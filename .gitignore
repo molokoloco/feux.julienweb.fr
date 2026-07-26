@@ -1,0 +1,11 @@
+node_modules/
+.cache/
+*.log
+
+# État de la veille : local, régénéré à chaque passage, pas de valeur en dépôt
+data/.veille-state.json
+
+# Google Drive
+.tmp.drivedownload/
+.tmp.driveupload/
+desktop.ini

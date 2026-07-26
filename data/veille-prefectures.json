@@ -1,0 +1,41 @@
+{
+  "methode": "Crawl borné de la branche Actualités/Publications des sites préfectoraux (aucun RSS, sitemap ou API n'existe sur ces sites — vérifié le 26/07/2026). Filtre par mots-clés forêt/massif/incendie + mesure (arrêté, interdiction, restriction).",
+  "avertissement": "Détection heuristique, non exhaustive et non officielle. Un arrêté peut être manqué. Seul l'arrêté préfectoral publié fait foi.",
+  "collecte": "2026-07-26T15:31:18.499Z",
+  "parametres": {
+    "maxPages": 8,
+    "maxDepth": 2,
+    "pause_ms": 3000,
+    "pause_entre_departements_ms": 20000
+  },
+  "stats": {
+    "departements": 1,
+    "trouvailles": 0,
+    "nouvelles": 0
+  },
+  "departements": [
+    {
+      "code": "40",
+      "nom": "Landes",
+      "domaine": "landes",
+      "seeds": [
+        "/Actualites"
+      ],
+      "motif": "prolongement du massif landais",
+      "actif": true,
+      "pages_visitees": 0,
+      "trouvailles": [],
+      "nouvelles": [],
+      "erreurs": [
+        {
+          "url": "https://www.landes.gouv.fr/Actualites",
+          "erreur": "Hôte www.landes.gouv.fr : 3 fermetures sèches d'affilée → disjoncteur ouvert. Très probablement un blocage anti-crawl. Attendre (dizaines de minutes), ralentir, réduire le nombre de pages."
+        },
+        {
+          "url": "https://www.landes.gouv.fr",
+          "erreur": "ABANDON — Hôte www.landes.gouv.fr : 3 fermetures sèches d'affilée → disjoncteur ouvert. Très probablement un blocage anti-crawl. Attendre (dizaines de minutes), ralentir, réduire le nombre de pages."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "feux-julienweb-fr",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Collecteurs et flux normalisé : arrêtés préfectoraux forêt + danger feu de forêt en France",
+  "license": "MIT",
+  "author": "Julien Guézennec <https://julienweb.fr>",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "meteo": "node collectors/meteo-forets.js --fresh",
+    "naviforest": "node collectors/naviforest.js --fresh",
+    "veille": "node collectors/watch-prefectures.js",
+    "collect": "npm run meteo && npm run naviforest && npm run veille"
+  }
+}

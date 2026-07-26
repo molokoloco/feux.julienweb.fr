@@ -1,0 +1,681 @@
+{
+  "source": "https://naviforest.ign.fr/arretes-prefectoraux-acces-massifs-forestiers",
+  "producteur": "IGN + FCBA (NaviForest)",
+  "avertissement": "Index non officiel. La mise à jour relève des services de l'État en département : des arrêtés peuvent manquer ou ne plus être en vigueur. Seul l'arrêté préfectoral fait foi.",
+  "collecte": "2026-07-26T15:32:17.450Z",
+  "stats": {
+    "departements_listes": 96,
+    "departements_avec_arrete": 25,
+    "departements_sans_arrete": 71,
+    "arretes_total": 27
+  },
+  "departements": [
+    {
+      "departement": "01",
+      "nom": "AIN",
+      "arretes": [
+        {
+          "fichier": "01_Arrete_Brulage_Prevention_des_Incendies.pdf",
+          "url": "https://naviforest.ign.fr/uploads/arretes/01_Arrete_Brulage_Prevention_des_Incendies.pdf",
+          "validite_texte": "Valide jusqu'au 31-12-2026",
+          "valide_jusqu_au": "2026-12-31"
+        }
+      ]
+    },
+    {
+      "departement": "02",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "03",
+      "nom": "ALLIER",
+      "arretes": [
+        {
+          "fichier": "03_arrete_prefectoral_n__1061_2026_du_12_mai_2026_portant_reglementation_en_vue_de_prevenir_les_incendies_de_forets_et_d_espaces_naturels_dans_le_departement_de_l_Allier.pdf",
+          "url": "https://naviforest.ign.fr/uploads/arretes/03_arrete_prefectoral_n__1061_2026_du_12_mai_2026_portant_reglementation_en_vue_de_prevenir_les_incendies_de_forets_et_d_espaces_naturels_dans_le_departement_de_l_Allier.pdf",
+          "validite_texte": "Valide jusqu'au 31-12-2026",
+          "valide_jusqu_au": "2026-12-31"
+        }
+      ]
+    },
+    {
+      "departement": "04",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "05",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "06",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "07",
+      "nom": "ARDECHE",
+      "arretes": [
+        {
+          "fichier": "07_20260520_AP_emploi_du_feu_Ardeche.pdf",
+          "url": "https://naviforest.ign.fr/uploads/arretes/07_20260520_AP_emploi_du_feu_Ardeche.pdf",
+          "validite_texte": "Valide jusqu'au 31-12-2026",
+          "valide_jusqu_au": "2026-12-31"
+        }
+      ]
+    },
+    {
+      "departement": "08",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "09",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "10",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "11",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "12",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "13",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "14",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "15",
+      "nom": "CANTAL",
+      "arretes": [
+        {
+          "fichier": "15_rrete_n___2024-432_reglementant_l_emploi_du_feu_dans_le_cadre_de_la_prevention_des_incendies.pdf",
+          "url": "https://naviforest.ign.fr/uploads/arretes/15_rrete_n___2024-432_reglementant_l_emploi_du_feu_dans_le_cadre_de_la_prevention_des_incendies.pdf",
+          "validite_texte": "Valide jusqu'au 31-12-2026",
+          "valide_jusqu_au": "2026-12-31"
+        }
+      ]
+    },
+    {
+      "departement": "16",
+      "nom": "CHARENTE",
+      "arretes": [
+        {
+          "fichier": "16_AP_restriction_temporaire_travaux_forestier.pdf",
+          "url": "https://naviforest.ign.fr/uploads/arretes/16_AP_restriction_temporaire_travaux_forestier.pdf",
+          "validite_texte": "Valide jusqu'au 27-07-2026",
+          "valide_jusqu_au": "2026-07-27"
+        }
+      ]
+    },
+    {
+      "departement": "17",
+      "nom": "CHARENTE-MARITIME",
+      "arretes": [
+        {
+          "fichier": "17_Arrete_Usages_feu_.pdf",
+          "url": "https://naviforest.ign.fr/uploads/arretes/17_Arrete_Usages_feu_.pdf",
+          "validite_texte": "Valide jusqu'au 31-12-2030",
+          "valide_jusqu_au": "2030-12-31"
+        },
+        {
+          "fichier": "17_Synthese_Usages_feu_.pdf",
+          "url": "https://naviforest.ign.fr/uploads/arretes/17_Synthese_Usages_feu_.pdf",
+          "validite_texte": "Valide jusqu'au 31-12-2030",
+          "valide_jusqu_au": "2030-12-31"
+        }
+      ]
+    },
+    {
+      "departement": "18",
+      "nom": "CHER",
+      "arretes": [
+        {
+          "fichier": "18_Prevention_et_lutte_contre_le_risque_incendie.pdf",
+          "url": "https://naviforest.ign.fr/uploads/arretes/18_Prevention_et_lutte_contre_le_risque_incendie.pdf",
+          "validite_texte": "Valide jusqu'au 30-09-2028",
+          "valide_jusqu_au": "2028-09-30"
+        }
+      ]
+    },
+    {
+      "departement": "19",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "21",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "22",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "23",
+      "nom": "CREUSE",
+      "arretes": [
+        {
+          "fichier": "23_AP_restriction_temporaire_travaux_forestier.pdf",
+          "url": "https://naviforest.ign.fr/uploads/arretes/23_AP_restriction_temporaire_travaux_forestier.pdf",
+          "validite_texte": "Valide jusqu'au 27-07-2026",
+          "valide_jusqu_au": "2026-07-27"
+        }
+      ]
+    },
+    {
+      "departement": "24",
+      "nom": "DORDOGNE",
+      "arretes": [
+        {
+          "fichier": "24_Reglement_departemental_prevention_incendies_de_forets.pdf",
+          "url": "https://naviforest.ign.fr/uploads/arretes/24_Reglement_departemental_prevention_incendies_de_forets.pdf",
+          "validite_texte": "Valide jusqu'au 31-12-2030",
+          "valide_jusqu_au": "2030-12-31"
+        }
+      ]
+    },
+    {
+      "departement": "25",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "26",
+      "nom": "DROME",
+      "arretes": [
+        {
+          "fichier": "26_20260604_AP26_acces_massifs_signe_annexes.pdf",
+          "url": "https://naviforest.ign.fr/uploads/arretes/26_20260604_AP26_acces_massifs_signe_annexes.pdf",
+          "validite_texte": "Valide jusqu'au 15-09-2026",
+          "valide_jusqu_au": "2026-09-15"
+        }
+      ]
+    },
+    {
+      "departement": "27",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "28",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "29",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "2A",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "2B",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "30",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "31",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "32",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "33",
+      "nom": "GIRONDE",
+      "arretes": [
+        {
+          "fichier": "33_Reglement_interdepartemental_protection_foret_contre_incendies.pdf",
+          "url": "https://naviforest.ign.fr/uploads/arretes/33_Reglement_interdepartemental_protection_foret_contre_incendies.pdf",
+          "validite_texte": "Valide jusqu'au 31-12-2030",
+          "valide_jusqu_au": "2030-12-31"
+        }
+      ]
+    },
+    {
+      "departement": "34",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "35",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "36",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "37",
+      "nom": "INDRE-ET-LOIRE",
+      "arretes": [
+        {
+          "fichier": "37_reglementation_sur_la_prevention_des_incendies_de_foret.pdf",
+          "url": "https://naviforest.ign.fr/uploads/arretes/37_reglementation_sur_la_prevention_des_incendies_de_foret.pdf",
+          "validite_texte": "Valide jusqu'au 30-09-2028",
+          "valide_jusqu_au": "2028-09-30"
+        }
+      ]
+    },
+    {
+      "departement": "38",
+      "nom": "ISERE",
+      "arretes": [
+        {
+          "fichier": "38_AP-reglt-usages-risque-incendie.pdf",
+          "url": "https://naviforest.ign.fr/uploads/arretes/38_AP-reglt-usages-risque-incendie.pdf",
+          "validite_texte": "Valide jusqu'au 30-09-2026",
+          "valide_jusqu_au": "2026-09-30"
+        }
+      ]
+    },
+    {
+      "departement": "39",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "40",
+      "nom": "LANDES",
+      "arretes": [
+        {
+          "fichier": "40_Reglement_interdepartemental_protection_foret_contre_incendie.pdf",
+          "url": "https://naviforest.ign.fr/uploads/arretes/40_Reglement_interdepartemental_protection_foret_contre_incendie.pdf",
+          "validite_texte": "Valide jusqu'au 31-12-2030",
+          "valide_jusqu_au": "2030-12-31"
+        }
+      ]
+    },
+    {
+      "departement": "41",
+      "nom": "LOIR-ET-CHER",
+      "arretes": [
+        {
+          "fichier": "41_reglementation_sur_la_prevention_des_incendies_de_foret_et_de_vegetation.pdf",
+          "url": "https://naviforest.ign.fr/uploads/arretes/41_reglementation_sur_la_prevention_des_incendies_de_foret_et_de_vegetation.pdf",
+          "validite_texte": "Valide jusqu'au 30-09-2027",
+          "valide_jusqu_au": "2027-09-30"
+        }
+      ]
+    },
+    {
+      "departement": "42",
+      "nom": "LOIRE",
+      "arretes": [
+        {
+          "fichier": "42_Reglementation_brulage_a_l_air_libre_et_usage_du_feu.pdf",
+          "url": "https://naviforest.ign.fr/uploads/arretes/42_Reglementation_brulage_a_l_air_libre_et_usage_du_feu.pdf",
+          "validite_texte": "Valide jusqu'au 31-12-2026",
+          "valide_jusqu_au": "2026-12-31"
+        }
+      ]
+    },
+    {
+      "departement": "43",
+      "nom": "HAUTE-LOIRE",
+      "arretes": [
+        {
+          "fichier": "43_Arrete_N___CAB_SDS_SIDPC_2025-50_relatif_a_la_protection_contre_l_incendie_des_bois__forets__plantations__landes__maquis_et_garrigues_dans_le_43.pdf",
+          "url": "https://naviforest.ign.fr/uploads/arretes/43_Arrete_N___CAB_SDS_SIDPC_2025-50_relatif_a_la_protection_contre_l_incendie_des_bois__forets__plantations__landes__maquis_et_garrigues_dans_le_43.pdf",
+          "validite_texte": "Valide jusqu'au 31-12-2026",
+          "valide_jusqu_au": "2026-12-31"
+        }
+      ]
+    },
+    {
+      "departement": "44",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "45",
+      "nom": "LOIRET",
+      "arretes": [
+        {
+          "fichier": "45_reglementation_a_fin_de_prevention_des_incendies.pdf",
+          "url": "https://naviforest.ign.fr/uploads/arretes/45_reglementation_a_fin_de_prevention_des_incendies.pdf",
+          "validite_texte": "Valide jusqu'au 30-09-2027",
+          "valide_jusqu_au": "2027-09-30"
+        }
+      ]
+    },
+    {
+      "departement": "46",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "47",
+      "nom": "LOT-ET-GARONNE",
+      "arretes": [
+        {
+          "fichier": "47_Reglement_interdepartemental_protection_foret_contre_incendie.pdf",
+          "url": "https://naviforest.ign.fr/uploads/arretes/47_Reglement_interdepartemental_protection_foret_contre_incendie.pdf",
+          "validite_texte": "Valide jusqu'au 31-12-2030",
+          "valide_jusqu_au": "2030-12-31"
+        }
+      ]
+    },
+    {
+      "departement": "48",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "49",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "50",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "51",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "52",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "53",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "54",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "55",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "56",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "57",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "58",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "59",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "60",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "61",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "62",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "63",
+      "nom": "PUY-DE-DOME",
+      "arretes": [
+        {
+          "fichier": "63_Arrete_n___20261041_Reglementant_les_feux_de_plein_air.pdf",
+          "url": "https://naviforest.ign.fr/uploads/arretes/63_Arrete_n___20261041_Reglementant_les_feux_de_plein_air.pdf",
+          "validite_texte": "Valide jusqu'au 31-12-2026",
+          "valide_jusqu_au": "2026-12-31"
+        }
+      ]
+    },
+    {
+      "departement": "64",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "65",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "66",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "67",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "68",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "69",
+      "nom": "RHONE",
+      "arretes": [
+        {
+          "fichier": "69_arrete_reglementant_l_usage_du_feu_dans_et_a_proximite_des_bois_et_forets.pdf",
+          "url": "https://naviforest.ign.fr/uploads/arretes/69_arrete_reglementant_l_usage_du_feu_dans_et_a_proximite_des_bois_et_forets.pdf",
+          "validite_texte": "Valide jusqu'au 31-12-2026",
+          "valide_jusqu_au": "2026-12-31"
+        }
+      ]
+    },
+    {
+      "departement": "70",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "71",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "72",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "73",
+      "nom": "SAVOIE",
+      "arretes": [
+        {
+          "fichier": "73_prevention_incendies_foret.pdf",
+          "url": "https://naviforest.ign.fr/uploads/arretes/73_prevention_incendies_foret.pdf",
+          "validite_texte": "Valide jusqu'au 31-12-2026",
+          "valide_jusqu_au": "2026-12-31"
+        }
+      ]
+    },
+    {
+      "departement": "74",
+      "nom": "HAUTE-SAVOIE",
+      "arretes": [
+        {
+          "fichier": "74_AP74-N__2024-0077_du_13_05_2024-prevention_des_incendies_de_foret_et_reglementant_l_emploi_du_feu_pdf",
+          "url": "https://naviforest.ign.fr/uploads/arretes/74_AP74-N__2024-0077_du_13_05_2024-prevention_des_incendies_de_foret_et_reglementant_l_emploi_du_feu_pdf",
+          "validite_texte": "Valide jusqu'au 31-12-2026",
+          "valide_jusqu_au": "2026-12-31"
+        },
+        {
+          "fichier": "74_Arrete_portant_reglementation_des_feux_et_brulage_pdf",
+          "url": "https://naviforest.ign.fr/uploads/arretes/74_Arrete_portant_reglementation_des_feux_et_brulage_pdf",
+          "validite_texte": "Valide jusqu'au 31-12-2026",
+          "valide_jusqu_au": "2026-12-31"
+        }
+      ]
+    },
+    {
+      "departement": "75",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "76",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "77",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "78",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "79",
+      "nom": "DEUX-SEVRES",
+      "arretes": [
+        {
+          "fichier": "79_AP_restriction_temporaire_travaux_forestier.pdf",
+          "url": "https://naviforest.ign.fr/uploads/arretes/79_AP_restriction_temporaire_travaux_forestier.pdf",
+          "validite_texte": "Valide jusqu'au 27-07-2026",
+          "valide_jusqu_au": "2026-07-27"
+        }
+      ]
+    },
+    {
+      "departement": "80",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "81",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "82",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "83",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "84",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "85",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "86",
+      "nom": "VIENNE",
+      "arretes": [
+        {
+          "fichier": "86_AP_restriction_temporaire_travaux_forestier.pdf",
+          "url": "https://naviforest.ign.fr/uploads/arretes/86_AP_restriction_temporaire_travaux_forestier.pdf",
+          "validite_texte": "Valide jusqu'au 27-07-2026",
+          "valide_jusqu_au": "2026-07-27"
+        }
+      ]
+    },
+    {
+      "departement": "87",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "88",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "89",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "90",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "91",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "92",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "93",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "94",
+      "nom": null,
+      "arretes": []
+    },
+    {
+      "departement": "95",
+      "nom": null,
+      "arretes": []
+    }
+  ]
+}

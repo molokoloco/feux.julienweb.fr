@@ -1,0 +1,6773 @@
+{
+  "source": "https://www.data.gouv.fr/api/1/datasets/archives-de-la-meteo-des-forets/",
+  "producteur": "Météo-France — Météo des forêts",
+  "licence": "lov2",
+  "frequence": "daily",
+  "maj_dataset": "2026-07-25T15:15:15+00:00",
+  "fichier_amont": "https://meteofrance.s3.sbg.io.cloud.ovh.net/data/BULLETIN/MDF/mdf_2026.csv.gz",
+  "geometries_departements": "https://static.data.gouv.fr/resources/archive-meteo-des-forets/20251218-123448/departements.geojson",
+  "avertissement": "Indicateur météorologique INDICATIF à l'échelle du département. Il ne vaut pas autorisation ni interdiction d'accès : seul l'arrêté préfectoral zonal réglemente l'accès aux massifs et l'emploi du feu.",
+  "collecte": "2026-07-26T15:32:17.577Z",
+  "bulletin_du": "2026-07-26",
+  "stats": {
+    "departements": 96,
+    "jours_disponibles": 60,
+    "premier_jour": "2026-05-28",
+    "departements_niveau_3_ou_4_j1": 7
+  },
+  "bulletin": [
+    {
+      "departement": "01",
+      "nom": "Ain",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "02",
+      "nom": "Aisne",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "03",
+      "nom": "Allier",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "04",
+      "nom": "Alpes-de-Haute-Provence",
+      "j1": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "05",
+      "nom": "Hautes-Alpes",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "06",
+      "nom": "Alpes-Maritimes",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "07",
+      "nom": "Ardèche",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "08",
+      "nom": "Ardennes",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "09",
+      "nom": "Ariège",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "10",
+      "nom": "Aube",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "11",
+      "nom": "Aude",
+      "j1": {
+        "niveau": 3,
+        "libelle": "élevé",
+        "couleur": "orange"
+      },
+      "j2": {
+        "niveau": 3,
+        "libelle": "élevé",
+        "couleur": "orange"
+      }
+    },
+    {
+      "departement": "12",
+      "nom": "Aveyron",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "13",
+      "nom": "Bouches-du-Rhône",
+      "j1": {
+        "niveau": 3,
+        "libelle": "élevé",
+        "couleur": "orange"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "14",
+      "nom": "Calvados",
+      "j1": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "15",
+      "nom": "Cantal",
+      "j1": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "16",
+      "nom": "Charente",
+      "j1": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "17",
+      "nom": "Charente-Maritime",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "18",
+      "nom": "Cher",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "19",
+      "nom": "Corrèze",
+      "j1": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      },
+      "j2": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      }
+    },
+    {
+      "departement": "21",
+      "nom": "Côte-d'Or",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "22",
+      "nom": "Côtes-d'Armor",
+      "j1": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      },
+      "j2": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      }
+    },
+    {
+      "departement": "23",
+      "nom": "Creuse",
+      "j1": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "24",
+      "nom": "Dordogne",
+      "j1": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "25",
+      "nom": "Doubs",
+      "j1": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "26",
+      "nom": "Drôme",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "27",
+      "nom": "Eure",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "28",
+      "nom": "Eure-et-Loir",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "29",
+      "nom": "Finistère",
+      "j1": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      },
+      "j2": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      }
+    },
+    {
+      "departement": "2A",
+      "nom": "Corse-du-Sud",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "2B",
+      "nom": "Haute-Corse",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "30",
+      "nom": "Gard",
+      "j1": {
+        "niveau": 3,
+        "libelle": "élevé",
+        "couleur": "orange"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "31",
+      "nom": "Haute-Garonne",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "32",
+      "nom": "Gers",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "33",
+      "nom": "Gironde",
+      "j1": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "34",
+      "nom": "Hérault",
+      "j1": {
+        "niveau": 3,
+        "libelle": "élevé",
+        "couleur": "orange"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "35",
+      "nom": "Ille-et-Vilaine",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "36",
+      "nom": "Indre",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "37",
+      "nom": "Indre-et-Loire",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "38",
+      "nom": "Isère",
+      "j1": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      },
+      "j2": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      }
+    },
+    {
+      "departement": "39",
+      "nom": "Jura",
+      "j1": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "40",
+      "nom": "Landes",
+      "j1": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "41",
+      "nom": "Loir-et-Cher",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "42",
+      "nom": "Loire",
+      "j1": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      },
+      "j2": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      }
+    },
+    {
+      "departement": "43",
+      "nom": "Haute-Loire",
+      "j1": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      },
+      "j2": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      }
+    },
+    {
+      "departement": "44",
+      "nom": "Loire-Atlantique",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "45",
+      "nom": "Loiret",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "46",
+      "nom": "Lot",
+      "j1": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "47",
+      "nom": "Lot-et-Garonne",
+      "j1": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "48",
+      "nom": "Lozère",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "49",
+      "nom": "Maine-et-Loire",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "50",
+      "nom": "Manche",
+      "j1": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "51",
+      "nom": "Marne",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "52",
+      "nom": "Haute-Marne",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "53",
+      "nom": "Mayenne",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "54",
+      "nom": "Meurthe-et-Moselle",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "55",
+      "nom": "Meuse",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "56",
+      "nom": "Morbihan",
+      "j1": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "57",
+      "nom": "Moselle",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "58",
+      "nom": "Nièvre",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "59",
+      "nom": "Nord",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "60",
+      "nom": "Oise",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "61",
+      "nom": "Orne",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "62",
+      "nom": "Pas-de-Calais",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "63",
+      "nom": "Puy-de-Dôme",
+      "j1": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      },
+      "j2": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      }
+    },
+    {
+      "departement": "64",
+      "nom": "Pyrénées-Atlantiques",
+      "j1": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      },
+      "j2": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      }
+    },
+    {
+      "departement": "65",
+      "nom": "Hautes-Pyrénées",
+      "j1": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      },
+      "j2": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      }
+    },
+    {
+      "departement": "66",
+      "nom": "Pyrénées-Orientales",
+      "j1": {
+        "niveau": 3,
+        "libelle": "élevé",
+        "couleur": "orange"
+      },
+      "j2": {
+        "niveau": 3,
+        "libelle": "élevé",
+        "couleur": "orange"
+      }
+    },
+    {
+      "departement": "67",
+      "nom": "Bas-Rhin",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "68",
+      "nom": "Haut-Rhin",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "69",
+      "nom": "Rhône",
+      "j1": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "70",
+      "nom": "Haute-Saône",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "71",
+      "nom": "Saône-et-Loire",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "72",
+      "nom": "Sarthe",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "73",
+      "nom": "Savoie",
+      "j1": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      },
+      "j2": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      }
+    },
+    {
+      "departement": "74",
+      "nom": "Haute-Savoie",
+      "j1": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      },
+      "j2": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      }
+    },
+    {
+      "departement": "75",
+      "nom": "Paris",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "76",
+      "nom": "Seine-Maritime",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "77",
+      "nom": "Seine-et-Marne",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "78",
+      "nom": "Yvelines",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "79",
+      "nom": "Deux-Sèvres",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "80",
+      "nom": "Somme",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "81",
+      "nom": "Tarn",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "82",
+      "nom": "Tarn-et-Garonne",
+      "j1": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "83",
+      "nom": "Var",
+      "j1": {
+        "niveau": 3,
+        "libelle": "élevé",
+        "couleur": "orange"
+      },
+      "j2": {
+        "niveau": 3,
+        "libelle": "élevé",
+        "couleur": "orange"
+      }
+    },
+    {
+      "departement": "84",
+      "nom": "Vaucluse",
+      "j1": {
+        "niveau": 3,
+        "libelle": "élevé",
+        "couleur": "orange"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "85",
+      "nom": "Vendée",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "86",
+      "nom": "Vienne",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "87",
+      "nom": "Haute-Vienne",
+      "j1": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "88",
+      "nom": "Vosges",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "89",
+      "nom": "Yonne",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "90",
+      "nom": "Territoire-de-Belfort",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "91",
+      "nom": "Essonne",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "92",
+      "nom": "Hauts-de-Seine",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "93",
+      "nom": "Seine-Saint-Denis",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "94",
+      "nom": "Val-de-Marne",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "95",
+      "nom": "Val-d'Oise",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    }
+  ],
+  "historique": {
+    "format": "{ jour: { dep: [j1, j2] } }",
+    "jours": {
+      "2026-07-13": {
+        "10": [
+          2,
+          2
+        ],
+        "11": [
+          3,
+          3
+        ],
+        "12": [
+          3,
+          3
+        ],
+        "13": [
+          2,
+          2
+        ],
+        "14": [
+          2,
+          2
+        ],
+        "15": [
+          2,
+          2
+        ],
+        "16": [
+          2,
+          2
+        ],
+        "17": [
+          2,
+          2
+        ],
+        "18": [
+          3,
+          3
+        ],
+        "19": [
+          2,
+          2
+        ],
+        "21": [
+          3,
+          2
+        ],
+        "22": [
+          1,
+          1
+        ],
+        "23": [
+          2,
+          2
+        ],
+        "24": [
+          2,
+          2
+        ],
+        "25": [
+          2,
+          2
+        ],
+        "26": [
+          3,
+          3
+        ],
+        "27": [
+          3,
+          3
+        ],
+        "28": [
+          2,
+          3
+        ],
+        "29": [
+          1,
+          1
+        ],
+        "30": [
+          3,
+          3
+        ],
+        "31": [
+          3,
+          2
+        ],
+        "32": [
+          2,
+          2
+        ],
+        "33": [
+          2,
+          2
+        ],
+        "34": [
+          2,
+          2
+        ],
+        "35": [
+          2,
+          2
+        ],
+        "36": [
+          2,
+          2
+        ],
+        "37": [
+          2,
+          2
+        ],
+        "38": [
+          2,
+          2
+        ],
+        "39": [
+          2,
+          2
+        ],
+        "40": [
+          2,
+          2
+        ],
+        "41": [
+          3,
+          3
+        ],
+        "42": [
+          2,
+          2
+        ],
+        "43": [
+          2,
+          2
+        ],
+        "44": [
+          2,
+          2
+        ],
+        "45": [
+          3,
+          3
+        ],
+        "46": [
+          2,
+          2
+        ],
+        "47": [
+          2,
+          2
+        ],
+        "48": [
+          2,
+          2
+        ],
+        "49": [
+          2,
+          3
+        ],
+        "50": [
+          2,
+          2
+        ],
+        "51": [
+          2,
+          2
+        ],
+        "52": [
+          3,
+          2
+        ],
+        "53": [
+          2,
+          2
+        ],
+        "54": [
+          3,
+          2
+        ],
+        "55": [
+          3,
+          2
+        ],
+        "56": [
+          2,
+          1
+        ],
+        "57": [
+          3,
+          2
+        ],
+        "58": [
+          3,
+          2
+        ],
+        "59": [
+          2,
+          3
+        ],
+        "60": [
+          2,
+          2
+        ],
+        "61": [
+          2,
+          2
+        ],
+        "62": [
+          2,
+          2
+        ],
+        "63": [
+          2,
+          2
+        ],
+        "64": [
+          1,
+          1
+        ],
+        "65": [
+          2,
+          2
+        ],
+        "66": [
+          2,
+          2
+        ],
+        "67": [
+          2,
+          2
+        ],
+        "68": [
+          2,
+          2
+        ],
+        "69": [
+          3,
+          3
+        ],
+        "70": [
+          2,
+          2
+        ],
+        "71": [
+          2,
+          2
+        ],
+        "72": [
+          2,
+          2
+        ],
+        "73": [
+          2,
+          2
+        ],
+        "74": [
+          2,
+          2
+        ],
+        "75": [
+          3,
+          3
+        ],
+        "76": [
+          2,
+          2
+        ],
+        "77": [
+          3,
+          3
+        ],
+        "78": [
+          3,
+          3
+        ],
+        "79": [
+          2,
+          2
+        ],
+        "80": [
+          2,
+          2
+        ],
+        "81": [
+          2,
+          2
+        ],
+        "82": [
+          2,
+          2
+        ],
+        "83": [
+          3,
+          3
+        ],
+        "84": [
+          3,
+          3
+        ],
+        "85": [
+          2,
+          2
+        ],
+        "86": [
+          2,
+          2
+        ],
+        "87": [
+          2,
+          2
+        ],
+        "88": [
+          2,
+          2
+        ],
+        "89": [
+          3,
+          2
+        ],
+        "90": [
+          2,
+          2
+        ],
+        "91": [
+          3,
+          3
+        ],
+        "92": [
+          3,
+          3
+        ],
+        "93": [
+          3,
+          3
+        ],
+        "94": [
+          3,
+          3
+        ],
+        "95": [
+          3,
+          3
+        ],
+        "01": [
+          2,
+          3
+        ],
+        "02": [
+          2,
+          2
+        ],
+        "03": [
+          3,
+          3
+        ],
+        "04": [
+          2,
+          2
+        ],
+        "05": [
+          2,
+          2
+        ],
+        "06": [
+          2,
+          2
+        ],
+        "07": [
+          3,
+          2
+        ],
+        "08": [
+          3,
+          2
+        ],
+        "09": [
+          2,
+          2
+        ],
+        "2A": [
+          2,
+          2
+        ],
+        "2B": [
+          2,
+          2
+        ]
+      },
+      "2026-07-14": {
+        "10": [
+          3,
+          2
+        ],
+        "11": [
+          3,
+          3
+        ],
+        "12": [
+          3,
+          3
+        ],
+        "13": [
+          2,
+          2
+        ],
+        "14": [
+          2,
+          1
+        ],
+        "15": [
+          3,
+          2
+        ],
+        "16": [
+          2,
+          2
+        ],
+        "17": [
+          2,
+          2
+        ],
+        "18": [
+          3,
+          2
+        ],
+        "19": [
+          2,
+          2
+        ],
+        "21": [
+          2,
+          1
+        ],
+        "22": [
+          1,
+          1
+        ],
+        "23": [
+          2,
+          2
+        ],
+        "24": [
+          2,
+          2
+        ],
+        "25": [
+          2,
+          1
+        ],
+        "26": [
+          3,
+          2
+        ],
+        "27": [
+          3,
+          2
+        ],
+        "28": [
+          3,
+          1
+        ],
+        "29": [
+          1,
+          1
+        ],
+        "30": [
+          3,
+          2
+        ],
+        "31": [
+          2,
+          2
+        ],
+        "32": [
+          2,
+          2
+        ],
+        "33": [
+          2,
+          2
+        ],
+        "34": [
+          2,
+          2
+        ],
+        "35": [
+          2,
+          1
+        ],
+        "36": [
+          3,
+          2
+        ],
+        "37": [
+          3,
+          2
+        ],
+        "38": [
+          2,
+          1
+        ],
+        "39": [
+          2,
+          1
+        ],
+        "40": [
+          2,
+          2
+        ],
+        "41": [
+          3,
+          1
+        ],
+        "42": [
+          2,
+          1
+        ],
+        "43": [
+          3,
+          2
+        ],
+        "44": [
+          2,
+          1
+        ],
+        "45": [
+          3,
+          1
+        ],
+        "46": [
+          2,
+          2
+        ],
+        "47": [
+          2,
+          2
+        ],
+        "48": [
+          2,
+          2
+        ],
+        "49": [
+          3,
+          2
+        ],
+        "50": [
+          2,
+          1
+        ],
+        "51": [
+          2,
+          2
+        ],
+        "52": [
+          2,
+          1
+        ],
+        "53": [
+          2,
+          1
+        ],
+        "54": [
+          2,
+          2
+        ],
+        "55": [
+          2,
+          2
+        ],
+        "56": [
+          2,
+          1
+        ],
+        "57": [
+          2,
+          2
+        ],
+        "58": [
+          2,
+          1
+        ],
+        "59": [
+          3,
+          2
+        ],
+        "60": [
+          2,
+          2
+        ],
+        "61": [
+          2,
+          1
+        ],
+        "62": [
+          2,
+          2
+        ],
+        "63": [
+          3,
+          2
+        ],
+        "64": [
+          1,
+          1
+        ],
+        "65": [
+          2,
+          2
+        ],
+        "66": [
+          2,
+          2
+        ],
+        "67": [
+          2,
+          1
+        ],
+        "68": [
+          2,
+          1
+        ],
+        "69": [
+          3,
+          1
+        ],
+        "70": [
+          2,
+          1
+        ],
+        "71": [
+          3,
+          1
+        ],
+        "72": [
+          3,
+          1
+        ],
+        "73": [
+          2,
+          1
+        ],
+        "74": [
+          2,
+          1
+        ],
+        "75": [
+          3,
+          2
+        ],
+        "76": [
+          2,
+          2
+        ],
+        "77": [
+          3,
+          2
+        ],
+        "78": [
+          3,
+          2
+        ],
+        "79": [
+          3,
+          2
+        ],
+        "80": [
+          2,
+          2
+        ],
+        "81": [
+          2,
+          2
+        ],
+        "82": [
+          2,
+          2
+        ],
+        "83": [
+          3,
+          3
+        ],
+        "84": [
+          3,
+          3
+        ],
+        "85": [
+          2,
+          2
+        ],
+        "86": [
+          2,
+          2
+        ],
+        "87": [
+          3,
+          2
+        ],
+        "88": [
+          2,
+          1
+        ],
+        "89": [
+          3,
+          1
+        ],
+        "90": [
+          2,
+          1
+        ],
+        "91": [
+          3,
+          2
+        ],
+        "92": [
+          3,
+          2
+        ],
+        "93": [
+          3,
+          2
+        ],
+        "94": [
+          3,
+          2
+        ],
+        "95": [
+          3,
+          2
+        ],
+        "01": [
+          3,
+          1
+        ],
+        "02": [
+          2,
+          2
+        ],
+        "03": [
+          3,
+          2
+        ],
+        "04": [
+          2,
+          2
+        ],
+        "05": [
+          2,
+          2
+        ],
+        "06": [
+          2,
+          2
+        ],
+        "07": [
+          3,
+          2
+        ],
+        "08": [
+          2,
+          2
+        ],
+        "09": [
+          2,
+          2
+        ],
+        "2A": [
+          2,
+          2
+        ],
+        "2B": [
+          2,
+          2
+        ]
+      },
+      "2026-07-15": {
+        "10": [
+          2,
+          1
+        ],
+        "11": [
+          3,
+          3
+        ],
+        "12": [
+          3,
+          2
+        ],
+        "13": [
+          3,
+          2
+        ],
+        "14": [
+          2,
+          1
+        ],
+        "15": [
+          2,
+          1
+        ],
+        "16": [
+          2,
+          2
+        ],
+        "17": [
+          2,
+          2
+        ],
+        "18": [
+          2,
+          1
+        ],
+        "19": [
+          2,
+          1
+        ],
+        "21": [
+          1,
+          1
+        ],
+        "22": [
+          1,
+          1
+        ],
+        "23": [
+          2,
+          1
+        ],
+        "24": [
+          2,
+          2
+        ],
+        "25": [
+          1,
+          1
+        ],
+        "26": [
+          2,
+          2
+        ],
+        "27": [
+          2,
+          1
+        ],
+        "28": [
+          2,
+          1
+        ],
+        "29": [
+          1,
+          1
+        ],
+        "30": [
+          3,
+          3
+        ],
+        "31": [
+          3,
+          2
+        ],
+        "32": [
+          2,
+          1
+        ],
+        "33": [
+          2,
+          2
+        ],
+        "34": [
+          2,
+          3
+        ],
+        "35": [
+          1,
+          1
+        ],
+        "36": [
+          2,
+          1
+        ],
+        "37": [
+          2,
+          1
+        ],
+        "38": [
+          1,
+          1
+        ],
+        "39": [
+          1,
+          1
+        ],
+        "40": [
+          2,
+          1
+        ],
+        "41": [
+          2,
+          1
+        ],
+        "42": [
+          2,
+          1
+        ],
+        "43": [
+          2,
+          1
+        ],
+        "44": [
+          2,
+          1
+        ],
+        "45": [
+          2,
+          1
+        ],
+        "46": [
+          2,
+          1
+        ],
+        "47": [
+          2,
+          2
+        ],
+        "48": [
+          2,
+          2
+        ],
+        "49": [
+          2,
+          1
+        ],
+        "50": [
+          1,
+          1
+        ],
+        "51": [
+          2,
+          1
+        ],
+        "52": [
+          1,
+          1
+        ],
+        "53": [
+          1,
+          1
+        ],
+        "54": [
+          2,
+          1
+        ],
+        "55": [
+          2,
+          1
+        ],
+        "56": [
+          1,
+          1
+        ],
+        "57": [
+          2,
+          1
+        ],
+        "58": [
+          2,
+          1
+        ],
+        "59": [
+          3,
+          2
+        ],
+        "60": [
+          2,
+          1
+        ],
+        "61": [
+          1,
+          1
+        ],
+        "62": [
+          2,
+          2
+        ],
+        "63": [
+          2,
+          1
+        ],
+        "64": [
+          1,
+          1
+        ],
+        "65": [
+          2,
+          1
+        ],
+        "66": [
+          2,
+          2
+        ],
+        "67": [
+          1,
+          1
+        ],
+        "68": [
+          1,
+          1
+        ],
+        "69": [
+          2,
+          1
+        ],
+        "70": [
+          1,
+          1
+        ],
+        "71": [
+          2,
+          1
+        ],
+        "72": [
+          1,
+          1
+        ],
+        "73": [
+          1,
+          1
+        ],
+        "74": [
+          1,
+          1
+        ],
+        "75": [
+          2,
+          1
+        ],
+        "76": [
+          2,
+          2
+        ],
+        "77": [
+          2,
+          1
+        ],
+        "78": [
+          2,
+          1
+        ],
+        "79": [
+          2,
+          2
+        ],
+        "80": [
+          2,
+          2
+        ],
+        "81": [
+          3,
+          2
+        ],
+        "82": [
+          2,
+          1
+        ],
+        "83": [
+          3,
+          3
+        ],
+        "84": [
+          3,
+          3
+        ],
+        "85": [
+          2,
+          2
+        ],
+        "86": [
+          2,
+          1
+        ],
+        "87": [
+          2,
+          1
+        ],
+        "88": [
+          1,
+          1
+        ],
+        "89": [
+          2,
+          1
+        ],
+        "90": [
+          1,
+          1
+        ],
+        "91": [
+          2,
+          1
+        ],
+        "92": [
+          2,
+          1
+        ],
+        "93": [
+          2,
+          1
+        ],
+        "94": [
+          2,
+          1
+        ],
+        "95": [
+          2,
+          1
+        ],
+        "01": [
+          2,
+          1
+        ],
+        "02": [
+          2,
+          1
+        ],
+        "03": [
+          2,
+          1
+        ],
+        "04": [
+          2,
+          2
+        ],
+        "05": [
+          2,
+          2
+        ],
+        "06": [
+          2,
+          2
+        ],
+        "07": [
+          2,
+          2
+        ],
+        "08": [
+          2,
+          1
+        ],
+        "09": [
+          2,
+          2
+        ],
+        "2A": [
+          2,
+          2
+        ],
+        "2B": [
+          2,
+          2
+        ]
+      },
+      "2026-07-16": {
+        "10": [
+          1,
+          1
+        ],
+        "11": [
+          3,
+          3
+        ],
+        "12": [
+          1,
+          2
+        ],
+        "13": [
+          3,
+          3
+        ],
+        "14": [
+          1,
+          1
+        ],
+        "15": [
+          1,
+          1
+        ],
+        "16": [
+          2,
+          2
+        ],
+        "17": [
+          2,
+          2
+        ],
+        "18": [
+          1,
+          1
+        ],
+        "19": [
+          1,
+          1
+        ],
+        "21": [
+          1,
+          1
+        ],
+        "22": [
+          1,
+          1
+        ],
+        "23": [
+          1,
+          1
+        ],
+        "24": [
+          2,
+          1
+        ],
+        "25": [
+          1,
+          1
+        ],
+        "26": [
+          2,
+          2
+        ],
+        "27": [
+          1,
+          1
+        ],
+        "28": [
+          1,
+          1
+        ],
+        "29": [
+          1,
+          1
+        ],
+        "30": [
+          3,
+          3
+        ],
+        "31": [
+          2,
+          2
+        ],
+        "32": [
+          2,
+          1
+        ],
+        "33": [
+          2,
+          2
+        ],
+        "34": [
+          3,
+          3
+        ],
+        "35": [
+          1,
+          1
+        ],
+        "36": [
+          1,
+          1
+        ],
+        "37": [
+          2,
+          2
+        ],
+        "38": [
+          1,
+          1
+        ],
+        "39": [
+          1,
+          1
+        ],
+        "40": [
+          1,
+          1
+        ],
+        "41": [
+          1,
+          1
+        ],
+        "42": [
+          1,
+          1
+        ],
+        "43": [
+          1,
+          1
+        ],
+        "44": [
+          2,
+          1
+        ],
+        "45": [
+          2,
+          2
+        ],
+        "46": [
+          1,
+          2
+        ],
+        "47": [
+          2,
+          2
+        ],
+        "48": [
+          1,
+          2
+        ],
+        "49": [
+          2,
+          2
+        ],
+        "50": [
+          1,
+          1
+        ],
+        "51": [
+          1,
+          1
+        ],
+        "52": [
+          1,
+          1
+        ],
+        "53": [
+          1,
+          1
+        ],
+        "54": [
+          1,
+          1
+        ],
+        "55": [
+          1,
+          1
+        ],
+        "56": [
+          1,
+          1
+        ],
+        "57": [
+          1,
+          1
+        ],
+        "58": [
+          1,
+          1
+        ],
+        "59": [
+          3,
+          2
+        ],
+        "60": [
+          2,
+          1
+        ],
+        "61": [
+          1,
+          1
+        ],
+        "62": [
+          2,
+          2
+        ],
+        "63": [
+          1,
+          1
+        ],
+        "64": [
+          1,
+          1
+        ],
+        "65": [
+          1,
+          1
+        ],
+        "66": [
+          2,
+          2
+        ],
+        "67": [
+          1,
+          1
+        ],
+        "68": [
+          1,
+          1
+        ],
+        "69": [
+          1,
+          1
+        ],
+        "70": [
+          1,
+          1
+        ],
+        "71": [
+          1,
+          1
+        ],
+        "72": [
+          1,
+          1
+        ],
+        "73": [
+          1,
+          1
+        ],
+        "74": [
+          1,
+          1
+        ],
+        "75": [
+          1,
+          1
+        ],
+        "76": [
+          2,
+          2
+        ],
+        "77": [
+          2,
+          2
+        ],
+        "78": [
+          1,
+          1
+        ],
+        "79": [
+          2,
+          2
+        ],
+        "80": [
+          2,
+          2
+        ],
+        "81": [
+          1,
+          2
+        ],
+        "82": [
+          2,
+          2
+        ],
+        "83": [
+          3,
+          3
+        ],
+        "84": [
+          3,
+          3
+        ],
+        "85": [
+          2,
+          2
+        ],
+        "86": [
+          2,
+          2
+        ],
+        "87": [
+          1,
+          1
+        ],
+        "88": [
+          1,
+          1
+        ],
+        "89": [
+          1,
+          1
+        ],
+        "90": [
+          1,
+          1
+        ],
+        "91": [
+          2,
+          1
+        ],
+        "92": [
+          1,
+          1
+        ],
+        "93": [
+          1,
+          1
+        ],
+        "94": [
+          1,
+          1
+        ],
+        "95": [
+          1,
+          1
+        ],
+        "01": [
+          1,
+          1
+        ],
+        "02": [
+          1,
+          1
+        ],
+        "03": [
+          1,
+          1
+        ],
+        "04": [
+          2,
+          2
+        ],
+        "05": [
+          2,
+          1
+        ],
+        "06": [
+          2,
+          2
+        ],
+        "07": [
+          2,
+          2
+        ],
+        "08": [
+          1,
+          1
+        ],
+        "09": [
+          1,
+          1
+        ],
+        "2A": [
+          2,
+          2
+        ],
+        "2B": [
+          2,
+          2
+        ]
+      },
+      "2026-07-17": {
+        "10": [
+          1,
+          1
+        ],
+        "11": [
+          3,
+          3
+        ],
+        "12": [
+          2,
+          2
+        ],
+        "13": [
+          3,
+          3
+        ],
+        "14": [
+          1,
+          2
+        ],
+        "15": [
+          1,
+          2
+        ],
+        "16": [
+          2,
+          2
+        ],
+        "17": [
+          2,
+          2
+        ],
+        "18": [
+          1,
+          2
+        ],
+        "19": [
+          1,
+          1
+        ],
+        "21": [
+          1,
+          1
+        ],
+        "22": [
+          1,
+          1
+        ],
+        "23": [
+          1,
+          1
+        ],
+        "24": [
+          1,
+          2
+        ],
+        "25": [
+          1,
+          1
+        ],
+        "26": [
+          2,
+          2
+        ],
+        "27": [
+          2,
+          2
+        ],
+        "28": [
+          2,
+          2
+        ],
+        "29": [
+          1,
+          1
+        ],
+        "30": [
+          3,
+          3
+        ],
+        "31": [
+          2,
+          2
+        ],
+        "32": [
+          2,
+          2
+        ],
+        "33": [
+          2,
+          2
+        ],
+        "34": [
+          3,
+          3
+        ],
+        "35": [
+          1,
+          2
+        ],
+        "36": [
+          2,
+          2
+        ],
+        "37": [
+          2,
+          2
+        ],
+        "38": [
+          1,
+          1
+        ],
+        "39": [
+          1,
+          1
+        ],
+        "40": [
+          1,
+          2
+        ],
+        "41": [
+          2,
+          2
+        ],
+        "42": [
+          1,
+          1
+        ],
+        "43": [
+          1,
+          1
+        ],
+        "44": [
+          2,
+          2
+        ],
+        "45": [
+          2,
+          2
+        ],
+        "46": [
+          2,
+          2
+        ],
+        "47": [
+          1,
+          2
+        ],
+        "48": [
+          2,
+          2
+        ],
+        "49": [
+          2,
+          2
+        ],
+        "50": [
+          1,
+          1
+        ],
+        "51": [
+          1,
+          2
+        ],
+        "52": [
+          1,
+          1
+        ],
+        "53": [
+          2,
+          2
+        ],
+        "54": [
+          1,
+          1
+        ],
+        "55": [
+          1,
+          1
+        ],
+        "56": [
+          1,
+          2
+        ],
+        "57": [
+          1,
+          1
+        ],
+        "58": [
+          1,
+          1
+        ],
+        "59": [
+          2,
+          2
+        ],
+        "60": [
+          1,
+          2
+        ],
+        "61": [
+          2,
+          2
+        ],
+        "62": [
+          2,
+          2
+        ],
+        "63": [
+          1,
+          1
+        ],
+        "64": [
+          1,
+          1
+        ],
+        "65": [
+          1,
+          1
+        ],
+        "66": [
+          3,
+          3
+        ],
+        "67": [
+          1,
+          1
+        ],
+        "68": [
+          1,
+          1
+        ],
+        "69": [
+          1,
+          1
+        ],
+        "70": [
+          1,
+          1
+        ],
+        "71": [
+          1,
+          1
+        ],
+        "72": [
+          2,
+          2
+        ],
+        "73": [
+          1,
+          1
+        ],
+        "74": [
+          1,
+          1
+        ],
+        "75": [
+          1,
+          1
+        ],
+        "76": [
+          2,
+          2
+        ],
+        "77": [
+          1,
+          2
+        ],
+        "78": [
+          2,
+          2
+        ],
+        "79": [
+          2,
+          3
+        ],
+        "80": [
+          2,
+          2
+        ],
+        "81": [
+          2,
+          2
+        ],
+        "82": [
+          2,
+          2
+        ],
+        "83": [
+          4,
+          3
+        ],
+        "84": [
+          3,
+          3
+        ],
+        "85": [
+          2,
+          2
+        ],
+        "86": [
+          2,
+          2
+        ],
+        "87": [
+          1,
+          2
+        ],
+        "88": [
+          1,
+          1
+        ],
+        "89": [
+          1,
+          1
+        ],
+        "90": [
+          1,
+          1
+        ],
+        "91": [
+          2,
+          2
+        ],
+        "92": [
+          1,
+          1
+        ],
+        "93": [
+          1,
+          1
+        ],
+        "94": [
+          1,
+          1
+        ],
+        "95": [
+          1,
+          1
+        ],
+        "01": [
+          1,
+          1
+        ],
+        "02": [
+          1,
+          1
+        ],
+        "03": [
+          1,
+          2
+        ],
+        "04": [
+          2,
+          2
+        ],
+        "05": [
+          2,
+          2
+        ],
+        "06": [
+          3,
+          2
+        ],
+        "07": [
+          2,
+          2
+        ],
+        "08": [
+          1,
+          2
+        ],
+        "09": [
+          2,
+          2
+        ],
+        "2A": [
+          2,
+          2
+        ],
+        "2B": [
+          3,
+          2
+        ]
+      },
+      "2026-07-18": {
+        "10": [
+          1,
+          2
+        ],
+        "11": [
+          3,
+          3
+        ],
+        "12": [
+          3,
+          3
+        ],
+        "13": [
+          4,
+          3
+        ],
+        "14": [
+          2,
+          2
+        ],
+        "15": [
+          2,
+          2
+        ],
+        "16": [
+          2,
+          3
+        ],
+        "17": [
+          2,
+          3
+        ],
+        "18": [
+          2,
+          2
+        ],
+        "19": [
+          2,
+          2
+        ],
+        "21": [
+          1,
+          1
+        ],
+        "22": [
+          2,
+          2
+        ],
+        "23": [
+          2,
+          2
+        ],
+        "24": [
+          2,
+          2
+        ],
+        "25": [
+          1,
+          1
+        ],
+        "26": [
+          3,
+          3
+        ],
+        "27": [
+          2,
+          2
+        ],
+        "28": [
+          2,
+          3
+        ],
+        "29": [
+          2,
+          2
+        ],
+        "30": [
+          3,
+          3
+        ],
+        "31": [
+          2,
+          2
+        ],
+        "32": [
+          2,
+          2
+        ],
+        "33": [
+          2,
+          3
+        ],
+        "34": [
+          3,
+          3
+        ],
+        "35": [
+          2,
+          2
+        ],
+        "36": [
+          2,
+          2
+        ],
+        "37": [
+          3,
+          2
+        ],
+        "38": [
+          2,
+          2
+        ],
+        "39": [
+          1,
+          1
+        ],
+        "40": [
+          2,
+          2
+        ],
+        "41": [
+          3,
+          3
+        ],
+        "42": [
+          1,
+          1
+        ],
+        "43": [
+          1,
+          1
+        ],
+        "44": [
+          3,
+          3
+        ],
+        "45": [
+          2,
+          2
+        ],
+        "46": [
+          2,
+          2
+        ],
+        "47": [
+          2,
+          2
+        ],
+        "48": [
+          2,
+          2
+        ],
+        "49": [
+          3,
+          3
+        ],
+        "50": [
+          2,
+          2
+        ],
+        "51": [
+          2,
+          2
+        ],
+        "52": [
+          1,
+          2
+        ],
+        "53": [
+          2,
+          2
+        ],
+        "54": [
+          2,
+          2
+        ],
+        "55": [
+          2,
+          2
+        ],
+        "56": [
+          2,
+          2
+        ],
+        "57": [
+          1,
+          1
+        ],
+        "58": [
+          2,
+          2
+        ],
+        "59": [
+          2,
+          2
+        ],
+        "60": [
+          2,
+          2
+        ],
+        "61": [
+          2,
+          2
+        ],
+        "62": [
+          2,
+          2
+        ],
+        "63": [
+          2,
+          2
+        ],
+        "64": [
+          1,
+          1
+        ],
+        "65": [
+          1,
+          1
+        ],
+        "66": [
+          3,
+          3
+        ],
+        "67": [
+          1,
+          1
+        ],
+        "68": [
+          1,
+          1
+        ],
+        "69": [
+          2,
+          2
+        ],
+        "70": [
+          1,
+          2
+        ],
+        "71": [
+          2,
+          2
+        ],
+        "72": [
+          2,
+          2
+        ],
+        "73": [
+          1,
+          1
+        ],
+        "74": [
+          1,
+          1
+        ],
+        "75": [
+          2,
+          2
+        ],
+        "76": [
+          2,
+          2
+        ],
+        "77": [
+          2,
+          2
+        ],
+        "78": [
+          2,
+          2
+        ],
+        "79": [
+          3,
+          3
+        ],
+        "80": [
+          2,
+          2
+        ],
+        "81": [
+          2,
+          2
+        ],
+        "82": [
+          2,
+          3
+        ],
+        "83": [
+          4,
+          3
+        ],
+        "84": [
+          3,
+          3
+        ],
+        "85": [
+          3,
+          3
+        ],
+        "86": [
+          2,
+          2
+        ],
+        "87": [
+          2,
+          2
+        ],
+        "88": [
+          1,
+          2
+        ],
+        "89": [
+          1,
+          2
+        ],
+        "90": [
+          1,
+          1
+        ],
+        "91": [
+          2,
+          2
+        ],
+        "92": [
+          2,
+          2
+        ],
+        "93": [
+          2,
+          2
+        ],
+        "94": [
+          2,
+          2
+        ],
+        "95": [
+          2,
+          2
+        ],
+        "01": [
+          2,
+          2
+        ],
+        "02": [
+          2,
+          2
+        ],
+        "03": [
+          2,
+          2
+        ],
+        "04": [
+          2,
+          2
+        ],
+        "05": [
+          2,
+          2
+        ],
+        "06": [
+          2,
+          2
+        ],
+        "07": [
+          2,
+          2
+        ],
+        "08": [
+          2,
+          2
+        ],
+        "09": [
+          2,
+          2
+        ],
+        "2A": [
+          2,
+          2
+        ],
+        "2B": [
+          3,
+          2
+        ]
+      },
+      "2026-07-19": {
+        "10": [
+          2,
+          2
+        ],
+        "11": [
+          3,
+          3
+        ],
+        "12": [
+          3,
+          3
+        ],
+        "13": [
+          3,
+          4
+        ],
+        "14": [
+          2,
+          2
+        ],
+        "15": [
+          2,
+          2
+        ],
+        "16": [
+          3,
+          3
+        ],
+        "17": [
+          3,
+          3
+        ],
+        "18": [
+          2,
+          2
+        ],
+        "19": [
+          2,
+          2
+        ],
+        "21": [
+          2,
+          2
+        ],
+        "22": [
+          2,
+          2
+        ],
+        "23": [
+          2,
+          2
+        ],
+        "24": [
+          2,
+          3
+        ],
+        "25": [
+          1,
+          1
+        ],
+        "26": [
+          3,
+          3
+        ],
+        "27": [
+          2,
+          2
+        ],
+        "28": [
+          3,
+          2
+        ],
+        "29": [
+          2,
+          2
+        ],
+        "30": [
+          3,
+          4
+        ],
+        "31": [
+          3,
+          3
+        ],
+        "32": [
+          2,
+          3
+        ],
+        "33": [
+          3,
+          3
+        ],
+        "34": [
+          3,
+          3
+        ],
+        "35": [
+          2,
+          2
+        ],
+        "36": [
+          3,
+          3
+        ],
+        "37": [
+          3,
+          3
+        ],
+        "38": [
+          2,
+          2
+        ],
+        "39": [
+          2,
+          2
+        ],
+        "40": [
+          2,
+          2
+        ],
+        "41": [
+          3,
+          3
+        ],
+        "42": [
+          2,
+          2
+        ],
+        "43": [
+          2,
+          2
+        ],
+        "44": [
+          3,
+          3
+        ],
+        "45": [
+          2,
+          3
+        ],
+        "46": [
+          2,
+          3
+        ],
+        "47": [
+          2,
+          2
+        ],
+        "48": [
+          2,
+          2
+        ],
+        "49": [
+          3,
+          3
+        ],
+        "50": [
+          2,
+          2
+        ],
+        "51": [
+          2,
+          2
+        ],
+        "52": [
+          2,
+          2
+        ],
+        "53": [
+          3,
+          2
+        ],
+        "54": [
+          2,
+          2
+        ],
+        "55": [
+          2,
+          2
+        ],
+        "56": [
+          2,
+          2
+        ],
+        "57": [
+          2,
+          2
+        ],
+        "58": [
+          2,
+          2
+        ],
+        "59": [
+          2,
+          2
+        ],
+        "60": [
+          2,
+          2
+        ],
+        "61": [
+          2,
+          2
+        ],
+        "62": [
+          2,
+          2
+        ],
+        "63": [
+          2,
+          2
+        ],
+        "64": [
+          1,
+          1
+        ],
+        "65": [
+          2,
+          2
+        ],
+        "66": [
+          3,
+          3
+        ],
+        "67": [
+          1,
+          1
+        ],
+        "68": [
+          1,
+          1
+        ],
+        "69": [
+          2,
+          2
+        ],
+        "70": [
+          2,
+          2
+        ],
+        "71": [
+          2,
+          2
+        ],
+        "72": [
+          3,
+          2
+        ],
+        "73": [
+          1,
+          1
+        ],
+        "74": [
+          1,
+          1
+        ],
+        "75": [
+          2,
+          2
+        ],
+        "76": [
+          2,
+          2
+        ],
+        "77": [
+          2,
+          2
+        ],
+        "78": [
+          2,
+          2
+        ],
+        "79": [
+          3,
+          3
+        ],
+        "80": [
+          2,
+          2
+        ],
+        "81": [
+          3,
+          3
+        ],
+        "82": [
+          3,
+          3
+        ],
+        "83": [
+          3,
+          4
+        ],
+        "84": [
+          3,
+          4
+        ],
+        "85": [
+          3,
+          3
+        ],
+        "86": [
+          3,
+          3
+        ],
+        "87": [
+          2,
+          3
+        ],
+        "88": [
+          2,
+          2
+        ],
+        "89": [
+          2,
+          2
+        ],
+        "90": [
+          1,
+          1
+        ],
+        "91": [
+          2,
+          2
+        ],
+        "92": [
+          2,
+          2
+        ],
+        "93": [
+          2,
+          2
+        ],
+        "94": [
+          2,
+          2
+        ],
+        "95": [
+          2,
+          2
+        ],
+        "01": [
+          2,
+          2
+        ],
+        "02": [
+          2,
+          2
+        ],
+        "03": [
+          2,
+          3
+        ],
+        "04": [
+          2,
+          3
+        ],
+        "05": [
+          2,
+          2
+        ],
+        "06": [
+          2,
+          2
+        ],
+        "07": [
+          2,
+          3
+        ],
+        "08": [
+          2,
+          2
+        ],
+        "09": [
+          2,
+          3
+        ],
+        "2A": [
+          2,
+          2
+        ],
+        "2B": [
+          3,
+          2
+        ]
+      },
+      "2026-07-20": {
+        "10": [
+          2,
+          2
+        ],
+        "11": [
+          4,
+          3
+        ],
+        "12": [
+          3,
+          3
+        ],
+        "13": [
+          4,
+          3
+        ],
+        "14": [
+          2,
+          2
+        ],
+        "15": [
+          2,
+          2
+        ],
+        "16": [
+          3,
+          3
+        ],
+        "17": [
+          3,
+          3
+        ],
+        "18": [
+          2,
+          2
+        ],
+        "19": [
+          2,
+          2
+        ],
+        "21": [
+          2,
+          2
+        ],
+        "22": [
+          2,
+          1
+        ],
+        "23": [
+          2,
+          2
+        ],
+        "24": [
+          3,
+          2
+        ],
+        "25": [
+          1,
+          1
+        ],
+        "26": [
+          3,
+          3
+        ],
+        "27": [
+          2,
+          2
+        ],
+        "28": [
+          2,
+          2
+        ],
+        "29": [
+          2,
+          2
+        ],
+        "30": [
+          4,
+          3
+        ],
+        "31": [
+          3,
+          3
+        ],
+        "32": [
+          3,
+          2
+        ],
+        "33": [
+          3,
+          3
+        ],
+        "34": [
+          3,
+          3
+        ],
+        "35": [
+          2,
+          2
+        ],
+        "36": [
+          3,
+          2
+        ],
+        "37": [
+          3,
+          2
+        ],
+        "38": [
+          2,
+          2
+        ],
+        "39": [
+          2,
+          2
+        ],
+        "40": [
+          2,
+          2
+        ],
+        "41": [
+          3,
+          2
+        ],
+        "42": [
+          2,
+          2
+        ],
+        "43": [
+          2,
+          2
+        ],
+        "44": [
+          3,
+          2
+        ],
+        "45": [
+          3,
+          2
+        ],
+        "46": [
+          3,
+          2
+        ],
+        "47": [
+          3,
+          2
+        ],
+        "48": [
+          2,
+          2
+        ],
+        "49": [
+          3,
+          2
+        ],
+        "50": [
+          2,
+          2
+        ],
+        "51": [
+          2,
+          2
+        ],
+        "52": [
+          2,
+          2
+        ],
+        "53": [
+          2,
+          2
+        ],
+        "54": [
+          2,
+          2
+        ],
+        "55": [
+          2,
+          2
+        ],
+        "56": [
+          2,
+          2
+        ],
+        "57": [
+          2,
+          2
+        ],
+        "58": [
+          2,
+          2
+        ],
+        "59": [
+          2,
+          2
+        ],
+        "60": [
+          2,
+          2
+        ],
+        "61": [
+          2,
+          2
+        ],
+        "62": [
+          2,
+          1
+        ],
+        "63": [
+          2,
+          2
+        ],
+        "64": [
+          2,
+          2
+        ],
+        "65": [
+          2,
+          2
+        ],
+        "66": [
+          3,
+          3
+        ],
+        "67": [
+          1,
+          1
+        ],
+        "68": [
+          1,
+          1
+        ],
+        "69": [
+          2,
+          2
+        ],
+        "70": [
+          2,
+          2
+        ],
+        "71": [
+          2,
+          2
+        ],
+        "72": [
+          2,
+          2
+        ],
+        "73": [
+          2,
+          1
+        ],
+        "74": [
+          2,
+          1
+        ],
+        "75": [
+          2,
+          2
+        ],
+        "76": [
+          2,
+          2
+        ],
+        "77": [
+          3,
+          2
+        ],
+        "78": [
+          2,
+          2
+        ],
+        "79": [
+          3,
+          3
+        ],
+        "80": [
+          2,
+          2
+        ],
+        "81": [
+          3,
+          3
+        ],
+        "82": [
+          3,
+          3
+        ],
+        "83": [
+          4,
+          3
+        ],
+        "84": [
+          4,
+          3
+        ],
+        "85": [
+          3,
+          3
+        ],
+        "86": [
+          3,
+          2
+        ],
+        "87": [
+          3,
+          3
+        ],
+        "88": [
+          2,
+          2
+        ],
+        "89": [
+          2,
+          2
+        ],
+        "90": [
+          1,
+          1
+        ],
+        "91": [
+          3,
+          2
+        ],
+        "92": [
+          2,
+          2
+        ],
+        "93": [
+          2,
+          2
+        ],
+        "94": [
+          2,
+          2
+        ],
+        "95": [
+          2,
+          2
+        ],
+        "01": [
+          3,
+          2
+        ],
+        "02": [
+          2,
+          2
+        ],
+        "03": [
+          3,
+          2
+        ],
+        "04": [
+          3,
+          2
+        ],
+        "05": [
+          2,
+          2
+        ],
+        "06": [
+          2,
+          2
+        ],
+        "07": [
+          3,
+          2
+        ],
+        "08": [
+          2,
+          2
+        ],
+        "09": [
+          3,
+          2
+        ],
+        "2A": [
+          2,
+          2
+        ],
+        "2B": [
+          2,
+          2
+        ]
+      },
+      "2026-07-21": {
+        "10": [
+          2,
+          2
+        ],
+        "11": [
+          3,
+          3
+        ],
+        "12": [
+          3,
+          3
+        ],
+        "13": [
+          4,
+          4
+        ],
+        "14": [
+          2,
+          2
+        ],
+        "15": [
+          2,
+          2
+        ],
+        "16": [
+          3,
+          3
+        ],
+        "17": [
+          3,
+          3
+        ],
+        "18": [
+          2,
+          2
+        ],
+        "19": [
+          2,
+          2
+        ],
+        "21": [
+          2,
+          2
+        ],
+        "22": [
+          1,
+          2
+        ],
+        "23": [
+          2,
+          2
+        ],
+        "24": [
+          2,
+          3
+        ],
+        "25": [
+          2,
+          2
+        ],
+        "26": [
+          3,
+          3
+        ],
+        "27": [
+          2,
+          2
+        ],
+        "28": [
+          2,
+          2
+        ],
+        "29": [
+          2,
+          2
+        ],
+        "30": [
+          4,
+          3
+        ],
+        "31": [
+          3,
+          3
+        ],
+        "32": [
+          3,
+          3
+        ],
+        "33": [
+          3,
+          3
+        ],
+        "34": [
+          3,
+          3
+        ],
+        "35": [
+          2,
+          2
+        ],
+        "36": [
+          3,
+          3
+        ],
+        "37": [
+          2,
+          2
+        ],
+        "38": [
+          2,
+          2
+        ],
+        "39": [
+          2,
+          2
+        ],
+        "40": [
+          2,
+          2
+        ],
+        "41": [
+          3,
+          2
+        ],
+        "42": [
+          2,
+          2
+        ],
+        "43": [
+          2,
+          2
+        ],
+        "44": [
+          3,
+          2
+        ],
+        "45": [
+          2,
+          2
+        ],
+        "46": [
+          2,
+          3
+        ],
+        "47": [
+          2,
+          3
+        ],
+        "48": [
+          2,
+          2
+        ],
+        "49": [
+          3,
+          2
+        ],
+        "50": [
+          2,
+          2
+        ],
+        "51": [
+          2,
+          2
+        ],
+        "52": [
+          2,
+          2
+        ],
+        "53": [
+          2,
+          2
+        ],
+        "54": [
+          2,
+          2
+        ],
+        "55": [
+          2,
+          2
+        ],
+        "56": [
+          2,
+          2
+        ],
+        "57": [
+          2,
+          2
+        ],
+        "58": [
+          2,
+          2
+        ],
+        "59": [
+          2,
+          2
+        ],
+        "60": [
+          2,
+          2
+        ],
+        "61": [
+          2,
+          2
+        ],
+        "62": [
+          2,
+          2
+        ],
+        "63": [
+          2,
+          2
+        ],
+        "64": [
+          2,
+          2
+        ],
+        "65": [
+          2,
+          2
+        ],
+        "66": [
+          3,
+          3
+        ],
+        "67": [
+          1,
+          1
+        ],
+        "68": [
+          1,
+          1
+        ],
+        "69": [
+          2,
+          2
+        ],
+        "70": [
+          2,
+          2
+        ],
+        "71": [
+          2,
+          2
+        ],
+        "72": [
+          2,
+          2
+        ],
+        "73": [
+          2,
+          1
+        ],
+        "74": [
+          1,
+          2
+        ],
+        "75": [
+          2,
+          2
+        ],
+        "76": [
+          2,
+          2
+        ],
+        "77": [
+          2,
+          2
+        ],
+        "78": [
+          2,
+          2
+        ],
+        "79": [
+          3,
+          3
+        ],
+        "80": [
+          2,
+          2
+        ],
+        "81": [
+          3,
+          3
+        ],
+        "82": [
+          3,
+          3
+        ],
+        "83": [
+          3,
+          3
+        ],
+        "84": [
+          4,
+          4
+        ],
+        "85": [
+          3,
+          3
+        ],
+        "86": [
+          3,
+          3
+        ],
+        "87": [
+          3,
+          3
+        ],
+        "88": [
+          2,
+          2
+        ],
+        "89": [
+          2,
+          2
+        ],
+        "90": [
+          1,
+          1
+        ],
+        "91": [
+          2,
+          2
+        ],
+        "92": [
+          2,
+          2
+        ],
+        "93": [
+          2,
+          2
+        ],
+        "94": [
+          2,
+          2
+        ],
+        "95": [
+          2,
+          2
+        ],
+        "01": [
+          2,
+          2
+        ],
+        "02": [
+          2,
+          2
+        ],
+        "03": [
+          2,
+          3
+        ],
+        "04": [
+          2,
+          2
+        ],
+        "05": [
+          2,
+          2
+        ],
+        "06": [
+          2,
+          2
+        ],
+        "07": [
+          3,
+          3
+        ],
+        "08": [
+          2,
+          2
+        ],
+        "09": [
+          2,
+          3
+        ],
+        "2A": [
+          3,
+          3
+        ],
+        "2B": [
+          2,
+          2
+        ]
+      },
+      "2026-07-22": {
+        "10": [
+          2,
+          2
+        ],
+        "11": [
+          4,
+          3
+        ],
+        "12": [
+          3,
+          3
+        ],
+        "13": [
+          4,
+          3
+        ],
+        "14": [
+          2,
+          2
+        ],
+        "15": [
+          2,
+          2
+        ],
+        "16": [
+          3,
+          2
+        ],
+        "17": [
+          3,
+          3
+        ],
+        "18": [
+          2,
+          2
+        ],
+        "19": [
+          2,
+          2
+        ],
+        "21": [
+          2,
+          2
+        ],
+        "22": [
+          2,
+          2
+        ],
+        "23": [
+          2,
+          2
+        ],
+        "24": [
+          3,
+          2
+        ],
+        "25": [
+          2,
+          2
+        ],
+        "26": [
+          3,
+          3
+        ],
+        "27": [
+          2,
+          2
+        ],
+        "28": [
+          2,
+          2
+        ],
+        "29": [
+          2,
+          2
+        ],
+        "30": [
+          4,
+          3
+        ],
+        "31": [
+          3,
+          3
+        ],
+        "32": [
+          3,
+          3
+        ],
+        "33": [
+          3,
+          2
+        ],
+        "34": [
+          3,
+          3
+        ],
+        "35": [
+          2,
+          2
+        ],
+        "36": [
+          3,
+          3
+        ],
+        "37": [
+          3,
+          2
+        ],
+        "38": [
+          2,
+          2
+        ],
+        "39": [
+          2,
+          2
+        ],
+        "40": [
+          2,
+          2
+        ],
+        "41": [
+          3,
+          3
+        ],
+        "42": [
+          2,
+          2
+        ],
+        "43": [
+          2,
+          2
+        ],
+        "44": [
+          2,
+          2
+        ],
+        "45": [
+          2,
+          2
+        ],
+        "46": [
+          3,
+          2
+        ],
+        "47": [
+          3,
+          2
+        ],
+        "48": [
+          2,
+          2
+        ],
+        "49": [
+          3,
+          3
+        ],
+        "50": [
+          2,
+          2
+        ],
+        "51": [
+          2,
+          2
+        ],
+        "52": [
+          2,
+          2
+        ],
+        "53": [
+          2,
+          2
+        ],
+        "54": [
+          2,
+          2
+        ],
+        "55": [
+          2,
+          2
+        ],
+        "56": [
+          2,
+          2
+        ],
+        "57": [
+          2,
+          2
+        ],
+        "58": [
+          2,
+          2
+        ],
+        "59": [
+          2,
+          1
+        ],
+        "60": [
+          2,
+          2
+        ],
+        "61": [
+          2,
+          2
+        ],
+        "62": [
+          2,
+          1
+        ],
+        "63": [
+          2,
+          2
+        ],
+        "64": [
+          2,
+          2
+        ],
+        "65": [
+          2,
+          2
+        ],
+        "66": [
+          3,
+          3
+        ],
+        "67": [
+          1,
+          1
+        ],
+        "68": [
+          1,
+          1
+        ],
+        "69": [
+          2,
+          2
+        ],
+        "70": [
+          2,
+          2
+        ],
+        "71": [
+          2,
+          2
+        ],
+        "72": [
+          2,
+          2
+        ],
+        "73": [
+          2,
+          1
+        ],
+        "74": [
+          2,
+          1
+        ],
+        "75": [
+          2,
+          2
+        ],
+        "76": [
+          2,
+          2
+        ],
+        "77": [
+          2,
+          2
+        ],
+        "78": [
+          2,
+          2
+        ],
+        "79": [
+          3,
+          3
+        ],
+        "80": [
+          2,
+          2
+        ],
+        "81": [
+          3,
+          3
+        ],
+        "82": [
+          3,
+          2
+        ],
+        "83": [
+          4,
+          3
+        ],
+        "84": [
+          4,
+          3
+        ],
+        "85": [
+          3,
+          3
+        ],
+        "86": [
+          3,
+          3
+        ],
+        "87": [
+          3,
+          2
+        ],
+        "88": [
+          2,
+          2
+        ],
+        "89": [
+          2,
+          2
+        ],
+        "90": [
+          1,
+          1
+        ],
+        "91": [
+          2,
+          2
+        ],
+        "92": [
+          2,
+          2
+        ],
+        "93": [
+          2,
+          2
+        ],
+        "94": [
+          2,
+          2
+        ],
+        "95": [
+          2,
+          2
+        ],
+        "01": [
+          2,
+          2
+        ],
+        "02": [
+          2,
+          2
+        ],
+        "03": [
+          3,
+          2
+        ],
+        "04": [
+          3,
+          2
+        ],
+        "05": [
+          2,
+          2
+        ],
+        "06": [
+          2,
+          2
+        ],
+        "07": [
+          3,
+          2
+        ],
+        "08": [
+          2,
+          2
+        ],
+        "09": [
+          3,
+          3
+        ],
+        "2A": [
+          3,
+          2
+        ],
+        "2B": [
+          3,
+          2
+        ]
+      },
+      "2026-07-23": {
+        "10": [
+          2,
+          2
+        ],
+        "11": [
+          3,
+          3
+        ],
+        "12": [
+          3,
+          2
+        ],
+        "13": [
+          3,
+          3
+        ],
+        "14": [
+          2,
+          2
+        ],
+        "15": [
+          2,
+          2
+        ],
+        "16": [
+          3,
+          2
+        ],
+        "17": [
+          3,
+          3
+        ],
+        "18": [
+          2,
+          2
+        ],
+        "19": [
+          2,
+          2
+        ],
+        "21": [
+          2,
+          2
+        ],
+        "22": [
+          2,
+          2
+        ],
+        "23": [
+          2,
+          2
+        ],
+        "24": [
+          2,
+          2
+        ],
+        "25": [
+          2,
+          2
+        ],
+        "26": [
+          3,
+          3
+        ],
+        "27": [
+          2,
+          2
+        ],
+        "28": [
+          2,
+          2
+        ],
+        "29": [
+          2,
+          2
+        ],
+        "30": [
+          3,
+          2
+        ],
+        "31": [
+          4,
+          3
+        ],
+        "32": [
+          3,
+          3
+        ],
+        "33": [
+          3,
+          2
+        ],
+        "34": [
+          3,
+          2
+        ],
+        "35": [
+          2,
+          2
+        ],
+        "36": [
+          3,
+          2
+        ],
+        "37": [
+          3,
+          2
+        ],
+        "38": [
+          2,
+          2
+        ],
+        "39": [
+          2,
+          2
+        ],
+        "40": [
+          3,
+          2
+        ],
+        "41": [
+          3,
+          2
+        ],
+        "42": [
+          2,
+          2
+        ],
+        "43": [
+          2,
+          2
+        ],
+        "44": [
+          3,
+          3
+        ],
+        "45": [
+          2,
+          2
+        ],
+        "46": [
+          2,
+          2
+        ],
+        "47": [
+          3,
+          2
+        ],
+        "48": [
+          2,
+          1
+        ],
+        "49": [
+          3,
+          3
+        ],
+        "50": [
+          2,
+          2
+        ],
+        "51": [
+          2,
+          2
+        ],
+        "52": [
+          2,
+          2
+        ],
+        "53": [
+          2,
+          2
+        ],
+        "54": [
+          2,
+          2
+        ],
+        "55": [
+          2,
+          2
+        ],
+        "56": [
+          2,
+          2
+        ],
+        "57": [
+          2,
+          2
+        ],
+        "58": [
+          2,
+          2
+        ],
+        "59": [
+          2,
+          2
+        ],
+        "60": [
+          2,
+          2
+        ],
+        "61": [
+          2,
+          2
+        ],
+        "62": [
+          2,
+          2
+        ],
+        "63": [
+          2,
+          2
+        ],
+        "64": [
+          2,
+          2
+        ],
+        "65": [
+          2,
+          2
+        ],
+        "66": [
+          3,
+          3
+        ],
+        "67": [
+          1,
+          2
+        ],
+        "68": [
+          1,
+          2
+        ],
+        "69": [
+          2,
+          2
+        ],
+        "70": [
+          2,
+          2
+        ],
+        "71": [
+          2,
+          2
+        ],
+        "72": [
+          2,
+          3
+        ],
+        "73": [
+          2,
+          1
+        ],
+        "74": [
+          1,
+          2
+        ],
+        "75": [
+          2,
+          2
+        ],
+        "76": [
+          2,
+          2
+        ],
+        "77": [
+          2,
+          2
+        ],
+        "78": [
+          2,
+          2
+        ],
+        "79": [
+          3,
+          3
+        ],
+        "80": [
+          2,
+          2
+        ],
+        "81": [
+          3,
+          3
+        ],
+        "82": [
+          3,
+          3
+        ],
+        "83": [
+          3,
+          3
+        ],
+        "84": [
+          3,
+          3
+        ],
+        "85": [
+          3,
+          3
+        ],
+        "86": [
+          3,
+          2
+        ],
+        "87": [
+          2,
+          2
+        ],
+        "88": [
+          2,
+          2
+        ],
+        "89": [
+          2,
+          2
+        ],
+        "90": [
+          1,
+          2
+        ],
+        "91": [
+          2,
+          2
+        ],
+        "92": [
+          2,
+          2
+        ],
+        "93": [
+          2,
+          2
+        ],
+        "94": [
+          2,
+          2
+        ],
+        "95": [
+          2,
+          2
+        ],
+        "01": [
+          2,
+          3
+        ],
+        "02": [
+          2,
+          2
+        ],
+        "03": [
+          3,
+          2
+        ],
+        "04": [
+          2,
+          2
+        ],
+        "05": [
+          2,
+          2
+        ],
+        "06": [
+          2,
+          2
+        ],
+        "07": [
+          2,
+          2
+        ],
+        "08": [
+          2,
+          2
+        ],
+        "09": [
+          3,
+          2
+        ],
+        "2A": [
+          2,
+          2
+        ],
+        "2B": [
+          2,
+          2
+        ]
+      },
+      "2026-07-24": {
+        "10": [
+          2,
+          2
+        ],
+        "11": [
+          3,
+          3
+        ],
+        "12": [
+          2,
+          2
+        ],
+        "13": [
+          3,
+          2
+        ],
+        "14": [
+          2,
+          2
+        ],
+        "15": [
+          2,
+          1
+        ],
+        "16": [
+          2,
+          2
+        ],
+        "17": [
+          3,
+          2
+        ],
+        "18": [
+          2,
+          3
+        ],
+        "19": [
+          2,
+          1
+        ],
+        "21": [
+          2,
+          3
+        ],
+        "22": [
+          2,
+          2
+        ],
+        "23": [
+          2,
+          2
+        ],
+        "24": [
+          2,
+          2
+        ],
+        "25": [
+          2,
+          2
+        ],
+        "26": [
+          3,
+          1
+        ],
+        "27": [
+          2,
+          2
+        ],
+        "28": [
+          2,
+          2
+        ],
+        "29": [
+          2,
+          1
+        ],
+        "30": [
+          3,
+          1
+        ],
+        "31": [
+          3,
+          2
+        ],
+        "32": [
+          3,
+          2
+        ],
+        "33": [
+          2,
+          2
+        ],
+        "34": [
+          2,
+          2
+        ],
+        "35": [
+          2,
+          2
+        ],
+        "36": [
+          3,
+          3
+        ],
+        "37": [
+          3,
+          2
+        ],
+        "38": [
+          2,
+          1
+        ],
+        "39": [
+          2,
+          2
+        ],
+        "40": [
+          2,
+          2
+        ],
+        "41": [
+          3,
+          3
+        ],
+        "42": [
+          2,
+          1
+        ],
+        "43": [
+          1,
+          1
+        ],
+        "44": [
+          3,
+          2
+        ],
+        "45": [
+          2,
+          3
+        ],
+        "46": [
+          2,
+          2
+        ],
+        "47": [
+          2,
+          2
+        ],
+        "48": [
+          1,
+          1
+        ],
+        "49": [
+          3,
+          3
+        ],
+        "50": [
+          2,
+          2
+        ],
+        "51": [
+          2,
+          2
+        ],
+        "52": [
+          2,
+          2
+        ],
+        "53": [
+          3,
+          2
+        ],
+        "54": [
+          2,
+          3
+        ],
+        "55": [
+          2,
+          2
+        ],
+        "56": [
+          2,
+          2
+        ],
+        "57": [
+          2,
+          2
+        ],
+        "58": [
+          2,
+          3
+        ],
+        "59": [
+          2,
+          2
+        ],
+        "60": [
+          2,
+          2
+        ],
+        "61": [
+          2,
+          2
+        ],
+        "62": [
+          2,
+          2
+        ],
+        "63": [
+          2,
+          2
+        ],
+        "64": [
+          2,
+          1
+        ],
+        "65": [
+          2,
+          1
+        ],
+        "66": [
+          3,
+          3
+        ],
+        "67": [
+          2,
+          2
+        ],
+        "68": [
+          2,
+          2
+        ],
+        "69": [
+          2,
+          1
+        ],
+        "70": [
+          2,
+          2
+        ],
+        "71": [
+          3,
+          2
+        ],
+        "72": [
+          3,
+          2
+        ],
+        "73": [
+          1,
+          1
+        ],
+        "74": [
+          2,
+          1
+        ],
+        "75": [
+          2,
+          2
+        ],
+        "76": [
+          2,
+          1
+        ],
+        "77": [
+          2,
+          2
+        ],
+        "78": [
+          2,
+          2
+        ],
+        "79": [
+          3,
+          2
+        ],
+        "80": [
+          2,
+          2
+        ],
+        "81": [
+          3,
+          2
+        ],
+        "82": [
+          3,
+          2
+        ],
+        "83": [
+          3,
+          2
+        ],
+        "84": [
+          3,
+          1
+        ],
+        "85": [
+          3,
+          2
+        ],
+        "86": [
+          3,
+          3
+        ],
+        "87": [
+          2,
+          2
+        ],
+        "88": [
+          2,
+          3
+        ],
+        "89": [
+          2,
+          2
+        ],
+        "90": [
+          2,
+          2
+        ],
+        "91": [
+          2,
+          2
+        ],
+        "92": [
+          2,
+          2
+        ],
+        "93": [
+          2,
+          2
+        ],
+        "94": [
+          2,
+          2
+        ],
+        "95": [
+          2,
+          2
+        ],
+        "01": [
+          3,
+          2
+        ],
+        "02": [
+          2,
+          2
+        ],
+        "03": [
+          3,
+          3
+        ],
+        "04": [
+          2,
+          1
+        ],
+        "05": [
+          2,
+          1
+        ],
+        "06": [
+          2,
+          1
+        ],
+        "07": [
+          2,
+          1
+        ],
+        "08": [
+          2,
+          2
+        ],
+        "09": [
+          2,
+          2
+        ],
+        "2A": [
+          3,
+          2
+        ],
+        "2B": [
+          2,
+          2
+        ]
+      },
+      "2026-07-25": {
+        "10": [
+          2,
+          2
+        ],
+        "11": [
+          3,
+          3
+        ],
+        "12": [
+          1,
+          2
+        ],
+        "13": [
+          2,
+          3
+        ],
+        "14": [
+          2,
+          1
+        ],
+        "15": [
+          1,
+          1
+        ],
+        "16": [
+          2,
+          2
+        ],
+        "17": [
+          2,
+          2
+        ],
+        "18": [
+          3,
+          2
+        ],
+        "19": [
+          1,
+          1
+        ],
+        "21": [
+          3,
+          2
+        ],
+        "22": [
+          2,
+          1
+        ],
+        "23": [
+          2,
+          1
+        ],
+        "24": [
+          2,
+          1
+        ],
+        "25": [
+          2,
+          1
+        ],
+        "26": [
+          1,
+          2
+        ],
+        "27": [
+          2,
+          2
+        ],
+        "28": [
+          2,
+          2
+        ],
+        "29": [
+          2,
+          1
+        ],
+        "30": [
+          2,
+          3
+        ],
+        "31": [
+          2,
+          2
+        ],
+        "32": [
+          2,
+          2
+        ],
+        "33": [
+          2,
+          1
+        ],
+        "34": [
+          2,
+          3
+        ],
+        "35": [
+          2,
+          1
+        ],
+        "36": [
+          3,
+          2
+        ],
+        "37": [
+          2,
+          2
+        ],
+        "38": [
+          1,
+          2
+        ],
+        "39": [
+          2,
+          1
+        ],
+        "40": [
+          2,
+          1
+        ],
+        "41": [
+          3,
+          2
+        ],
+        "42": [
+          2,
+          2
+        ],
+        "43": [
+          1,
+          1
+        ],
+        "44": [
+          2,
+          2
+        ],
+        "45": [
+          3,
+          2
+        ],
+        "46": [
+          1,
+          1
+        ],
+        "47": [
+          2,
+          1
+        ],
+        "48": [
+          1,
+          1
+        ],
+        "49": [
+          3,
+          2
+        ],
+        "50": [
+          2,
+          1
+        ],
+        "51": [
+          2,
+          2
+        ],
+        "52": [
+          3,
+          2
+        ],
+        "53": [
+          2,
+          2
+        ],
+        "54": [
+          3,
+          2
+        ],
+        "55": [
+          2,
+          2
+        ],
+        "56": [
+          2,
+          1
+        ],
+        "57": [
+          3,
+          2
+        ],
+        "58": [
+          3,
+          2
+        ],
+        "59": [
+          2,
+          2
+        ],
+        "60": [
+          2,
+          2
+        ],
+        "61": [
+          2,
+          2
+        ],
+        "62": [
+          2,
+          2
+        ],
+        "63": [
+          2,
+          2
+        ],
+        "64": [
+          1,
+          1
+        ],
+        "65": [
+          1,
+          1
+        ],
+        "66": [
+          3,
+          3
+        ],
+        "67": [
+          2,
+          2
+        ],
+        "68": [
+          2,
+          2
+        ],
+        "69": [
+          2,
+          2
+        ],
+        "70": [
+          2,
+          1
+        ],
+        "71": [
+          3,
+          2
+        ],
+        "72": [
+          2,
+          2
+        ],
+        "73": [
+          1,
+          1
+        ],
+        "74": [
+          1,
+          1
+        ],
+        "75": [
+          2,
+          2
+        ],
+        "76": [
+          1,
+          2
+        ],
+        "77": [
+          2,
+          2
+        ],
+        "78": [
+          2,
+          2
+        ],
+        "79": [
+          3,
+          2
+        ],
+        "80": [
+          2,
+          2
+        ],
+        "81": [
+          2,
+          1
+        ],
+        "82": [
+          2,
+          1
+        ],
+        "83": [
+          3,
+          2
+        ],
+        "84": [
+          2,
+          3
+        ],
+        "85": [
+          2,
+          2
+        ],
+        "86": [
+          3,
+          2
+        ],
+        "87": [
+          2,
+          1
+        ],
+        "88": [
+          3,
+          2
+        ],
+        "89": [
+          3,
+          2
+        ],
+        "90": [
+          2,
+          1
+        ],
+        "91": [
+          2,
+          2
+        ],
+        "92": [
+          2,
+          2
+        ],
+        "93": [
+          2,
+          2
+        ],
+        "94": [
+          2,
+          2
+        ],
+        "95": [
+          2,
+          2
+        ],
+        "01": [
+          2,
+          2
+        ],
+        "02": [
+          2,
+          2
+        ],
+        "03": [
+          3,
+          2
+        ],
+        "04": [
+          2,
+          2
+        ],
+        "05": [
+          2,
+          1
+        ],
+        "06": [
+          2,
+          2
+        ],
+        "07": [
+          2,
+          2
+        ],
+        "08": [
+          2,
+          2
+        ],
+        "09": [
+          1,
+          1
+        ],
+        "2A": [
+          2,
+          2
+        ],
+        "2B": [
+          3,
+          2
+        ]
+      },
+      "2026-07-26": {
+        "10": [
+          2,
+          2
+        ],
+        "11": [
+          3,
+          3
+        ],
+        "12": [
+          2,
+          2
+        ],
+        "13": [
+          3,
+          2
+        ],
+        "14": [
+          1,
+          2
+        ],
+        "15": [
+          1,
+          2
+        ],
+        "16": [
+          1,
+          2
+        ],
+        "17": [
+          2,
+          2
+        ],
+        "18": [
+          2,
+          2
+        ],
+        "19": [
+          1,
+          1
+        ],
+        "21": [
+          2,
+          2
+        ],
+        "22": [
+          1,
+          1
+        ],
+        "23": [
+          1,
+          2
+        ],
+        "24": [
+          1,
+          2
+        ],
+        "25": [
+          1,
+          2
+        ],
+        "26": [
+          2,
+          2
+        ],
+        "27": [
+          2,
+          2
+        ],
+        "28": [
+          2,
+          2
+        ],
+        "29": [
+          1,
+          1
+        ],
+        "30": [
+          3,
+          2
+        ],
+        "31": [
+          2,
+          2
+        ],
+        "32": [
+          2,
+          2
+        ],
+        "33": [
+          1,
+          2
+        ],
+        "34": [
+          3,
+          2
+        ],
+        "35": [
+          2,
+          2
+        ],
+        "36": [
+          2,
+          2
+        ],
+        "37": [
+          2,
+          2
+        ],
+        "38": [
+          1,
+          1
+        ],
+        "39": [
+          1,
+          2
+        ],
+        "40": [
+          1,
+          2
+        ],
+        "41": [
+          2,
+          2
+        ],
+        "42": [
+          1,
+          1
+        ],
+        "43": [
+          1,
+          1
+        ],
+        "44": [
+          2,
+          2
+        ],
+        "45": [
+          2,
+          2
+        ],
+        "46": [
+          1,
+          2
+        ],
+        "47": [
+          1,
+          2
+        ],
+        "48": [
+          2,
+          2
+        ],
+        "49": [
+          2,
+          2
+        ],
+        "50": [
+          1,
+          2
+        ],
+        "51": [
+          2,
+          2
+        ],
+        "52": [
+          2,
+          2
+        ],
+        "53": [
+          2,
+          2
+        ],
+        "54": [
+          2,
+          2
+        ],
+        "55": [
+          2,
+          2
+        ],
+        "56": [
+          1,
+          2
+        ],
+        "57": [
+          2,
+          2
+        ],
+        "58": [
+          2,
+          2
+        ],
+        "59": [
+          2,
+          2
+        ],
+        "60": [
+          2,
+          2
+        ],
+        "61": [
+          2,
+          2
+        ],
+        "62": [
+          2,
+          2
+        ],
+        "63": [
+          1,
+          1
+        ],
+        "64": [
+          1,
+          1
+        ],
+        "65": [
+          1,
+          1
+        ],
+        "66": [
+          3,
+          3
+        ],
+        "67": [
+          2,
+          2
+        ],
+        "68": [
+          2,
+          2
+        ],
+        "69": [
+          1,
+          2
+        ],
+        "70": [
+          2,
+          2
+        ],
+        "71": [
+          2,
+          2
+        ],
+        "72": [
+          2,
+          2
+        ],
+        "73": [
+          1,
+          1
+        ],
+        "74": [
+          1,
+          1
+        ],
+        "75": [
+          2,
+          2
+        ],
+        "76": [
+          2,
+          2
+        ],
+        "77": [
+          2,
+          2
+        ],
+        "78": [
+          2,
+          2
+        ],
+        "79": [
+          2,
+          2
+        ],
+        "80": [
+          2,
+          2
+        ],
+        "81": [
+          2,
+          2
+        ],
+        "82": [
+          1,
+          2
+        ],
+        "83": [
+          3,
+          3
+        ],
+        "84": [
+          3,
+          2
+        ],
+        "85": [
+          2,
+          2
+        ],
+        "86": [
+          2,
+          2
+        ],
+        "87": [
+          1,
+          2
+        ],
+        "88": [
+          2,
+          2
+        ],
+        "89": [
+          2,
+          2
+        ],
+        "90": [
+          2,
+          2
+        ],
+        "91": [
+          2,
+          2
+        ],
+        "92": [
+          2,
+          2
+        ],
+        "93": [
+          2,
+          2
+        ],
+        "94": [
+          2,
+          2
+        ],
+        "95": [
+          2,
+          2
+        ],
+        "01": [
+          2,
+          2
+        ],
+        "02": [
+          2,
+          2
+        ],
+        "03": [
+          2,
+          2
+        ],
+        "04": [
+          1,
+          2
+        ],
+        "05": [
+          2,
+          2
+        ],
+        "06": [
+          2,
+          2
+        ],
+        "07": [
+          2,
+          2
+        ],
+        "08": [
+          2,
+          2
+        ],
+        "09": [
+          2,
+          2
+        ],
+        "2A": [
+          2,
+          2
+        ],
+        "2B": [
+          2,
+          2
+        ]
+      }
+    }
+  }
+}

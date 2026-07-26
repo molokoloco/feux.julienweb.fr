@@ -1,0 +1,91 @@
+{
+  "_doc": "Départements suivis par collectors/watch-prefectures.js. 'domaine' = sous-domaine .gouv.fr (vérifié en HTTP 200 le 26/07/2026). 'seeds' = points d'entrée du crawl ; /Actualites répond 200 sur tous les sites testés. Passer 'actif' à false pour suspendre un département sans le supprimer.",
+  "_endpoints_communs": {
+    "actualites": "/Actualites",
+    "plan_du_site": "/content/view/sitemap/2",
+    "pdf": "/contenu/telechargement/<node>/<id>/file/<nom>.pdf",
+    "rss": "AUCUN — /rss.xml, /rss, /feed, /sitemap.xml, /robots.txt renvoient 404"
+  },
+  "departements": [
+    {
+      "code": "33",
+      "nom": "Gironde",
+      "domaine": "gironde",
+      "seeds": ["/Actualites", "/Actualites/Breves", "/Actualites/Communiques-de-presse"],
+      "motif": "priorité saison 2026 — massif landais, régime ponctuel (pas de carte quotidienne)",
+      "actif": true
+    },
+    {
+      "code": "40",
+      "nom": "Landes",
+      "domaine": "landes",
+      "seeds": ["/Actualites"],
+      "motif": "prolongement du massif landais",
+      "actif": true
+    },
+    {
+      "code": "77",
+      "nom": "Seine-et-Marne",
+      "domaine": "seine-et-marne",
+      "seeds": ["/Actualites"],
+      "motif": "Fontainebleau — origine du projet, absent de NaviForest",
+      "actif": true
+    },
+    {
+      "code": "83",
+      "nom": "Var",
+      "domaine": "var",
+      "seeds": ["/Actualites"],
+      "motif": "carte quotidienne d'accès aux massifs (9 massifs, publiée avant 19h)",
+      "actif": true
+    },
+    {
+      "code": "13",
+      "nom": "Bouches-du-Rhône",
+      "domaine": "bouches-du-rhone",
+      "seeds": ["/Actualites"],
+      "motif": "accès quotidien 1er juin → 30 septembre",
+      "actif": true
+    },
+    {
+      "code": "30",
+      "nom": "Gard",
+      "domaine": "gard",
+      "seeds": ["/Actualites"],
+      "motif": "pourtour méditerranéen",
+      "actif": true
+    },
+    {
+      "code": "34",
+      "nom": "Hérault",
+      "domaine": "herault",
+      "seeds": ["/Actualites"],
+      "motif": "pourtour méditerranéen",
+      "actif": true
+    },
+    {
+      "code": "66",
+      "nom": "Pyrénées-Orientales",
+      "domaine": "pyrenees-orientales",
+      "seeds": ["/Actualites"],
+      "motif": "pourtour méditerranéen, sécheresse structurelle",
+      "actif": true
+    },
+    {
+      "code": "2A",
+      "nom": "Corse-du-Sud",
+      "domaine": "corse-du-sud",
+      "seeds": ["/Actualites"],
+      "motif": "risque élevé récurrent",
+      "actif": true
+    },
+    {
+      "code": "2B",
+      "nom": "Haute-Corse",
+      "domaine": "haute-corse",
+      "seeds": ["/Actualites"],
+      "motif": "risque élevé récurrent",
+      "actif": true
+    }
+  ]
+}
