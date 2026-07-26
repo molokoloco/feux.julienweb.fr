@@ -5,6 +5,11 @@ node_modules/
 # État de la veille : local, régénéré à chaque passage, pas de valeur en dépôt
 data/.veille-state.json
 
+# Bundle du POC : ~1 Mo régénéré à chaque collecte (node app/build-data.js).
+# Le committer ferait 1 Mo de diff par passage, pour zéro information nouvelle :
+# tout son contenu vient de data/*.json et app/departements.geojson, déjà versionnés.
+app/data.js
+
 # Google Drive
 .tmp.drivedownload/
 .tmp.driveupload/

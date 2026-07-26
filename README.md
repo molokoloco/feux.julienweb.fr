@@ -120,6 +120,22 @@ Ne pas remonter ces valeurs sans avoir lu l'encadré « bannissement » ci-desso
 
 Sorties dans `data/` : `meteo-forets.json`, `naviforest.json`, `veille-prefectures.json`.
 
+### POC local
+
+```bash
+node app/build-data.js
+```
+
+Puis **double-clic sur `app/index.html`**. Aucun serveur, aucune dépendance à installer.
+
+Carte Leaflet des 96 départements colorés par niveau de danger J+1, liseré blanc sur les
+départements ayant un arrêté NaviForest, panneau de détail au survol (niveaux J+1/J+2, arrêtés
+avec lien vers le PDF, trouvailles de veille), et bandeau d'avertissement.
+
+Même parti pris que `feux-foret-carte` : les données sont **embarquées** dans `app/data.js`
+(`window.POC`) plutôt que chargées en `fetch()` — sur `file://`, CORS bloque la lecture des JSON
+locaux. Régénérer `data.js` après chaque collecte.
+
 ---
 
 ## L'avertissement qui n'est pas négociable
@@ -144,9 +160,12 @@ il n'est pas là pour décorer.
       départements reste à rejouer une fois le blocage retombé
 - [x] Disjoncteur anti-bannissement (`_http.js`) — testé sous blocage réel
 - [x] Brouillons de demande : Valabre + référent ReAcT
+- [x] **POC carto local** — Leaflet, 96 départements, données embarquées, marche en double-clic
 - [ ] Fusion des 3 sorties en un `arretes-forets-fr.json` unique et versionné
-- [ ] Géométries : contours de massifs (OSM/Overpass comme sur feux-foret-carte, ou BD TOPO IGN)
-- [ ] Front carto (statique Leaflet d'abord ; React seulement si l'interactivité le justifie)
+- [ ] Géométries : contours de **massifs** (OSM/Overpass comme sur feux-foret-carte, ou BD TOPO IGN)
+      — aujourd'hui la maille est le département, ce qui est trop grossier pour un usage réel
+- [ ] Cadrage carte : `fitBounds` dézoome à ~zoom 4,5 même après `invalidateSize()`, alors que la
+      bbox du GeoJSON est saine. Contourné par un `setView` en dur. À élucider si le front se durcit
 - [ ] Automatisation quotidienne + déploiement sous-domaine
 - [ ] Scaling : à reconsidérer seulement si le trafic l'impose (machine dédiée OVH)
 

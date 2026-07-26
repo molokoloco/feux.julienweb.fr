@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>POC — Danger feu de forêt & arrêtés préfectoraux</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+  :root{
+    --n1:#3d8b4a; --n2:#e0b400; --n3:#e07b00; --n4:#c22c22;
+    --bg:#12140f; --panel:#1c1f19; --texte:#e8e6df; --gris:#8f9287; --bord:#2e3229;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--texte)}
+  header{padding:14px 18px;border-bottom:1px solid var(--bord)}
+  h1{margin:0 0 4px;font-size:19px;font-weight:650}
+  .sous{color:var(--gris);font-size:13px}
+  .avert{margin:10px 18px 0;padding:10px 13px;border-left:4px solid var(--n4);
+         background:rgba(194,44,34,.12);font-size:13.5px;border-radius:0 4px 4px 0}
+  .avert b{color:#ff8a7e}
+  main{display:grid;grid-template-columns:1fr 370px;gap:14px;padding:14px 18px 18px;height:calc(100vh - 150px)}
+  #carte{border-radius:6px;border:1px solid var(--bord);background:#0d0f0b}
+  aside{overflow:auto;padding-right:4px}
+  .bloc{background:var(--panel);border:1px solid var(--bord);border-radius:6px;padding:12px 14px;margin-bottom:12px}
+  .bloc h2{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--gris);font-weight:600}
+  .legende span{display:flex;align-items:center;gap:8px;margin:5px 0;font-size:13.5px}
+  .pastille{width:15px;height:15px;border-radius:3px;flex:none;border:1px solid rgba(255,255,255,.25)}
+  .kpi{display:flex;justify-content:space-between;padding:4px 0;font-size:13.5px;border-bottom:1px dashed var(--bord)}
+  .kpi:last-child{border:0}
+  .kpi b{font-variant-numeric:tabular-nums}
+  #detail .titre{font-size:16px;font-weight:650;margin-bottom:2px}
+  .niveaux{display:flex;gap:8px;margin:10px 0}
+  .niv{flex:1;text-align:center;padding:8px 4px;border-radius:5px;border:1px solid var(--bord)}
+  .niv small{display:block;color:var(--gris);font-size:11px;text-transform:uppercase;letter-spacing:.05em}
+  .niv b{font-size:14px}
+  ul{margin:6px 0 0;padding-left:17px}
+  li{margin:5px 0;font-size:13px}
+  a{color:#7fb2e8}
+  .vide{color:var(--gris);font-style:italic;font-size:13px}
+  .src{font-size:11.5px;color:var(--gris);margin-top:3px}
+  footer{padding:0 18px 16px;font-size:12px;color:var(--gris)}
+  @media(max-width:900px){main{grid-template-columns:1fr;height:auto}#carte{height:60vh}}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Danger feu de forêt &amp; arrêtés préfectoraux — <span style="color:var(--gris);font-weight:400">POC local</span></h1>
+  <div class="sous" id="soustitre">Chargement…</div>
+</header>
+
+<div class="avert">
+  <b>Ceci n'est pas une carte d'autorisation d'accès.</b> Le niveau affiché est la
+  <b>Météo des forêts</b> de Météo-France : un indicateur <b>indicatif</b>, à la maille du
+  <b>département</b>. Seul l'<b>arrêté préfectoral zonal</b> autorise ou interdit l'accès à un massif.
+  En cas de doute, seul l'arrêté fait foi.
+</div>
+
+<main>
+  <div id="carte"></div>
+  <aside>
+    <div class="bloc" id="detail">
+      <h2>Département</h2>
+      <div class="vide">Survolez ou cliquez un département sur la carte.</div>
+    </div>
+
+    <div class="bloc">
+      <h2>Niveau de danger (J+1)</h2>
+      <div class="legende">
+        <span><i class="pastille" style="background:var(--n1)"></i> 1 — faible</span>
+        <span><i class="pastille" style="background:var(--n2)"></i> 2 — modéré</span>
+        <span><i class="pastille" style="background:var(--n3)"></i> 3 — élevé</span>
+        <span><i class="pastille" style="background:var(--n4)"></i> 4 — très élevé</span>
+        <span><i class="pastille" style="background:#3a3f34"></i> hors saison / non couvert</span>
+      </div>
+    </div>
+
+    <div class="bloc">
+      <h2>Couverture des sources</h2>
+      <div id="kpis"></div>
+    </div>
+  </aside>
+</main>
+
+<footer id="pied"></footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<!-- Données embarquées (window.POC) : la page marche en double-clic, sans serveur.
+     Régénérer après chaque collecte : node app/build-data.js -->
+<script src="data.js"></script>
+<script>
+const COULEURS = {1:'#3d8b4a', 2:'#e0b400', 3:'#e07b00', 4:'#c22c22'};
+const NEUTRE = '#3a3f34';
+
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+(function(){
+  if (!window.POC) throw new Error('data.js absent ou vide — lancer : node app/build-data.js');
+  const {geo, mdf, navi, veille} = window.POC;
+
+  const parDep = {};
+  for (const d of mdf.bulletin) parDep[d.departement] = d;
+  const naviParDep = {};
+  for (const d of navi.departements) naviParDep[d.departement] = d.arretes || [];
+  const veilleParDep = {};
+  for (const d of veille.departements || []) veilleParDep[d.code] = d.trouvailles || [];
+
+  $('#soustitre').textContent =
+    `Bulletin Météo-France du ${mdf.bulletin_du} · ${mdf.bulletin.length} départements · ` +
+    `NaviForest : ${navi.stats.arretes_total} arrêté(s) sur ${navi.stats.departements_avec_arrete} départements`;
+
+  // ── Carte ─────────────────────────────────────────────────────────────────
+  // setView AVANT d'ajouter les calques vectoriels (piège relevé sur feux-foret-carte).
+  const carte = L.map('carte', {scrollWheelZoom:true}).setView([46.6, 2.4], 6);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> · © <a href="https://carto.com/attributions">CARTO</a> · Données : Météo-France, IGN/FCBA',
+    maxZoom:12,
+  }).addTo(carte);
+
+  const style = (f) => {
+    const code = f.properties.code;
+    const d = parDep[code];
+    const n = d ? d.j1.niveau : null;
+    return {
+      fillColor: COULEURS[n] || NEUTRE,
+      fillOpacity: n ? .72 : .35,
+      color: (naviParDep[code] || []).length ? '#e8e6df' : '#000',
+      weight: (naviParDep[code] || []).length ? 1.6 : .6,
+      opacity: .85,
+    };
+  };
+
+  function detail(code){
+    const f = geo.features.find(x => x.properties.code === code);
+    const d = parDep[code];
+    const arretes = naviParDep[code] || [];
+    const trouve = veilleParDep[code] || [];
+    const niv = (o) => o
+      ? `<div class="niv" style="border-color:${COULEURS[o.niveau]}"><small>${o === (d&&d.j1) ? 'J+1' : 'J+2'}</small><b style="color:${COULEURS[o.niveau]}">${o.niveau} · ${esc(o.libelle)}</b></div>`
+      : '';
+
+    $('#detail').innerHTML =
+      `<h2>Département</h2>
+       <div class="titre">${esc(code)} — ${esc(f ? f.properties.nom : '')}</div>
+       ${d ? `<div class="niveaux">${niv(d.j1)}${niv(d.j2)}</div>`
+           : '<div class="vide">Aucun bulletin Météo des forêts (hors saison ou hors couverture).</div>'}
+
+       <h2 style="margin-top:14px">Arrêtés permanents — NaviForest</h2>
+       ${arretes.length
+          ? `<ul>${arretes.map(a =>
+              `<li><a href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.fichier)}</a>
+               <div class="src">${esc(a.validite_texte || '')}</div></li>`).join('')}</ul>`
+          : '<div class="vide">Aucun arrêté listé — ce qui ne veut pas dire qu\'il n\'y en a pas : NaviForest ne couvre que 25 départements sur 96.</div>'}
+
+       <h2 style="margin-top:14px">Veille préfecture</h2>
+       ${trouve.length
+          ? `<ul>${trouve.map(t =>
+              `<li><a href="${esc(t.url)}" target="_blank" rel="noopener">${esc(t.titre)}</a>
+               <div class="src">${esc(t.type)}</div></li>`).join('')}</ul>`
+          : '<div class="vide">Rien de détecté (département non suivi, ou aucun arrêté récent).</div>'}`;
+  }
+
+  const couche = L.geoJSON(geo, {
+    style,
+    onEachFeature: (f, layer) => {
+      const code = f.properties.code;
+      layer.bindTooltip(`${code} — ${f.properties.nom}`, {sticky:true});
+      layer.on({
+        mouseover: (e) => { e.target.setStyle({weight:2.4, color:'#fff'}); detail(code); },
+        mouseout:  (e) => couche.resetStyle(e.target),
+        click:     () => detail(code),
+      });
+    },
+  }).addTo(carte);
+
+  // Cadrage : setView en dur, volontairement.
+  // fitBounds(couche.getBounds()) a été essayé et dézoome à ~zoom 4,5 (France minuscule
+  // au milieu de l'Europe), y compris après invalidateSize() — alors que la bbox du
+  // GeoJSON est saine (lon -5,1→9,6 · lat 41,4→51,1, aucune géométrie aberrante).
+  // Cause non élucidée, pas bloquante pour un POC. À reprendre si le front devient sérieux.
+  carte.invalidateSize();
+
+  // ── Indicateurs de couverture ────────────────────────────────────────────
+  const alerte = mdf.bulletin.filter(d => d.j1.niveau >= 3);
+  const suivis = (veille.departements || []).length;
+  const kpi = (l, v, t) => `<div class="kpi"><span>${l}</span><b title="${t||''}">${v}</b></div>`;
+  $('#kpis').innerHTML =
+    kpi('Météo des forêts', `${mdf.bulletin.length}/96`, 'national, quotidien, sans clé API') +
+    kpi('Départements niveau ≥ 3 (J+1)', alerte.length, alerte.map(d=>d.departement).join(' ')) +
+    kpi('NaviForest — arrêtés', `${navi.stats.departements_avec_arrete}/96`, 'index IGN/FCBA, lacunaire') +
+    kpi('Veille préfectures', `${suivis}/101`, 'crawl borné, départements à risque') +
+    kpi('Trouvailles de veille', (veille.stats && veille.stats.trouvailles) || 0, '');
+
+  $('#pied').innerHTML =
+    `Sources : Météo-France (Licence Ouverte 2.0) · NaviForest IGN + FCBA · sites préfectoraux. ` +
+    `Contours : © contributeurs OpenStreetMap, ODbL. POC non officiel — ne remplace aucune publication préfectorale.`;
+})();
+</script>
+</body>
+</html>
