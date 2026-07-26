@@ -1,7 +1,7 @@
 {
   "methode": "Crawl borné de la branche Actualités/Publications des sites préfectoraux (aucun RSS, sitemap ou API n'existe sur ces sites — vérifié le 26/07/2026). Filtre par mots-clés forêt/massif/incendie + mesure (arrêté, interdiction, restriction).",
   "avertissement": "Détection heuristique, non exhaustive et non officielle. Un arrêté peut être manqué. Seul l'arrêté préfectoral publié fait foi.",
-  "collecte": "2026-07-26T15:31:18.499Z",
+  "collecte": "2026-07-26T16:39:33.207Z",
   "parametres": {
     "maxPages": 8,
     "maxDepth": 2,
@@ -9,11 +9,35 @@
     "pause_entre_departements_ms": 20000
   },
   "stats": {
-    "departements": 1,
-    "trouvailles": 0,
-    "nouvelles": 0
+    "departements": 10,
+    "trouvailles": 28,
+    "nouvelles": 27
   },
   "departements": [
+    {
+      "code": "33",
+      "nom": "Gironde",
+      "domaine": "gironde",
+      "seeds": [
+        "/Actualites",
+        "/Actualites/Breves",
+        "/Actualites/Communiques-de-presse"
+      ],
+      "motif": "priorité saison 2026 — massif landais, régime ponctuel (pas de carte quotidienne)",
+      "actif": true,
+      "pages_visitees": 8,
+      "trouvailles": [
+        {
+          "departement": "33",
+          "titre": "Télécharger 2026-07-16-Vigilance ORANGE feu de forêt reconduite en Gironde PDF - 0,07 Mb - 16/07/2026",
+          "url": "https://www.gironde.gouv.fr/contenu/telechargement/87548/658789/file/2026-07-16-Vigilance%20ORANGE%20feu%20de%20for%C3%AAt%20reconduite%20en%20Gironde.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.gironde.gouv.fr/Actualites/Vigilance-ORANGE-feux-de-foret-reconduite-en-Gironde"
+        }
+      ],
+      "nouvelles": [],
+      "erreurs": []
+    },
     {
       "code": "40",
       "nom": "Landes",
@@ -23,19 +47,512 @@
       ],
       "motif": "prolongement du massif landais",
       "actif": true,
-      "pages_visitees": 0,
-      "trouvailles": [],
-      "nouvelles": [],
-      "erreurs": [
+      "pages_visitees": 8,
+      "trouvailles": [
         {
-          "url": "https://www.landes.gouv.fr/Actualites",
-          "erreur": "Hôte www.landes.gouv.fr : 3 fermetures sèches d'affilée → disjoncteur ouvert. Très probablement un blocage anti-crawl. Attendre (dizaines de minutes), ralentir, réduire le nombre de pages."
+          "departement": "40",
+          "titre": "Télécharger CP - Incendie à Biscarrosse - point de situation à 00h PDF - 0,05 Mb - 24/07/2026",
+          "url": "https://www.landes.gouv.fr/contenu/telechargement/41322/335098/file/CP%20-%20Incendie%20%C3%A0%20Biscarrosse%20-%20point%20de%20situation%20%C3%A0%2000h.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.landes.gouv.fr/Actualites/Actualites/Incendie-en-cours-a-Biscarrosse-point-de-situation-a-00h"
         },
         {
-          "url": "https://www.landes.gouv.fr",
-          "erreur": "ABANDON — Hôte www.landes.gouv.fr : 3 fermetures sèches d'affilée → disjoncteur ouvert. Très probablement un blocage anti-crawl. Attendre (dizaines de minutes), ralentir, réduire le nombre de pages."
+          "departement": "40",
+          "titre": "Télécharger CP - Incendie à Biscarrosse PDF - 0,05 Mb - 23/07/2026",
+          "url": "https://www.landes.gouv.fr/contenu/telechargement/41320/335077/file/CP%20-%20Incendie%20%C3%A0%20Biscarrosse.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.landes.gouv.fr/Actualites/Actualites/Incendie-en-cours-a-Biscarrosse"
         }
-      ]
+      ],
+      "nouvelles": [
+        {
+          "departement": "40",
+          "titre": "Télécharger CP - Incendie à Biscarrosse - point de situation à 00h PDF - 0,05 Mb - 24/07/2026",
+          "url": "https://www.landes.gouv.fr/contenu/telechargement/41322/335098/file/CP%20-%20Incendie%20%C3%A0%20Biscarrosse%20-%20point%20de%20situation%20%C3%A0%2000h.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.landes.gouv.fr/Actualites/Actualites/Incendie-en-cours-a-Biscarrosse-point-de-situation-a-00h"
+        },
+        {
+          "departement": "40",
+          "titre": "Télécharger CP - Incendie à Biscarrosse PDF - 0,05 Mb - 23/07/2026",
+          "url": "https://www.landes.gouv.fr/contenu/telechargement/41320/335077/file/CP%20-%20Incendie%20%C3%A0%20Biscarrosse.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.landes.gouv.fr/Actualites/Actualites/Incendie-en-cours-a-Biscarrosse"
+        }
+      ],
+      "erreurs": []
+    },
+    {
+      "code": "77",
+      "nom": "Seine-et-Marne",
+      "domaine": "seine-et-marne",
+      "seeds": [
+        "/Actualites"
+      ],
+      "motif": "Fontainebleau — origine du projet, absent de NaviForest",
+      "actif": true,
+      "pages_visitees": 8,
+      "trouvailles": [
+        {
+          "departement": "77",
+          "titre": "Prévention feux de forêt : fermeture des Trois Pignons",
+          "url": "https://www.seine-et-marne.gouv.fr/Actualites/Salle-de-presse/Prevention-feux-de-foret-fermeture-des-Trois-Pignons",
+          "type": "page",
+          "trouve_sur": "https://www.seine-et-marne.gouv.fr/Actualites/Salle-de-presse"
+        },
+        {
+          "departement": "77",
+          "titre": "Prévention des feux de forêts : restriction des travaux forestiers",
+          "url": "https://www.seine-et-marne.gouv.fr/Actualites/Salle-de-presse/Prevention-des-feux-de-forets-restriction-des-travaux-forestiers",
+          "type": "page",
+          "trouve_sur": "https://www.seine-et-marne.gouv.fr/Actualites/Salle-de-presse"
+        }
+      ],
+      "nouvelles": [
+        {
+          "departement": "77",
+          "titre": "Prévention feux de forêt : fermeture des Trois Pignons",
+          "url": "https://www.seine-et-marne.gouv.fr/Actualites/Salle-de-presse/Prevention-feux-de-foret-fermeture-des-Trois-Pignons",
+          "type": "page",
+          "trouve_sur": "https://www.seine-et-marne.gouv.fr/Actualites/Salle-de-presse"
+        },
+        {
+          "departement": "77",
+          "titre": "Prévention des feux de forêts : restriction des travaux forestiers",
+          "url": "https://www.seine-et-marne.gouv.fr/Actualites/Salle-de-presse/Prevention-des-feux-de-forets-restriction-des-travaux-forestiers",
+          "type": "page",
+          "trouve_sur": "https://www.seine-et-marne.gouv.fr/Actualites/Salle-de-presse"
+        }
+      ],
+      "erreurs": []
+    },
+    {
+      "code": "83",
+      "nom": "Var",
+      "domaine": "var",
+      "seeds": [
+        "/Actualites"
+      ],
+      "motif": "carte quotidienne d'accès aux massifs (9 massifs, publiée avant 19h)",
+      "actif": true,
+      "pages_visitees": 8,
+      "trouvailles": [
+        {
+          "departement": "83",
+          "titre": "26/07/2026 Point de situation n°22 - 18h00",
+          "url": "https://www.var.gouv.fr/contenu/telechargement/47781/310015/file/2026-07-26%20CP%20Feu%20PONTEVES%20point%2021%20-%2018H00.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.var.gouv.fr/Actualites/Incendie-en-cours"
+        },
+        {
+          "departement": "83",
+          "titre": "26/07/2026 Point de situation n°21 - 12h45",
+          "url": "https://www.var.gouv.fr/contenu/telechargement/47780/310010/file/2026-07-26%20CP%20Feu%20PONTEVES%20point%2021%20-%2012h45%20%20-%20RSN.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.var.gouv.fr/Actualites/Incendie-en-cours"
+        },
+        {
+          "departement": "83",
+          "titre": "26/07/2026 Point de situation n°20 - 09H30",
+          "url": "https://www.var.gouv.fr/contenu/telechargement/47779/310005/file/2026-07-26%20CP%20Feu%20PONTEVES%20point%2020%20-%2009h30%20%20-%20Copie.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.var.gouv.fr/Actualites/Incendie-en-cours"
+        },
+        {
+          "departement": "83",
+          "titre": "25/07/2026 Point de situation n°19 - 20H00",
+          "url": "https://www.var.gouv.fr/contenu/telechargement/47777/309995/file/2026-07-25%20CP%20Feu%20PONTEVES%20point%2019%20-%2020h00%20.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.var.gouv.fr/Actualites/Incendie-en-cours"
+        },
+        {
+          "departement": "83",
+          "titre": "25/07/2026 Point de situation n°17 - 11H30",
+          "url": "https://www.var.gouv.fr/contenu/telechargement/47775/309985/file/2026-07-25%20CP%20Feu%20PONTEVES%20point%2017-%2011h30%20.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.var.gouv.fr/Actualites/Incendie-en-cours"
+        },
+        {
+          "departement": "83",
+          "titre": "24-07-2026 Point de situation n°15-20H25",
+          "url": "https://www.var.gouv.fr/contenu/telechargement/47770/309960/file/2026-07-24%20CP%20Feu%20PONTEVES%20point%2015-%20.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.var.gouv.fr/Actualites/Incendie-en-cours"
+        },
+        {
+          "departement": "83",
+          "titre": "24-07-2026 Point de situation n°14-17h15",
+          "url": "https://www.var.gouv.fr/contenu/telechargement/47769/309955/file/2026-07-24%20CP%20Feu%20PONTEVES%20point%2014-%2017h15%20.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.var.gouv.fr/Actualites/Incendie-en-cours"
+        },
+        {
+          "departement": "83",
+          "titre": "24-07-2026 Point de situation n°13 - 9h45",
+          "url": "https://www.var.gouv.fr/contenu/telechargement/47761/309915/file/2026-07-24%20CP%20Feu%20PONTEVES%20point%2013-%209h45%20.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.var.gouv.fr/Actualites/Incendie-en-cours"
+        },
+        {
+          "departement": "83",
+          "titre": "23-07-2026 Point de situation n°11-18H30",
+          "url": "https://www.var.gouv.fr/contenu/telechargement/47759/309905/file/2026-07-23%20CP%20Feu%20du%20GROS-BESSILLON%20point%2011-%2018h30%20.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.var.gouv.fr/Actualites/Incendie-en-cours"
+        },
+        {
+          "departement": "83",
+          "titre": "23-07-2026 Point de situation n°10-12H",
+          "url": "https://www.var.gouv.fr/contenu/telechargement/47738/309785/file/CP%20du%2023072026%20Feu%20PONTEVES%20point%2010%20-%2012h00%20.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.var.gouv.fr/Actualites/Incendie-en-cours"
+        },
+        {
+          "departement": "83",
+          "titre": "22-07-2026 Point de situation n°9-18H",
+          "url": "https://www.var.gouv.fr/contenu/telechargement/47731/309751/file/2026-07-22%20CP%20Feu%20PONTEVES%20point%209-%2018h00%20.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.var.gouv.fr/Actualites/Incendie-en-cours"
+        },
+        {
+          "departement": "83",
+          "titre": "22-07-2026 Point de situation n°8-12H",
+          "url": "https://www.var.gouv.fr/contenu/telechargement/47724/309689/file/2026-07-22%20CP%20Feu%20PONTEVES%20point%208-%2012h00%20.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.var.gouv.fr/Actualites/Incendie-en-cours"
+        },
+        {
+          "departement": "83",
+          "titre": "22-07-2026 Point de situation n°6 - 02h00",
+          "url": "https://www.var.gouv.fr/contenu/telechargement/47715/309644/file/2026-07-22%20CP%20Feu%20PONTEVES%20point%206%20-%2002h00%20.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.var.gouv.fr/Actualites/Incendie-en-cours"
+        },
+        {
+          "departement": "83",
+          "titre": "21-07-2026 Point de situation n°5 - 22h30",
+          "url": "https://www.var.gouv.fr/contenu/telechargement/47714/309639/file/2026-07-21%20CP%20Feu%20PONTEVES%20point%205%20-%2022h30%20.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.var.gouv.fr/Actualites/Incendie-en-cours"
+        },
+        {
+          "departement": "83",
+          "titre": "21-07-2026 Point de situation n°4 - 20h",
+          "url": "https://www.var.gouv.fr/contenu/telechargement/47717/309654/file/2026-07-21%20CP%20Feu%20PONTEVES%20point%204%20-%2020h%20.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.var.gouv.fr/Actualites/Incendie-en-cours"
+        },
+        {
+          "departement": "83",
+          "titre": "21-07-2026 Point de situation n°3 - 18h30",
+          "url": "https://www.var.gouv.fr/contenu/telechargement/47710/309597/file/2026-07-21%20CP%20Feu%20PONTEVES%20point%203%20-%2018h%20.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.var.gouv.fr/Actualites/Incendie-en-cours"
+        },
+        {
+          "departement": "83",
+          "titre": "21-07-2026 Point de situation n°2 - 16h15",
+          "url": "https://www.var.gouv.fr/contenu/telechargement/47709/309592/file/2026-07-21%20CP%20Feu%20PONTEVES%20point%202%20-%2016h15%20.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.var.gouv.fr/Actualites/Incendie-en-cours"
+        },
+        {
+          "departement": "83",
+          "titre": "21-07-2026 Point de situation n°1 - 14h00",
+          "url": "https://www.var.gouv.fr/contenu/telechargement/47708/309587/file/2026-07-21%20CP%20Feu%20PONTEVES%20point%201%20.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.var.gouv.fr/Actualites/Incendie-en-cours"
+        }
+      ],
+      "nouvelles": [
+        {
+          "departement": "83",
+          "titre": "26/07/2026 Point de situation n°22 - 18h00",
+          "url": "https://www.var.gouv.fr/contenu/telechargement/47781/310015/file/2026-07-26%20CP%20Feu%20PONTEVES%20point%2021%20-%2018H00.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.var.gouv.fr/Actualites/Incendie-en-cours"
+        },
+        {
+          "departement": "83",
+          "titre": "26/07/2026 Point de situation n°21 - 12h45",
+          "url": "https://www.var.gouv.fr/contenu/telechargement/47780/310010/file/2026-07-26%20CP%20Feu%20PONTEVES%20point%2021%20-%2012h45%20%20-%20RSN.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.var.gouv.fr/Actualites/Incendie-en-cours"
+        },
+        {
+          "departement": "83",
+          "titre": "26/07/2026 Point de situation n°20 - 09H30",
+          "url": "https://www.var.gouv.fr/contenu/telechargement/47779/310005/file/2026-07-26%20CP%20Feu%20PONTEVES%20point%2020%20-%2009h30%20%20-%20Copie.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.var.gouv.fr/Actualites/Incendie-en-cours"
+        },
+        {
+          "departement": "83",
+          "titre": "25/07/2026 Point de situation n°19 - 20H00",
+          "url": "https://www.var.gouv.fr/contenu/telechargement/47777/309995/file/2026-07-25%20CP%20Feu%20PONTEVES%20point%2019%20-%2020h00%20.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.var.gouv.fr/Actualites/Incendie-en-cours"
+        },
+        {
+          "departement": "83",
+          "titre": "25/07/2026 Point de situation n°17 - 11H30",
+          "url": "https://www.var.gouv.fr/contenu/telechargement/47775/309985/file/2026-07-25%20CP%20Feu%20PONTEVES%20point%2017-%2011h30%20.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.var.gouv.fr/Actualites/Incendie-en-cours"
+        },
+        {
+          "departement": "83",
+          "titre": "24-07-2026 Point de situation n°15-20H25",
+          "url": "https://www.var.gouv.fr/contenu/telechargement/47770/309960/file/2026-07-24%20CP%20Feu%20PONTEVES%20point%2015-%20.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.var.gouv.fr/Actualites/Incendie-en-cours"
+        },
+        {
+          "departement": "83",
+          "titre": "24-07-2026 Point de situation n°14-17h15",
+          "url": "https://www.var.gouv.fr/contenu/telechargement/47769/309955/file/2026-07-24%20CP%20Feu%20PONTEVES%20point%2014-%2017h15%20.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.var.gouv.fr/Actualites/Incendie-en-cours"
+        },
+        {
+          "departement": "83",
+          "titre": "24-07-2026 Point de situation n°13 - 9h45",
+          "url": "https://www.var.gouv.fr/contenu/telechargement/47761/309915/file/2026-07-24%20CP%20Feu%20PONTEVES%20point%2013-%209h45%20.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.var.gouv.fr/Actualites/Incendie-en-cours"
+        },
+        {
+          "departement": "83",
+          "titre": "23-07-2026 Point de situation n°11-18H30",
+          "url": "https://www.var.gouv.fr/contenu/telechargement/47759/309905/file/2026-07-23%20CP%20Feu%20du%20GROS-BESSILLON%20point%2011-%2018h30%20.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.var.gouv.fr/Actualites/Incendie-en-cours"
+        },
+        {
+          "departement": "83",
+          "titre": "23-07-2026 Point de situation n°10-12H",
+          "url": "https://www.var.gouv.fr/contenu/telechargement/47738/309785/file/CP%20du%2023072026%20Feu%20PONTEVES%20point%2010%20-%2012h00%20.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.var.gouv.fr/Actualites/Incendie-en-cours"
+        },
+        {
+          "departement": "83",
+          "titre": "22-07-2026 Point de situation n°9-18H",
+          "url": "https://www.var.gouv.fr/contenu/telechargement/47731/309751/file/2026-07-22%20CP%20Feu%20PONTEVES%20point%209-%2018h00%20.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.var.gouv.fr/Actualites/Incendie-en-cours"
+        },
+        {
+          "departement": "83",
+          "titre": "22-07-2026 Point de situation n°8-12H",
+          "url": "https://www.var.gouv.fr/contenu/telechargement/47724/309689/file/2026-07-22%20CP%20Feu%20PONTEVES%20point%208-%2012h00%20.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.var.gouv.fr/Actualites/Incendie-en-cours"
+        },
+        {
+          "departement": "83",
+          "titre": "22-07-2026 Point de situation n°6 - 02h00",
+          "url": "https://www.var.gouv.fr/contenu/telechargement/47715/309644/file/2026-07-22%20CP%20Feu%20PONTEVES%20point%206%20-%2002h00%20.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.var.gouv.fr/Actualites/Incendie-en-cours"
+        },
+        {
+          "departement": "83",
+          "titre": "21-07-2026 Point de situation n°5 - 22h30",
+          "url": "https://www.var.gouv.fr/contenu/telechargement/47714/309639/file/2026-07-21%20CP%20Feu%20PONTEVES%20point%205%20-%2022h30%20.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.var.gouv.fr/Actualites/Incendie-en-cours"
+        },
+        {
+          "departement": "83",
+          "titre": "21-07-2026 Point de situation n°4 - 20h",
+          "url": "https://www.var.gouv.fr/contenu/telechargement/47717/309654/file/2026-07-21%20CP%20Feu%20PONTEVES%20point%204%20-%2020h%20.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.var.gouv.fr/Actualites/Incendie-en-cours"
+        },
+        {
+          "departement": "83",
+          "titre": "21-07-2026 Point de situation n°3 - 18h30",
+          "url": "https://www.var.gouv.fr/contenu/telechargement/47710/309597/file/2026-07-21%20CP%20Feu%20PONTEVES%20point%203%20-%2018h%20.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.var.gouv.fr/Actualites/Incendie-en-cours"
+        },
+        {
+          "departement": "83",
+          "titre": "21-07-2026 Point de situation n°2 - 16h15",
+          "url": "https://www.var.gouv.fr/contenu/telechargement/47709/309592/file/2026-07-21%20CP%20Feu%20PONTEVES%20point%202%20-%2016h15%20.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.var.gouv.fr/Actualites/Incendie-en-cours"
+        },
+        {
+          "departement": "83",
+          "titre": "21-07-2026 Point de situation n°1 - 14h00",
+          "url": "https://www.var.gouv.fr/contenu/telechargement/47708/309587/file/2026-07-21%20CP%20Feu%20PONTEVES%20point%201%20.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.var.gouv.fr/Actualites/Incendie-en-cours"
+        }
+      ],
+      "erreurs": []
+    },
+    {
+      "code": "13",
+      "nom": "Bouches-du-Rhône",
+      "domaine": "bouches-du-rhone",
+      "seeds": [
+        "/Actualites"
+      ],
+      "motif": "accès quotidien 1er juin → 30 septembre",
+      "actif": true,
+      "pages_visitees": 8,
+      "trouvailles": [
+        {
+          "departement": "13",
+          "titre": "Feux de forêt - Risque incendie TRÈS SÉVÈRE - Fermeture de TOUS les massifs jeudi 23 juillet 2026",
+          "url": "https://www.bouches-du-rhone.gouv.fr/Actualites/Feux-de-foret-Risque-incendie-TRES-SEVERE-Fermeture-de-TOUS-les-massifs-jeudi-23-juillet-2026",
+          "type": "page",
+          "trouve_sur": "https://www.bouches-du-rhone.gouv.fr/Actualites"
+        }
+      ],
+      "nouvelles": [
+        {
+          "departement": "13",
+          "titre": "Feux de forêt - Risque incendie TRÈS SÉVÈRE - Fermeture de TOUS les massifs jeudi 23 juillet 2026",
+          "url": "https://www.bouches-du-rhone.gouv.fr/Actualites/Feux-de-foret-Risque-incendie-TRES-SEVERE-Fermeture-de-TOUS-les-massifs-jeudi-23-juillet-2026",
+          "type": "page",
+          "trouve_sur": "https://www.bouches-du-rhone.gouv.fr/Actualites"
+        }
+      ],
+      "erreurs": []
+    },
+    {
+      "code": "30",
+      "nom": "Gard",
+      "domaine": "gard",
+      "seeds": [
+        "/Actualites"
+      ],
+      "motif": "pourtour méditerranéen",
+      "actif": true,
+      "pages_visitees": 8,
+      "trouvailles": [],
+      "nouvelles": [],
+      "erreurs": []
+    },
+    {
+      "code": "34",
+      "nom": "Hérault",
+      "domaine": "herault",
+      "seeds": [
+        "/Actualites"
+      ],
+      "motif": "pourtour méditerranéen",
+      "actif": true,
+      "pages_visitees": 8,
+      "trouvailles": [],
+      "nouvelles": [],
+      "erreurs": []
+    },
+    {
+      "code": "66",
+      "nom": "Pyrénées-Orientales",
+      "domaine": "pyrenees-orientales",
+      "seeds": [
+        "/Actualites"
+      ],
+      "motif": "pourtour méditerranéen, sécheresse structurelle",
+      "actif": true,
+      "pages_visitees": 8,
+      "trouvailles": [],
+      "nouvelles": [],
+      "erreurs": []
+    },
+    {
+      "code": "2A",
+      "nom": "Corse-du-Sud",
+      "domaine": "corse-du-sud",
+      "seeds": [
+        "/Actualites"
+      ],
+      "motif": "risque élevé récurrent",
+      "actif": true,
+      "pages_visitees": 8,
+      "trouvailles": [
+        {
+          "departement": "2A",
+          "titre": "Arrêté du 20 juillet 2026 remplaçant l'arrêté de fermeture du massif d'Illarata du 17 juillet 2026",
+          "url": "https://www.corse-du-sud.gouv.fr/Actualites/Actualites/Arrete-du-20-juillet-2026-remplacant-l-arrete-de-fermeture-du-massif-d-Illarata-du-17-juillet-2026",
+          "type": "page",
+          "trouve_sur": "https://www.corse-du-sud.gouv.fr/Actualites/Actualites"
+        },
+        {
+          "departement": "2A",
+          "titre": "Arrêté du 20 juillet 2026 abrogeant l'arrêté de fermeture du massif de BAVELLA du 17 juillet 2026",
+          "url": "https://www.corse-du-sud.gouv.fr/Actualites/Actualites/Arrete-du-20-juillet-2026-abrogeant-l-arrete-de-fermeture-du-massif-de-BAVELLA-du-17-juillet-2026",
+          "type": "page",
+          "trouve_sur": "https://www.corse-du-sud.gouv.fr/Actualites/Actualites"
+        },
+        {
+          "departement": "2A",
+          "titre": "Arrêtés du 17/07/2026 portant fermeture des massifs forestiers de BAVELLA et d’ILLARATA",
+          "url": "https://www.corse-du-sud.gouv.fr/Actualites/Actualites/Arretes-du-17-07-2026-portant-fermeture-des-massifs-forestiers-de-BAVELLA-et-d-ILLARATA",
+          "type": "page",
+          "trouve_sur": "https://www.corse-du-sud.gouv.fr/Actualites/Actualites"
+        }
+      ],
+      "nouvelles": [
+        {
+          "departement": "2A",
+          "titre": "Arrêté du 20 juillet 2026 remplaçant l'arrêté de fermeture du massif d'Illarata du 17 juillet 2026",
+          "url": "https://www.corse-du-sud.gouv.fr/Actualites/Actualites/Arrete-du-20-juillet-2026-remplacant-l-arrete-de-fermeture-du-massif-d-Illarata-du-17-juillet-2026",
+          "type": "page",
+          "trouve_sur": "https://www.corse-du-sud.gouv.fr/Actualites/Actualites"
+        },
+        {
+          "departement": "2A",
+          "titre": "Arrêté du 20 juillet 2026 abrogeant l'arrêté de fermeture du massif de BAVELLA du 17 juillet 2026",
+          "url": "https://www.corse-du-sud.gouv.fr/Actualites/Actualites/Arrete-du-20-juillet-2026-abrogeant-l-arrete-de-fermeture-du-massif-de-BAVELLA-du-17-juillet-2026",
+          "type": "page",
+          "trouve_sur": "https://www.corse-du-sud.gouv.fr/Actualites/Actualites"
+        },
+        {
+          "departement": "2A",
+          "titre": "Arrêtés du 17/07/2026 portant fermeture des massifs forestiers de BAVELLA et d’ILLARATA",
+          "url": "https://www.corse-du-sud.gouv.fr/Actualites/Actualites/Arretes-du-17-07-2026-portant-fermeture-des-massifs-forestiers-de-BAVELLA-et-d-ILLARATA",
+          "type": "page",
+          "trouve_sur": "https://www.corse-du-sud.gouv.fr/Actualites/Actualites"
+        }
+      ],
+      "erreurs": []
+    },
+    {
+      "code": "2B",
+      "nom": "Haute-Corse",
+      "domaine": "haute-corse",
+      "seeds": [
+        "/Actualites"
+      ],
+      "motif": "risque élevé récurrent",
+      "actif": true,
+      "pages_visitees": 8,
+      "trouvailles": [
+        {
+          "departement": "2B",
+          "titre": "Feux de Corte et Albertacce: fermetures de sentiers communaux par arrêtés préfectoraux",
+          "url": "https://www.haute-corse.gouv.fr/Actualites/Feux-de-Corte-et-Albertacce-fermetures-de-sentiers-communaux-par-arretes-prefectoraux",
+          "type": "page",
+          "trouve_sur": "https://www.haute-corse.gouv.fr/Actualites"
+        }
+      ],
+      "nouvelles": [
+        {
+          "departement": "2B",
+          "titre": "Feux de Corte et Albertacce: fermetures de sentiers communaux par arrêtés préfectoraux",
+          "url": "https://www.haute-corse.gouv.fr/Actualites/Feux-de-Corte-et-Albertacce-fermetures-de-sentiers-communaux-par-arretes-prefectoraux",
+          "type": "page",
+          "trouve_sur": "https://www.haute-corse.gouv.fr/Actualites"
+        }
+      ],
+      "erreurs": []
     }
   ]
 }
