@@ -11,7 +11,9 @@
   "scripts": {
     "meteo": "node collectors/meteo-forets.js --fresh",
     "naviforest": "node collectors/naviforest.js --fresh",
+    "massifs": "node collectors/massifs-osm.js",
     "veille": "node collectors/watch-prefectures.js",
-    "collect": "npm run meteo && npm run naviforest && npm run veille"
+    "poc": "node app/build-data.js",
+    "collect": "npm run meteo && npm run naviforest && npm run massifs && npm run veille && npm run poc"
   }
 }

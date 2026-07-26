@@ -38,6 +38,28 @@
   a{color:#7fb2e8}
   .vide{color:var(--gris);font-style:italic;font-size:13px}
   .src{font-size:11.5px;color:var(--gris);margin-top:3px}
+  /* Zones interdites — bloc principal */
+  #interdits{border-color:#5a2a26;background:#1f1614}
+  .compte{font-size:13.5px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--bord)}
+  .zone{padding:9px 0;border-bottom:1px dashed var(--bord)}
+  .zone:last-child{border:0;padding-bottom:0}
+  .zone-tete{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:3px}
+  .zone-tete b{font-size:14px}
+  .badge{font-size:10.5px;font-weight:700;letter-spacing:.05em;padding:2px 7px;border-radius:3px;color:#fff;text-transform:uppercase}
+  .dep{font-size:11.5px;color:var(--gris)}
+  .quand{font-size:13px;color:#d8d5cc}
+  .quand b{color:#ffb3a8}
+  .alerte-dates{font-size:11.5px;color:#e8b44a;margin-top:4px;line-height:1.4}
+  .btn{display:block;width:100%;margin-top:8px;padding:7px;background:#3a201d;color:#ffb3a8;
+       border:1px solid #5a2a26;border-radius:4px;font:inherit;font-size:12.5px;cursor:pointer}
+  .btn:hover:not(:disabled){background:#4a2621}
+  .btn:disabled{opacity:.5;cursor:default;color:var(--gris)}
+  .zone.cliquable{cursor:pointer;margin:0 -6px;padding-left:6px;padding-right:6px;border-radius:4px}
+  .zone.cliquable:hover{background:rgba(255,255,255,.05)}
+  .derog{margin-top:5px;font-size:12px}
+  .derog summary{cursor:pointer;color:#7fb2e8}
+  .derog ul{margin:5px 0 0;padding-left:16px}
+  .derog li{font-size:12px;color:#d8d5cc;margin:3px 0}
   footer{padding:0 18px 16px;font-size:12px;color:var(--gris)}
   @media(max-width:900px){main{grid-template-columns:1fr;height:auto}#carte{height:60vh}}
 </style>
@@ -59,13 +81,27 @@
 <main>
   <div id="carte"></div>
   <aside>
+    <div class="bloc" id="interdits">
+      <h2>Zones interdites</h2>
+      <div class="vide">Chargement…</div>
+    </div>
+
     <div class="bloc" id="detail">
       <h2>Département</h2>
       <div class="vide">Survolez ou cliquez un département sur la carte.</div>
     </div>
 
     <div class="bloc">
-      <h2>Niveau de danger (J+1)</h2>
+      <h2>Massifs (calque du dessus)</h2>
+      <div class="legende">
+        <span><i class="pastille" style="background:#c22c22"></i> interdiction en vigueur</span>
+        <span><i class="pastille" style="background:#b45309"></i> statut incertain (pas de date de fin)</span>
+        <span><i class="pastille" style="background:#4a7c59"></i> levée / expirée</span>
+      </div>
+    </div>
+
+    <div class="bloc">
+      <h2>Fond : niveau de danger (J+1)</h2>
       <div class="legende">
         <span><i class="pastille" style="background:var(--n1)"></i> 1 — faible</span>
         <span><i class="pastille" style="background:var(--n2)"></i> 2 — modéré</span>
@@ -95,9 +131,62 @@ const NEUTRE = '#3a3f34';
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
+const AUJOURDHUI = new Date().toISOString().slice(0,10);
+const jour = (iso) => iso ? new Date(iso+'T12:00:00').toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'}) : null;
+
+/**
+ * Statut temporel d'une interdiction, recalculé à l'ouverture de la page.
+ * Le champ `statut` du JSON est celui CONSTATÉ au relevé : il vieillit, pas nous.
+ * Quatre cas, et surtout : on n'invente jamais « c'est fini » quand l'arrêté ne
+ * fixe pas de date de fin — on dit qu'on ne sait pas.
+ */
+function statutDuJour(z){
+  if (z.statut === 'levee')   return {cle:'levee',   libelle:'Levée',            couleur:'#4a7c59'};
+  if (z.debut && AUJOURDHUI < z.debut)
+                              return {cle:'a_venir', libelle:'À venir',          couleur:'#6b7280'};
+  if (z.fin && AUJOURDHUI > z.fin)
+                              return {cle:'expiree', libelle:'Expirée',          couleur:'#6b7280'};
+  if (z.fin && AUJOURDHUI <= z.fin)
+                              return {cle:'active',  libelle:'INTERDIT',         couleur:'#c22c22'};
+  // Pas de date de fin : deux situations à ne surtout pas confondre.
+  // Si l'arrêté a été lu et ne fixe aucun terme, l'interdiction COURT — c'est un fait,
+  // pas une incertitude. Si on ne l'a pas lu, on l'affiche comme incertain.
+  if (z.confiance_dates === 'verifiee')
+                              return {cle:'active',  libelle:'INTERDIT — sans terme', couleur:'#c22c22'};
+  return                             {cle:'inconnu', libelle:'Statut incertain', couleur:'#b45309'};
+}
+
+/** « du 24 au 31 juillet 2026 », « depuis le 17 juillet 2026, sans date de fin »… */
+function periode(z){
+  const d = jour(z.debut), f = jour(z.fin);
+  if (d && f && z.debut === z.fin) return `le ${d}`;
+  if (d && f) return `du ${d} au ${f} inclus`;
+  if (d && z.fin_condition) return `depuis le ${d}, jusqu'à : ${z.fin_condition}`;
+  if (d) return `depuis le ${d} — aucune date de fin dans l'arrêté`;
+  return 'dates non établies';
+}
+
+/** Jours restants, seulement quand une vraie date de fin existe. */
+function restant(z){
+  if (!z.fin) return null;
+  const n = Math.round((new Date(z.fin+'T12:00:00') - new Date(AUJOURDHUI+'T12:00:00')) / 86400000);
+  if (n < 0) return null;
+  return n === 0 ? "dernier jour" : n === 1 ? "encore 1 jour" : `encore ${n} jours`;
+}
+
 (function(){
   if (!window.POC) throw new Error('data.js absent ou vide — lancer : node app/build-data.js');
-  const {geo, mdf, navi, veille} = window.POC;
+  const {geo, mdf, navi, veille, massifs, interdits} = window.POC;
+
+  // Interdiction ↔ contour du massif. Une interdiction sans contour reste affichée :
+  // ne pas savoir dessiner une zone n'autorise pas à la taire.
+  const contourDe = {};
+  for (const f of massifs.features) if (f.geometry) contourDe[f.properties.cle] = f;
+  const nomDe = {};
+  for (const f of massifs.features) nomDe[f.properties.cle] = f.properties.nom;
+
+  const zones = interdits.map(z => ({...z, etat: statutDuJour(z), nom: z.massif ? nomDe[z.massif] : `Tout le département ${z.departement}`}));
+  const actives = zones.filter(z => z.etat.cle === 'active' || z.etat.cle === 'inconnu');
 
   const parDep = {};
   for (const d of mdf.bulletin) parDep[d.departement] = d;
@@ -174,12 +263,104 @@ const esc = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&l
     },
   }).addTo(carte);
 
+  // ── Calque des massifs interdits — le sujet principal de la carte ────────
+  // Dessiné APRÈS les départements pour passer au-dessus.
+  const calqueMassifs = L.layerGroup().addTo(carte);
+  for (const z of zones) {
+    const f = z.massif && contourDe[z.massif];
+    if (!f) continue;
+    const actif = z.etat.cle === 'active' || z.etat.cle === 'inconnu';
+    L.geoJSON(f, {
+      style: {
+        color: z.etat.couleur,
+        weight: actif ? 2 : 1,
+        fillColor: z.etat.couleur,
+        fillOpacity: actif ? .55 : .18,
+        dashArray: z.etat.cle === 'inconnu' ? '5,4' : null,
+      },
+    })
+      .bindTooltip(`${z.nom} — ${z.etat.libelle}`, {sticky:true})
+      .on('click', () => ficheZone(z))
+      .addTo(calqueMassifs);
+  }
+
+  // Le fond départemental sert à lire la France d'un coup d'œil ; une fois zoomé sur un
+  // massif, il ne fait plus que masquer le sujet. On l'efface progressivement.
+  function ajusterFond(){
+    const z = carte.getZoom();
+    const o = z >= 10 ? .06 : z >= 8 ? .22 : .72;
+    couche.setStyle((f) => ({fillOpacity: parDep[f.properties.code] ? o : o * .5}));
+  }
+  carte.on('zoomend', ajusterFond);
+
   // Cadrage : setView en dur, volontairement.
   // fitBounds(couche.getBounds()) a été essayé et dézoome à ~zoom 4,5 (France minuscule
   // au milieu de l'Europe), y compris après invalidateSize() — alors que la bbox du
   // GeoJSON est saine (lon -5,1→9,6 · lat 41,4→51,1, aucune géométrie aberrante).
   // Cause non élucidée, pas bloquante pour un POC. À reprendre si le front devient sérieux.
   carte.invalidateSize();
+
+  // ── Panneau « zones interdites » ─────────────────────────────────────────
+  function ligneZone(z){
+    const r = restant(z);
+    const sansContour = z.massif && !contourDe[z.massif];
+    return `<div class="zone" data-cle="${esc(z.massif||z.departement)}">
+      <div class="zone-tete">
+        <span class="badge" style="background:${z.etat.couleur}">${esc(z.etat.libelle)}</span>
+        <b>${esc(z.nom)}</b> <span class="dep">${esc(z.departement)}</span>
+      </div>
+      <div class="quand">${esc(periode(z))}${r ? ` · <b>${esc(r)}</b>` : ''}</div>
+      ${z.arrete ? `<div class="src">Arrêté ${esc(z.arrete)}${z.abroge_par ? ` · abrogé par ${esc(z.abroge_par)}` : ''}</div>` : ''}
+      ${z.confiance_dates !== 'verifiee'
+        ? `<div class="alerte-dates">⚠ Dates ${z.confiance_dates === 'inconnue' ? 'non établies' : 'partielles'} — ${esc(z.note || '')}</div>` : ''}
+      ${sansContour ? '<div class="alerte-dates">⚠ Aucun contour cartographiable : le périmètre n\'est défini que dans l\'annexe de l\'arrêté.</div>' : ''}
+      ${(z.derogations || []).length
+        ? `<details class="derog"><summary>${z.derogations.length} dérogation(s) — ce qui reste autorisé</summary>
+           <ul>${z.derogations.map(d => `<li>${esc(d)}</li>`).join('')}</ul></details>` : ''}
+      <div class="src"><a href="${esc(z.source)}" target="_blank" rel="noopener">Consulter l'arrêté →</a></div>
+    </div>`;
+  }
+
+  function ficheZone(z){
+    $('#detail').innerHTML = `<h2>Zone sélectionnée</h2>${ligneZone(z)}`;
+  }
+
+  const ordre = {active:0, inconnu:1, a_venir:2, levee:3, expiree:4};
+  const triees = zones.slice().sort((a,b) => ordre[a.etat.cle] - ordre[b.etat.cle] || (a.debut < b.debut ? 1 : -1));
+
+  $('#interdits').innerHTML =
+    `<h2>Zones interdites — au ${jour(AUJOURDHUI)}</h2>
+     <div class="compte">${actives.length
+        ? `<b style="color:#ff6b5e">${actives.length}</b> interdiction(s) à considérer aujourd'hui`
+        : 'Aucune interdiction active dans les données collectées'}
+       <span class="dep">sur ${zones.length} suivie(s)</span>
+       <button id="zoom-interdits" class="btn">Zoomer sur les zones interdites</button></div>
+     ${triees.map(ligneZone).join('')}`;
+
+  // Aller à une zone : c'est LA fonction utile de la page — « où est-ce, exactement ».
+  // fitBounds est fiable ici (déclenché après que la mise en page est stabilisée),
+  // contrairement à son usage au chargement.
+  function allerA(cle){
+    const f = contourDe[cle];
+    if (!f) return false;
+    carte.fitBounds(L.geoJSON(f).getBounds(), {padding:[30,30], maxZoom:12});
+    return true;
+  }
+
+  const avecContour = actives.filter(z => z.massif && contourDe[z.massif]);
+  const btn = $('#zoom-interdits');
+  if (!avecContour.length) { btn.disabled = true; btn.textContent = 'Aucune zone cartographiable'; }
+  btn.addEventListener('click', () => {
+    const grp = L.featureGroup(avecContour.map(z => L.geoJSON(contourDe[z.massif])));
+    carte.fitBounds(grp.getBounds(), {padding:[30,30]});
+  });
+
+  for (const el of document.querySelectorAll('.zone')) {
+    const cle = el.dataset.cle;
+    if (!contourDe[cle]) continue;
+    el.classList.add('cliquable');
+    el.addEventListener('click', (e) => { if (e.target.tagName !== 'A') allerA(cle); });
+  }
 
   // ── Indicateurs de couverture ────────────────────────────────────────────
   const alerte = mdf.bulletin.filter(d => d.j1.niveau >= 3);

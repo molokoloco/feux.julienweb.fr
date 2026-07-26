@@ -120,6 +120,49 @@ Ne pas remonter ces valeurs sans avoir lu l'encadré « bannissement » ci-desso
 
 Sorties dans `data/` : `meteo-forets.json`, `naviforest.json`, `veille-prefectures.json`.
 
+### Étage 4 : les contours de massifs, et ce qu'ils révèlent
+
+`massifs-osm.js` récupère les contours depuis OpenStreetMap, à partir du registre curaté
+`data/massifs.json`.
+
+**Pourquoi curaté et pas automatique** : le nom d'un massif dans un arrêté ne correspond pas à un
+objet OSM. Vérifié le 26/07/2026 — « massif de Bavella » et « massif d'Illarata » n'existent dans
+OSM ni en relation ni en way (seulement un col, un village, des routes) ; les forêts voisines
+s'appellent « Forêt Territoriale de Tova » et « Forêt de Valdu ». Une correspondance devinée par nom
+produirait des contours faux sur un sujet où l'erreur vaut une amende. Un massif sans contour fiable
+est donc **conservé sans géométrie** et affiché comme tel : ne pas savoir dessiner une zone
+n'autorise pas à la taire.
+
+Pièges Overpass, tous rencontrés :
+
+| Symptôme | Cause / remède |
+|---|---|
+| `406` | User-Agent générique type Mozilla → UA descriptif obligatoire |
+| « Query timed out after 64 seconds » | regex de nom non bornée géographiquement → borner par id ou bbox |
+| Réponse XML au lieu de JSON | `overpass-api.de` saturé → bascule automatique sur miroir |
+| Géométrie éclatée ou vide | ne PAS recoller les anneaux soi-même (81 anneaux incohérents pour Fontainebleau, zéro pour la Commanderie) → `polygons.openstreetmap.fr` assemble côté serveur |
+
+### Interdictions : quoi, de quand à quand
+
+`data/zones-interdites.json` répond à la seule question qui compte sur le terrain. Le modèle est
+conçu pour la réalité des arrêtés, pas pour un cas idéal :
+
+- `fin: null` + `fin_condition` — beaucoup d'arrêtés ne fixent **aucune date de fin**
+  (ex. Trois Pignons : « jusqu'à la fin de la vigilance rouge canicule »)
+- `abroge_par` — une interdiction peut être levée en trois jours (Bavella : 17/07 → 20/07)
+- `derogations` — ce qui reste autorisé malgré l'interdiction, souvent l'info la plus utile
+- `confiance_dates` — distingue **« l'arrêté ne fixe pas de terme »** (fait vérifié → *INTERDIT sans
+  terme*) de **« nous n'avons pas lu l'arrêté »** (→ *statut incertain*). Ne jamais confondre les deux.
+
+Le statut est **recalculé à l'ouverture de la page** : le champ `statut` du JSON est celui constaté
+au relevé, il vieillit.
+
+**Pourquoi le remplissage est manuel** : les dates ne sont pas sur la page d'actualité, elles sont
+dans le PDF, et ces PDF sont scannés — `pdftotext` a rendu **32 octets** sur l'arrêté Illarata.
+Lecture faite par rendu Ghostscript 150 dpi + vision, comme sur feux-foret-carte. Extraire une date
+de fin d'un PDF scanné sans relecture humaine, quand une amende en dépend, n'est pas acceptable :
+**l'automatisation s'arrête à la détection, la qualification reste humaine.**
+
 ### POC local
 
 ```bash
@@ -128,9 +171,19 @@ node app/build-data.js
 
 Puis **double-clic sur `app/index.html`**. Aucun serveur, aucune dépendance à installer.
 
-Carte Leaflet des 96 départements colorés par niveau de danger J+1, liseré blanc sur les
-départements ayant un arrêté NaviForest, panneau de détail au survol (niveaux J+1/J+2, arrêtés
-avec lien vers le PDF, trouvailles de veille), et bandeau d'avertissement.
+Le sujet de la page, c'est **l'interdiction** — la météo n'est que le fond de carte :
+
+- panneau **« Zones interdites »** en tête, trié par urgence : *INTERDIT* → *sans terme* →
+  *statut incertain* → *levée* / *expirée*
+- chaque zone affiche sa **période en clair** (« du 24 au 31 juillet 2026 inclus · encore 5 jours »,
+  « depuis le 17 juillet 2026 — aucune date de fin dans l'arrêté »), son numéro d'arrêté, ses
+  dérogations dépliables, et un lien direct vers l'arrêté
+- **contours de massifs** superposés en rouge, cliquables ; bouton *Zoomer sur les zones interdites*
+- le fond départemental **s'efface au zoom** pour ne pas masquer les massifs
+- les zones **sans contour cartographiable** restent listées, avec la raison
+
+Sous le panneau : détail départemental au survol (niveaux J+1/J+2, arrêtés NaviForest, trouvailles
+de veille) et indicateurs de couverture des sources.
 
 Même parti pris que `feux-foret-carte` : les données sont **embarquées** dans `app/data.js`
 (`window.POC`) plutôt que chargées en `fetch()` — sur `file://`, CORS bloque la lecture des JSON
@@ -161,9 +214,11 @@ il n'est pas là pour décorer.
 - [x] Disjoncteur anti-bannissement (`_http.js`) — testé sous blocage réel
 - [x] Brouillons de demande : Valabre + référent ReAcT
 - [x] **POC carto local** — Leaflet, 96 départements, données embarquées, marche en double-clic
-- [ ] Fusion des 3 sorties en un `arretes-forets-fr.json` unique et versionné
-- [ ] Géométries : contours de **massifs** (OSM/Overpass comme sur feux-foret-carte, ou BD TOPO IGN)
-      — aujourd'hui la maille est le département, ce qui est trop grossier pour un usage réel
+- [x] **Contours de massifs OSM** — Fontainebleau, Trois Pignons, Commanderie (204 / 16 / 34 polygones)
+- [x] **Modèle « de quand à quand »** — périodes, dérogations, statut recalculé, abrogations
+- [ ] Contours des massifs corses (Bavella, Illarata–Taglio Rosso) : absents d'OSM, à tracer depuis
+      les cartes annexées aux arrêtés — c'est le même travail manuel que pour Fontainebleau
+- [ ] Fusion des sorties en un `arretes-forets-fr.json` unique et versionné
 - [ ] Cadrage carte : `fitBounds` dézoome à ~zoom 4,5 même après `invalidateSize()`, alors que la
       bbox du GeoJSON est saine. Contourné par un `setView` en dur. À élucider si le front se durcit
 - [ ] Automatisation quotidienne + déploiement sous-domaine

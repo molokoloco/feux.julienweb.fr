@@ -1,0 +1,54 @@
+{
+  "_doc": "Registre des massifs cités par des arrêtés préfectoraux, et leur correspondance OSM. Consommé par collectors/massifs-osm.js pour produire app/massifs.geojson.",
+  "_pourquoi_curate": "Le nom d'un massif dans un arrêté ne correspond PAS à un objet OSM. Vérifié le 26/07/2026 : 'massif de Bavella' et 'massif d'Illarata' (arrêtés 2A) n'existent dans OSM ni en relation ni en way — seulement un col, un village, des routes ; les forêts voisines s'appellent 'Forêt Territoriale de Tova' et 'Forêt de Valdu'. Une correspondance automatique par nom produirait des contours faux sur un sujet où l'erreur est pénalement sanctionnée. D'où : correspondance saisie à la main, sourcée, et assumée absente quand elle l'est.",
+  "_schema": {
+    "cle": "identifiant stable utilisé par zones-interdites.json",
+    "nom": "libellé tel qu'il apparaît dans les arrêtés",
+    "departement": "code INSEE",
+    "osm": "liste d'objets OSM {type, id} — [] si aucune correspondance fiable",
+    "confiance": "verifiee | approximative | aucune",
+    "note": "d'où vient la correspondance, ou pourquoi elle manque"
+  },
+  "massifs": [
+    {
+      "cle": "fontainebleau",
+      "nom": "Forêt domaniale de Fontainebleau",
+      "departement": "77",
+      "osm": [{ "type": "relation", "id": 3236785 }],
+      "confiance": "verifiee",
+      "note": "Relation validée manuellement sur le projet feux-foret-carte (arrêté 2026/CAB/SIDPC/1223)."
+    },
+    {
+      "cle": "trois-pignons",
+      "nom": "Forêt domaniale des Trois Pignons",
+      "departement": "77",
+      "osm": [{ "type": "relation", "id": 16615234 }],
+      "confiance": "verifiee",
+      "note": "Idem feux-foret-carte."
+    },
+    {
+      "cle": "commanderie",
+      "nom": "Forêt domaniale de la Commanderie",
+      "departement": "77",
+      "osm": [{ "type": "relation", "id": 3253740 }],
+      "confiance": "verifiee",
+      "note": "Idem feux-foret-carte."
+    },
+    {
+      "cle": "bavella",
+      "nom": "Massif de Bavella",
+      "departement": "2A",
+      "osm": [],
+      "confiance": "aucune",
+      "note": "Aucun polygone OSM ne porte ce nom (recherche bbox 41.5-42.0 / 8.7-9.5 le 26/07/2026 : col, village, routes uniquement). Le périmètre réel est défini par l'annexe de l'arrêté, non numérisée. À tracer depuis l'arrêté, comme cela a été fait pour Fontainebleau."
+    },
+    {
+      "cle": "illarata",
+      "nom": "Massif d'Illarata",
+      "departement": "2A",
+      "osm": [],
+      "confiance": "aucune",
+      "note": "Idem Bavella — seul 'Bocca d'Illarata' (un col) existe dans OSM."
+    }
+  ]
+}

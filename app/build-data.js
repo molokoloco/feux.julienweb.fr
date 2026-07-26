@@ -17,6 +17,8 @@ const lire = (p) => JSON.parse(fs.readFileSync(path.join(RACINE, p), 'utf8'));
 const geo = lire('app/departements.geojson');
 const mdf = lire('data/meteo-forets.json');
 const navi = lire('data/naviforest.json');
+const massifs = lire('app/massifs.geojson');
+const interdits = lire('data/zones-interdites.json');
 let veille = { departements: [], stats: {} };
 try { veille = lire('data/veille-prefectures.json'); } catch { /* veille pas encore lancée */ }
 
@@ -27,6 +29,8 @@ const paquet = {
   mdf: { bulletin_du: mdf.bulletin_du, bulletin: mdf.bulletin, stats: mdf.stats, avertissement: mdf.avertissement },
   navi: { stats: navi.stats, departements: navi.departements, avertissement: navi.avertissement },
   veille: { stats: veille.stats || {}, departements: veille.departements || [] },
+  massifs,
+  interdits: interdits.zones,
 };
 
 const sortie = path.join(__dirname, 'data.js');
