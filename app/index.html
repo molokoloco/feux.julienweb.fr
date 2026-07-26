@@ -18,7 +18,7 @@
   .avert{margin:10px 18px 0;padding:10px 13px;border-left:4px solid var(--n4);
          background:rgba(194,44,34,.12);font-size:13.5px;border-radius:0 4px 4px 0}
   .avert b{color:#ff8a7e}
-  main{display:grid;grid-template-columns:1fr 370px;gap:14px;padding:14px 18px 18px;height:calc(100vh - 150px)}
+  main{display:grid;grid-template-columns:300px 1fr 380px;gap:14px;padding:14px 18px 18px;height:calc(100vh - 150px)}
   #carte{border-radius:6px;border:1px solid var(--bord);background:#0d0f0b}
   aside{overflow:auto;padding-right:4px}
   .bloc{background:var(--panel);border:1px solid var(--bord);border-radius:6px;padding:12px 14px;margin-bottom:12px}
@@ -61,7 +61,21 @@
   .derog ul{margin:5px 0 0;padding-left:16px}
   .derog li{font-size:12px;color:#d8d5cc;margin:3px 0}
   footer{padding:0 18px 16px;font-size:12px;color:var(--gris)}
-  @media(max-width:900px){main{grid-template-columns:1fr;height:auto}#carte{height:60vh}}
+  /* Sous 1250px, la carte perd trop de largeur à trois colonnes : on repasse à deux,
+     les zones interdites restant à droite puisque c'est le sujet. */
+  @media(max-width:1250px){
+    /* height:auto obligatoire : la colonne gauche devient une LIGNE supplémentaire,
+       et une hauteur fixe écraserait la carte au point de la rogner. */
+    main{grid-template-columns:1fr 360px;height:auto}
+    #carte{height:72vh}
+    aside.gauche{grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;align-items:start;overflow:visible}
+    aside.gauche .bloc{margin-bottom:0}
+  }
+  @media(max-width:900px){
+    main{grid-template-columns:1fr;height:auto}
+    #carte{height:60vh}
+    aside.droite{order:-1}
+  }
 </style>
 </head>
 <body>
@@ -79,13 +93,8 @@
 </div>
 
 <main>
-  <div id="carte"></div>
-  <aside>
-    <div class="bloc" id="interdits">
-      <h2>Zones interdites</h2>
-      <div class="vide">Chargement…</div>
-    </div>
-
+  <!-- Colonne gauche : contexte et lecture de la carte. -->
+  <aside class="gauche">
     <div class="bloc" id="detail">
       <h2>Département</h2>
       <div class="vide">Survolez ou cliquez un département sur la carte.</div>
@@ -114,6 +123,16 @@
     <div class="bloc">
       <h2>Couverture des sources</h2>
       <div id="kpis"></div>
+    </div>
+  </aside>
+
+  <div id="carte"></div>
+
+  <!-- Colonne droite : le sujet de la page. -->
+  <aside class="droite">
+    <div class="bloc" id="interdits">
+      <h2>Zones interdites</h2>
+      <div class="vide">Chargement…</div>
     </div>
   </aside>
 </main>
@@ -201,7 +220,9 @@ function restant(z){
 
   // ── Carte ─────────────────────────────────────────────────────────────────
   // setView AVANT d'ajouter les calques vectoriels (piège relevé sur feux-foret-carte).
-  const carte = L.map('carte', {scrollWheelZoom:true}).setView([46.6, 2.4], 6);
+  // Zoom initial selon la largeur : à 6 dans une colonne étroite, la France déborde.
+  const carte = L.map('carte', {scrollWheelZoom:true})
+    .setView([46.7, 2.4], window.innerWidth < 1250 ? 5 : 6);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
     attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> · © <a href="https://carto.com/attributions">CARTO</a> · Données : Météo-France, IGN/FCBA',
     maxZoom:12,
