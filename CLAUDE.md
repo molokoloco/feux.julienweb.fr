@@ -1,77 +1,138 @@
 # CLAUDE.md — feux.julienweb.fr
 
-Projet dédié : généralisation nationale de la carte des massifs forestiers fermés.
-Créé le 26/07/2026, issu du projet [Julienweb.fr](../Julienweb.fr/CLAUDE.md) (article #11311 +
-repo `molokoloco/feux-foret-carte`).
+Généralisation nationale de la carte des massifs forestiers fermés.
+Créé le 26/07/2026 depuis [Julienweb.fr](../Julienweb.fr/CLAUDE.md) (article #11311 + repo
+`molokoloco/feux-foret-carte`).
 
-**Nature** : site statique déployé sur un sous-domaine de julienweb.fr (nom retenu par défaut :
-`feux.julienweb.fr`, non déployé — renommage trivial tant que rien n'est en ligne).
-Pas de WordPress. Front en statique d'abord ; React seulement si l'interactivité le justifie.
-Question du scaling (machine dédiée OVH) volontairement repoussée : on la traite si le trafic arrive.
+> **Ce fichier = l'état vivant du projet.** Le récit détaillé de la session fondatrice
+> (ce qui a été cherché, trouvé, cassé, pourquoi) vit dans [HANDOFF.md](HANDOFF.md), daté et figé.
+> Le paysage des sources et les commandes vivent dans [README.md](README.md).
+> Mettre à jour CE fichier à chaque session ; ne jamais réécrire HANDOFF.md.
+
+**Nature** : site statique sur le sous-domaine `feux.julienweb.fr` (nom validé, **non déployé**).
+Pas de WordPress. Statique d'abord, React seulement si l'interactivité le justifie.
+Scaling (machine dédiée OVH) volontairement repoussé : on le traite si le trafic arrive.
 
 ## Frontière avec les projets voisins
 
 | Projet | Rôle |
 |---|---|
-| `Julienweb.fr/` | studio, blog, SEO, CRM — c'est là que vit l'**article** #11311 et le suivi SEO-TRACKER |
+| `Julienweb.fr/` | studio, blog, SEO, CRM — l'**article** #11311 et le SEO-TRACKER vivent là-bas |
 | `feux-foret-carte/` | repo public GitHub, carte **Fontainebleau** figée sur l'arrêté 77 de juillet 2026 |
 | **ce projet** | **collecte nationale** + flux normalisé + carte multi-départements |
 
-Ne pas fusionner avec `feux-foret-carte` : ce repo raconte une histoire précise (un arrêté, un PDF
-scanné illisible, une carte reconstruite) qui est citée par l'article. Il reste tel quel.
+Ne pas fusionner avec `feux-foret-carte` : il raconte un cas précis (un arrêté, un PDF scanné
+illisible, une carte reconstruite) cité par l'article. Il reste tel quel.
 
-## Ce qui a été établi le 26/07/2026 (ne pas re-chercher)
+⏰ **Échéance 31/07/2026** : l'arrêté 77 expire. Passé cette date, l'article #11311 **et** le repo
+`feux-foret-carte` affirment une interdiction qui n'existe plus. Sujet de sécurité, préfecture citée
+nommément — à corriger le jour même.
 
-- **Aucun flux national d'arrêtés préfectoraux n'existe.** ReAcT (beta.gouv.fr), qui visait
-  exactement ça, a été **arrêté le 26/08/2025**, code source non publié.
-- Sur les sites préfectoraux : `/rss.xml`, `/rss`, `/feed`, `/sitemap.xml`, `/robots.txt` → **404**.
-  Vérifié sur 33, 40, 77, 83. Le crawl est la seule voie.
-- `/Actualites` et `/content/view/sitemap/2` répondent **200 sur les 10 sites testés** → endpoints
-  communs exploitables. PDF en `/contenu/telechargement/<node>/<id>/file/<nom>.pdf`.
-- L'archive `mdf_2026.csv.gz` de la Météo des forêts est **rafraîchie quotidiennement** (pas un
-  historique figé) → flux national sans clé API. L'API à clé du portail Météo-France est inutile.
-- NaviForest couvre **25/96 départements** et **rate le 77**. Index, pas source de vérité.
+## État au 26/07/2026 — 4 commits, tout tourne
 
-## Règle éditoriale non négociable
+| Brique | État |
+|---|---|
+| `collectors/meteo-forets.js` | ✅ 96 départements, bulletin du jour, sans clé API |
+| `collectors/naviforest.js` | ✅ 27 arrêtés — mais **25/96 départements**, et le **77 est vide** |
+| `collectors/watch-prefectures.js` | ✅ 10 départements, **28 trouvailles, 0 erreur** |
+| `collectors/massifs-osm.js` | ✅ Fontainebleau (204 polygones), Trois Pignons (16), Commanderie (34) |
+| `data/zones-interdites.json` | ✅ 6 zones qualifiées à la main, sourcées |
+| `app/index.html` | ✅ POC 3 colonnes, marche en **double-clic**, sans serveur |
 
-Météo des forêts = **indicatif, départemental**. L'accès aux massifs est réglementé par l'**arrêté
-préfectoral zonal**, seul opposable. Tout affichage doit porter l'avertissement aussi visiblement
-que la donnée. Les collecteurs le propagent dans le JSON (`avertissement`) — ne pas le retirer à
-l'affichage.
+`npm run collect` enchaîne tout et régénère le POC.
 
-Cohérent avec le garde-fou dual-use des articles cyber : on publie la méthode et le droit, on
-n'induit personne en erreur sur ce qui est autorisé.
+**Prochaine étape** : fusionner les sorties en un `arretes-forets-fr.json` unique et versionné.
+Puis : contours des massifs corses (à tracer à la main), automatisation quotidienne, déploiement.
 
-## Politesse de crawl — non négociable, on s'est déjà fait bannir
+## Doctrine — ce qui n'est pas négociable
 
-**26/07/2026** : un crawl à 400 ms de pause sur 30 pages × 10 départements a fait **bannir l'IP en
-~2 minutes**. Connexion acceptée puis fermée sèchement (`curl` → `000` en 0,1 s ; Node →
-`UND_ERR_SOCKET`), sur **tous** les sites préfectoraux simultanément, alors que `naviforest.ign.fr`
-répondait toujours 200. Anti-crawl de plateforme mutualisée.
+**1. Météo des forêts ≠ autorisation d'accès.** Indicateur *indicatif*, *départemental*. Seul
+l'**arrêté préfectoral zonal** est opposable. L'avertissement doit être aussi visible que la donnée ;
+les collecteurs le propagent dans le JSON (`avertissement`), ne pas le retirer à l'affichage.
+Des gens se font verbaliser chaque année à cause de cette confusion.
 
-`collectors/_http.js` impose : User-Agent descriptif et joignable, séquentiel, backoff exponentiel,
-cache disque, et un **disjoncteur** (3 fermetures sèches sur un hôte → abandon du département avec
-diagnostic). Défauts du watcher : 8 pages, profondeur 2, 3 s de pause, 20 s entre départements.
+**2. L'automatisation s'arrête à la détection, la qualification reste humaine.** Les dates ne sont
+pas sur les pages, elles sont dans des PDF **scannés**. Extraire une date de fin par OCR sans
+relecture, quand une amende en dépend, n'est pas acceptable.
+
+**3. Ne jamais confondre ces deux cas :**
+- « l'arrêté ne fixe pas de terme » = **fait vérifié** → *INTERDIT sans terme*
+- « nous n'avons pas lu l'arrêté » = **doute** → *statut incertain*
+
+C'est le champ `confiance_dates`. Confondre les deux, c'est soit rassurer à tort, soit crier au loup.
+
+**4. Une zone sans contour reste affichée.** Ne pas savoir dessiner un périmètre n'autorise pas à
+taire l'interdiction.
+
+**5. Jamais de correspondance devinée entre un nom d'arrêté et un objet cartographique.** Voir
+« pièges » ci-dessous : ça produit des contours faux sur un sujet pénalement sanctionné.
+
+## Politesse de crawl — on s'est déjà fait bannir
+
+**26/07/2026** : crawl à 400 ms de pause sur 30 pages × 10 départements → **IP bannie en ~2 minutes**.
+Connexion acceptée puis fermée sèchement (`curl` → `000` en 0,1 s ; Node → `UND_ERR_SOCKET`), sur
+**tous** les sites préfectoraux à la fois, alors que `naviforest.ign.fr` répondait toujours 200.
+Anti-crawl de plateforme mutualisée, pas panne locale. Le ban est tombé au bout de ~6 minutes.
+
+`collectors/_http.js` impose : UA descriptif et joignable, séquentiel, backoff exponentiel, cache
+disque, **disjoncteur** (3 fermetures sèches → abandon du département avec diagnostic).
+Défauts du watcher : 8 pages, profondeur 2, 3 s de pause, 20 s entre départements.
 
 - **Un département à la fois** (`--dep 33`). Pas les dix d'affilée.
 - Ne pas paralléliser, ne pas remonter les compteurs « pour tester plus vite ».
 - Un arrêté ne sort pas toutes les heures : un passage par jour suffit.
-- Si ça renvoie `000` : attendre des dizaines de minutes. Insister allonge le bannissement.
+- `000` → attendre des dizaines de minutes. Insister allonge le ban.
+- **Astuce** : `WebFetch` lit les pages `.gouv.fr` **sans entamer le quota de l'IP locale**.
 
-Pour Valabre (`risque-prevention-incendie.fr`) : **ne pas requêter l'endpoint non documenté** tant
-que la demande écrite (`mails/01-valabre-acces-massifs.md`) n'a pas eu de réponse.
+**Valabre** (`risque-prevention-incendie.fr`) : ne **pas** requêter l'endpoint non documenté tant que
+`mails/01-valabre-acces-massifs.md` n'a pas eu de réponse. Données à valeur réglementaire.
+
+## Pièges déjà payés — ne pas les repayer
+
+**Sites préfectoraux**
+- `/rss.xml`, `/rss`, `/feed`, `/sitemap.xml`, `/robots.txt` → **404**. Le crawl est la seule voie.
+- `/Actualites` et `/content/view/sitemap/2` → **200 partout**. PDF en
+  `/contenu/telechargement/<node>/<id>/file/<nom>.pdf`. Même CMS → un adaptateur, pas 101 scrapers.
+
+**OpenStreetMap / Overpass**
+- Le nom d'un massif dans un arrêté **ne correspond pas** à un objet OSM : « Bavella » et
+  « Illarata » n'existent ni en relation ni en way (seulement un col, un village, des routes).
+  → registre curaté `data/massifs.json`, correspondance saisie à la main.
+- **Ne pas recoller les anneaux soi-même** : un assemblage maison a donné 81 anneaux incohérents
+  pour Fontainebleau et **zéro** pour la Commanderie. → `polygons.openstreetmap.fr` assemble
+  côté serveur. Overpass sert à *chercher*, pas à *assembler*.
+- UA générique → `406`. Regex de nom non bornée → timeout à 64 s. Réponse XML au lieu de JSON →
+  serveur saturé, basculer sur un miroir.
+
+**PDF d'arrêtés**
+- Ils sont **scannés** : `pdftotext` a rendu **32 octets** sur l'arrêté Illarata.
+- `pdftoppm` **n'est pas installé** sur cette machine → l'outil `Read` échoue sur les PDF.
+- Pipeline qui marche : `"/c/Program Files/gs/gs10.07.1/bin/gswin64c" -sDEVICE=png16m -r150` puis
+  lecture visuelle des PNG. Même méthode que sur feux-foret-carte.
+
+**POC / front**
+- `fetch()` de JSON locaux est bloqué par **CORS sur `file://`** → données embarquées dans
+  `app/data.js` (`window.POC`) via `node app/build-data.js`. La page marche en double-clic.
+- `.claude/launch.json` **refuse toute cible hors racine projet** → pas de dev server, et c'est
+  très bien : le POC est autonome.
+- ⚠️ **Bug ouvert** : `fitBounds` au chargement dézoome à ~zoom 4,5 malgré `invalidateSize()`, alors
+  que la bbox du GeoJSON est saine (lon -5,1→9,6 · lat 41,4→51,1). Contourné par `setView` en dur.
+  `fitBounds` déclenché par un clic utilisateur fonctionne, lui, très bien.
 
 ## Structure
 
 ```
-collectors/   _http.js (lib) · meteo-forets.js · naviforest.js · watch-prefectures.js
-data/         prefectures.json (config) + sorties JSON
-mails/        brouillons de demandes (Valabre, référent ReAcT) — à envoyer par Julien
+collectors/  _http.js (lib + disjoncteur) · meteo-forets.js · naviforest.js
+             massifs-osm.js · watch-prefectures.js
+data/        prefectures.json · massifs.json · zones-interdites.json (+ sorties)
+app/         index.html (POC) · build-data.js · departements.geojson · massifs.geojson
+mails/       2 brouillons — à relire et ENVOYER par Julien, rien n'est parti
 ```
 
-Commandes : `npm run meteo` · `npm run naviforest` · `npm run veille` · `npm run collect`.
+`app/data.js` est **gitignoré** (~1,4 Mo régénéré à chaque collecte).
 
-## Reste à faire
+## En attente de Julien
 
-Fusion en `arretes-forets-fr.json` unique → géométries (Overpass/OSM comme feux-foret-carte, ou
-BD TOPO IGN) → front carto → automatisation quotidienne → déploiement sous-domaine.
+- Envoyer `mails/01-valabre-acces-massifs.md` (conditions de réutilisation des données d'accès)
+- Envoyer `mails/02-react-betagouv.md` (code source de ReAcT — `jean-luc.girel@aube.gouv.fr`)
+- Arbitrer le 31/07 sur l'article #11311 et le repo `feux-foret-carte`
