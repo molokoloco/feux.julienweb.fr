@@ -28,7 +28,7 @@ illisible, une carte reconstruite) cité par l'article. Il reste tel quel.
 `feux-foret-carte` affirment une interdiction qui n'existe plus. Sujet de sécurité, préfecture citée
 nommément — à corriger le jour même.
 
-## État au 26/07/2026 — 4 commits, tout tourne
+## État au 26/07/2026 — 7 commits, tout tourne
 
 | Brique | État |
 |---|---|
@@ -38,11 +38,33 @@ nommément — à corriger le jour même.
 | `collectors/massifs-osm.js` | ✅ Fontainebleau (204 polygones), Trois Pignons (16), Commanderie (34) |
 | `data/zones-interdites.json` | ✅ 6 zones qualifiées à la main, sourcées |
 | `app/index.html` | ✅ POC 3 colonnes, marche en **double-clic**, sans serveur |
+| `design/` | ✅ kit Claude Design — prompt, design system importable, données réelles, skills |
 
 `npm run collect` enchaîne tout et régénère le POC.
 
 **Prochaine étape** : fusionner les sorties en un `arretes-forets-fr.json` unique et versionné.
 Puis : contours des massifs corses (à tracer à la main), automatisation quotidienne, déploiement.
+
+## Piste v2 — webapp 3D (kit prêt, rien de lancé)
+
+`design/` contient de quoi attaquer une refonte 3D via **claude.ai/design** : `PROMPT-CLAUDE-DESIGN.md`
+(prompt maître), `DESIGN-SYSTEM-FEUX.md` (tokens à importer, dérivés de la charte terminal
+JulienWeb), `DONNEES-REELLES.json` (extrait généré depuis `data/`, aucune valeur inventée),
+`SKILLS-ET-MCP.md` (skills vérifiés + verdict sur l'écosystème Three.js).
+
+Parti pris retenu : **globe → plongée sur la France → France extrudée par niveau de danger**, massifs
+interdits en volume par-dessus. Implémentation cible React Three Fiber — ce qui contredit le
+« statique d'abord » ci-dessus, donc **à arbitrer avant d'écrire la moindre ligne**.
+
+Trois faits vérifiés le 26/07/2026, à ne pas re-chercher :
+- **aucun MCP Three.js n'existe** (registre : 0 résultat) — ce qui circule sont des skills tiers ;
+- Claude Design **n'a pas de sélecteur de skills** : ce qui s'active, c'est l'import de design
+  system, les pièces jointes, les exports et le handoff Claude Code ;
+- il **brûle le quota très vite** (~80 % d'un quota Pro hebdo en 25 min pour 3 variations d'une
+  page) → un écran à la fois.
+
+L'outil `DesignSync` de Claude Code peut pousser le design system directement dans claude.ai/design,
+mais demande une autorisation interactive du scope design.
 
 ## Doctrine — ce qui n'est pas négociable
 
@@ -127,9 +149,19 @@ collectors/  _http.js (lib + disjoncteur) · meteo-forets.js · naviforest.js
 data/        prefectures.json · massifs.json · zones-interdites.json (+ sorties)
 app/         index.html (POC) · build-data.js · departements.geojson · massifs.geojson
 mails/       2 brouillons — à relire et ENVOYER par Julien, rien n'est parti
+skills/      snapshots locaux des skills globaux (index README.md)
 ```
 
 `app/data.js` est **gitignoré** (~1,4 Mo régénéré à chaque collecte).
+
+## Skills locaux
+
+`/wrap-up` → **lire [skills/wrap-up/SKILL.md](skills/wrap-up/SKILL.md) et suivre celui-là**, pas le
+global : le snapshot local fige les chemins, remplace l'étape Wiki par la frontière avec les projets
+voisins, et ajoute une **étape 3f « Vérité des données »** non-skippable (échéance 31/07,
+`confiance_dates`, avertissement météo, correspondances OSM). Il pose aussi deux garde-fous :
+le wrap-up ne lance **jamais** de collecte, et aucune date d'arrêté n'entre dans un JSON sans
+lecture humaine du PDF. Index : [skills/README.md](skills/README.md).
 
 ## En attente de Julien
 

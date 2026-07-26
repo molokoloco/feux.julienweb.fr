@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>POC — Danger feu de forêt & arrêtés préfectoraux</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.6.1/dist/maplibre-gl.css">
 <style>
   :root{
     --n1:#3d8b4a; --n2:#e0b400; --n3:#e07b00; --n4:#c22c22;
@@ -140,6 +141,10 @@
 <footer id="pied"></footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<!-- Fond vectoriel IGN (Géoplateforme) rendu dans Leaflet. Chargement non bloquant :
+     si ces deux CDN tombent, la carte reste utilisable sur le fond raster CARTO. -->
+<script src="https://unpkg.com/maplibre-gl@5.6.1/dist/maplibre-gl.js"></script>
+<script src="https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.1.3/leaflet-maplibre-gl.js"></script>
 <!-- Données embarquées (window.POC) : la page marche en double-clic, sans serveur.
      Régénérer après chaque collecte : node app/build-data.js -->
 <script src="data.js"></script>
@@ -221,12 +226,35 @@ function restant(z){
   // ── Carte ─────────────────────────────────────────────────────────────────
   // setView AVANT d'ajouter les calques vectoriels (piège relevé sur feux-foret-carte).
   // Zoom initial selon la largeur : à 6 dans une colonne étroite, la France déborde.
-  const carte = L.map('carte', {scrollWheelZoom:true})
+  const carte = L.map('carte', {scrollWheelZoom:true, maxZoom:18})
     .setView([46.7, 2.4], window.innerWidth < 1250 ? 5 : 6);
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-    attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> · © <a href="https://carto.com/attributions">CARTO</a> · Données : Météo-France, IGN/FCBA',
-    maxZoom:12,
-  }).addTo(carte);
+
+  const CREDITS = 'Données : Météo-France, IGN/FCBA · contours © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
+
+  // maxNativeZoom 12 : CARTO ne sert pas plus loin, au-delà on ré-échantillonne
+  // ses tuiles plutôt que d'interdire le zoom (l'IGN, lui, va jusqu'à 18).
+  const fondSombre = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution:'© <a href="https://carto.com/attributions">CARTO</a> · ' + CREDITS,
+    maxZoom:18, maxNativeZoom:12,
+  });
+
+  // Fond IGN « Plan atténué » — vecteur, Géoplateforme, sans clé ni compte.
+  // Repéré sur feuxdeforet.fr, qui l'utilise via son propre cache tiles.fdfdata.fr ;
+  // on tape la source IGN en direct, pas leur CDN (cf. README, § Fonds de carte).
+  // Le style est délibérément désaturé : les massifs interdits en rouge ressortent,
+  // et contrairement à CARTO on lit enfin les noms de forêts et les routes d'accès.
+  // maxZoom 12 imposé par CARTO ; l'IGN monte à 18, utile pour un périmètre de massif.
+  const STYLE_IGN = 'https://data.geopf.fr/annexes/ressources/vectorTiles/styles/PLAN.IGN/attenue.json';
+  let fondIgn = null;
+  if (window.maplibregl && L.maplibreGL) {
+    fondIgn = L.maplibreGL({style: STYLE_IGN, attribution:'© IGN / Géoplateforme · ' + CREDITS});
+  }
+
+  (fondIgn || fondSombre).addTo(carte);
+  if (fondIgn) {
+    L.control.layers({'Plan IGN atténué': fondIgn, 'Sombre (CARTO)': fondSombre},
+                     null, {position:'topright'}).addTo(carte);
+  }
 
   const style = (f) => {
     const code = f.properties.code;

@@ -1,0 +1,412 @@
+{
+  "_lisez_moi": "Extrait REEL des donnees du projet feux.julienweb.fr, releve le 2026-07-26. Genere depuis data/*.json, aucune valeur inventee. A joindre au prompt Claude Design pour que les maquettes affichent de vrais cas et non des donnees plausibles. Sur ce sujet une fausse interdiction dans une maquette finit par se retrouver en production.",
+  "_interdit": "Ne pas inventer de nouvelles zones, de nouvelles dates ni de nouveaux numeros d arretes. Si une maquette a besoin d un cas supplementaire, la remplir avec un placeholder EXPLICITE du type \"exemple fictif\" et le marquer visuellement.",
+  "avertissement_meteo": "Indicateur météorologique INDICATIF à l'échelle du département. Il ne vaut pas autorisation ni interdiction d'accès : seul l'arrêté préfectoral zonal réglemente l'accès aux massifs et l'emploi du feu.",
+  "avertissement_veille": "Détection heuristique, non exhaustive et non officielle. Un arrêté peut être manqué. Seul l'arrêté préfectoral publié fait foi.",
+  "bulletin_du": "2026-07-26",
+  "couverture": {
+    "departements_meteo": 96,
+    "departements_niveau_3_ou_4": 7,
+    "massifs_avec_contour": 3,
+    "massifs_sans_contour": 2,
+    "zones_qualifiees": 6,
+    "departements_veilles": 10,
+    "trouvailles_veille": 28
+  },
+  "schema_zone": {
+    "massif": "clé du registre data/massifs.json (peut être null si l'arrêté vise tout un département)",
+    "portee": "massif | departement",
+    "debut": "date ISO de prise d'effet",
+    "fin": "date ISO de fin, ou null si l'arrêté n'en fixe pas",
+    "fin_condition": "texte de la condition de fin quand il n'y a pas de date (ex : « fin de la vigilance rouge canicule »)",
+    "statut": "en_vigueur | levee | expiree | indeterminee — recalculé à l'affichage, cette valeur est celle constatée à la date de relevé",
+    "abroge_par": "numéro de l'arrêté qui lève l'interdiction, le cas échéant",
+    "arrete": "numéro officiel",
+    "source": "URL de la page ou du PDF",
+    "releve_le": "date à laquelle l'information a été vérifiée",
+    "confiance_dates": "verifiee | partielle | inconnue",
+    "derogations": "liste des accès qui restent autorisés malgré l'interdiction — souvent l'information la plus utile en pratique"
+  },
+  "zones": [
+    {
+      "massif": "fontainebleau",
+      "portee": "massif",
+      "departement": "77",
+      "debut": "2026-07-24",
+      "fin": "2026-07-31",
+      "fin_condition": null,
+      "statut": "en_vigueur",
+      "arrete": "2026/CAB/SIDPC/1223",
+      "source": "https://www.seine-et-marne.gouv.fr/contenu/telechargement/73028/593148/file/20260724-2026_CAB_SIDPC_1223%20-%20portant%20interdiction%20fr%C3%A9quentation%20for%C3%A8t%20domaniales%20Fontainebleau%20et%20de%20la%20commanderie.pdf",
+      "releve_le": "2026-07-26",
+      "confiance_dates": "verifiee",
+      "note": "Arrêté lu intégralement lors du projet feux-foret-carte. Fin le 31/07/2026 inclus."
+    },
+    {
+      "massif": "commanderie",
+      "portee": "massif",
+      "departement": "77",
+      "debut": "2026-07-24",
+      "fin": "2026-07-31",
+      "fin_condition": null,
+      "statut": "en_vigueur",
+      "arrete": "2026/CAB/SIDPC/1223",
+      "source": "https://www.seine-et-marne.gouv.fr/contenu/telechargement/73028/593148/file/20260724-2026_CAB_SIDPC_1223%20-%20portant%20interdiction%20fr%C3%A9quentation%20for%C3%A8t%20domaniales%20Fontainebleau%20et%20de%20la%20commanderie.pdf",
+      "releve_le": "2026-07-26",
+      "confiance_dates": "verifiee",
+      "note": "Même arrêté que Fontainebleau."
+    },
+    {
+      "massif": "trois-pignons",
+      "portee": "massif",
+      "departement": "77",
+      "debut": "2026-06-24",
+      "fin": null,
+      "fin_condition": "fin de la vigilance rouge canicule",
+      "statut": "indeterminee",
+      "arrete": "AP 2026 CAB SIDPC 1009",
+      "source": "https://www.seine-et-marne.gouv.fr/Actualites/Salle-de-presse/Prevention-feux-de-foret-fermeture-des-Trois-Pignons",
+      "releve_le": "2026-07-26",
+      "confiance_dates": "partielle",
+      "note": "Arrêté interdépartemental (77 + 91). Prend effet à la publication, sans date de fin : la levée est conditionnée à la fin de la vigilance rouge canicule. Impossible de dire depuis l'arrêté seul si c'est encore en vigueur aujourd'hui."
+    },
+    {
+      "massif": "bavella",
+      "portee": "massif",
+      "departement": "2A",
+      "debut": "2026-07-17",
+      "fin": "2026-07-20",
+      "fin_condition": null,
+      "statut": "levee",
+      "abroge_par": "2A-2026-07-20-00006",
+      "arrete": "du 17/07/2026 (numéro non publié sur la page)",
+      "source": "https://www.corse-du-sud.gouv.fr/Actualites/Actualites/Arrete-du-20-juillet-2026-abrogeant-l-arrete-de-fermeture-du-massif-de-BAVELLA-du-17-juillet-2026",
+      "releve_le": "2026-07-26",
+      "confiance_dates": "verifiee",
+      "note": "Fermé le 17/07, ABROGÉ le 20/07. Exemple type de l'interdiction courte qu'aucun flux national ne suit."
+    },
+    {
+      "massif": "illarata",
+      "portee": "massif",
+      "departement": "2A",
+      "debut": "2026-07-17",
+      "fin": null,
+      "fin_condition": null,
+      "statut": "en_vigueur",
+      "arrete": "2A-2026-07-20-00007 (en vigueur depuis le 21/07/2026 à 6h00)",
+      "source": "https://www.corse-du-sud.gouv.fr/contenu/telechargement/18181/117452/file/Arr%C3%AAt%C3%A9%20du%2020%20juillet%202026%20n%C2%B0%202A-2026-07-20-00007%20rempla%C3%A7ant%20l%27arr%C3%A9t%C3%A9%20de%20fermeture%20du%20massif%20d%27Illarata%20-Taglio%20Rossodu%2017%20juillet%202026.pdf",
+      "releve_le": "2026-07-26",
+      "confiance_dates": "verifiee",
+      "derogations": [
+        "Véhicules : accès autorisé entre le PR7+750 et le PR9 de la RD168A ; parking municipal du PR9 limité à 260 véhicules ; stationnement interdit le long de la RD168A.",
+        "Piétons : site des « Trois Piscines » (PR10+350) accessible EXCLUSIVEMENT par la navette communale de Zonza depuis le parking du PR9.",
+        "Dans tous les cas : pistes forestières, chemins et sentiers restent interdits ; évacuation immédiate en cas de départ de feu."
+      ],
+      "note": "Nom exact du massif : Illarata – Taglio Rosso (commune de Zonza). L'arrêté R20-2026-07-17-00003 du 17/07 est abrogé à compter du 21/07 à 6h00 et remplacé par celui-ci : l'interdiction est MAINTENUE sur le massif, avec réouverture partielle de la basse vallée du Cavu. AUCUNE date de fin n'est fixée — l'interdiction court tant qu'un nouvel arrêté ne la lève pas. Dates et dispositif lus dans le PDF (scanné : pdftotext rend 32 octets, lecture par rendu Ghostscript + vision). Le périmètre est défini par la carte n°1 annexée, non numérisée."
+    },
+    {
+      "massif": null,
+      "portee": "departement",
+      "departement": "13",
+      "debut": "2026-07-23",
+      "fin": "2026-07-23",
+      "fin_condition": null,
+      "statut": "expiree",
+      "arrete": null,
+      "source": "https://www.bouches-du-rhone.gouv.fr/Actualites/Feux-de-foret-Risque-incendie-TRES-SEVERE-Fermeture-de-TOUS-les-massifs-jeudi-23-juillet-2026",
+      "releve_le": "2026-07-26",
+      "confiance_dates": "verifiee",
+      "note": "Fermeture de TOUS les massifs du département pour la seule journée du 23/07/2026 (risque TRÈS SÉVÈRE). Le régime des Bouches-du-Rhône est quotidien : l'accès est réévalué chaque jour."
+    }
+  ],
+  "massifs_registre": [
+    {
+      "cle": "fontainebleau",
+      "nom": "Forêt domaniale de Fontainebleau",
+      "departement": "77",
+      "osm": [
+        {
+          "type": "relation",
+          "id": 3236785
+        }
+      ],
+      "confiance": "verifiee",
+      "note": "Relation validée manuellement sur le projet feux-foret-carte (arrêté 2026/CAB/SIDPC/1223)."
+    },
+    {
+      "cle": "trois-pignons",
+      "nom": "Forêt domaniale des Trois Pignons",
+      "departement": "77",
+      "osm": [
+        {
+          "type": "relation",
+          "id": 16615234
+        }
+      ],
+      "confiance": "verifiee",
+      "note": "Idem feux-foret-carte."
+    },
+    {
+      "cle": "commanderie",
+      "nom": "Forêt domaniale de la Commanderie",
+      "departement": "77",
+      "osm": [
+        {
+          "type": "relation",
+          "id": 3253740
+        }
+      ],
+      "confiance": "verifiee",
+      "note": "Idem feux-foret-carte."
+    },
+    {
+      "cle": "bavella",
+      "nom": "Massif de Bavella",
+      "departement": "2A",
+      "osm": [],
+      "confiance": "aucune",
+      "note": "Aucun polygone OSM ne porte ce nom (recherche bbox 41.5-42.0 / 8.7-9.5 le 26/07/2026 : col, village, routes uniquement). Le périmètre réel est défini par l'annexe de l'arrêté, non numérisée. À tracer depuis l'arrêté, comme cela a été fait pour Fontainebleau."
+    },
+    {
+      "cle": "illarata",
+      "nom": "Massif d'Illarata",
+      "departement": "2A",
+      "osm": [],
+      "confiance": "aucune",
+      "note": "Idem Bavella — seul 'Bocca d'Illarata' (un col) existe dans OSM."
+    }
+  ],
+  "meteo_departements_a_risque": [
+    {
+      "departement": "11",
+      "nom": "Aude",
+      "j1": {
+        "niveau": 3,
+        "libelle": "élevé",
+        "couleur": "orange"
+      },
+      "j2": {
+        "niveau": 3,
+        "libelle": "élevé",
+        "couleur": "orange"
+      }
+    },
+    {
+      "departement": "13",
+      "nom": "Bouches-du-Rhône",
+      "j1": {
+        "niveau": 3,
+        "libelle": "élevé",
+        "couleur": "orange"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "30",
+      "nom": "Gard",
+      "j1": {
+        "niveau": 3,
+        "libelle": "élevé",
+        "couleur": "orange"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "34",
+      "nom": "Hérault",
+      "j1": {
+        "niveau": 3,
+        "libelle": "élevé",
+        "couleur": "orange"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "66",
+      "nom": "Pyrénées-Orientales",
+      "j1": {
+        "niveau": 3,
+        "libelle": "élevé",
+        "couleur": "orange"
+      },
+      "j2": {
+        "niveau": 3,
+        "libelle": "élevé",
+        "couleur": "orange"
+      }
+    },
+    {
+      "departement": "83",
+      "nom": "Var",
+      "j1": {
+        "niveau": 3,
+        "libelle": "élevé",
+        "couleur": "orange"
+      },
+      "j2": {
+        "niveau": 3,
+        "libelle": "élevé",
+        "couleur": "orange"
+      }
+    },
+    {
+      "departement": "84",
+      "nom": "Vaucluse",
+      "j1": {
+        "niveau": 3,
+        "libelle": "élevé",
+        "couleur": "orange"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    }
+  ],
+  "meteo_echantillon_bas": [
+    {
+      "departement": "01",
+      "nom": "Ain",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "29",
+      "nom": "Finistère",
+      "j1": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      },
+      "j2": {
+        "niveau": 1,
+        "libelle": "faible",
+        "couleur": "vert"
+      }
+    },
+    {
+      "departement": "2A",
+      "nom": "Corse-du-Sud",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "75",
+      "nom": "Paris",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    },
+    {
+      "departement": "77",
+      "nom": "Seine-et-Marne",
+      "j1": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      },
+      "j2": {
+        "niveau": 2,
+        "libelle": "modéré",
+        "couleur": "jaune"
+      }
+    }
+  ],
+  "veille_echantillon": [
+    {
+      "code": "33",
+      "nom": "Gironde",
+      "motif": "priorité saison 2026 — massif landais, régime ponctuel (pas de carte quotidienne)",
+      "pages_visitees": 8,
+      "trouvailles": [
+        {
+          "departement": "33",
+          "titre": "Télécharger 2026-07-16-Vigilance ORANGE feu de forêt reconduite en Gironde PDF - 0,07 Mb - 16/07/2026",
+          "url": "https://www.gironde.gouv.fr/contenu/telechargement/87548/658789/file/2026-07-16-Vigilance%20ORANGE%20feu%20de%20for%C3%AAt%20reconduite%20en%20Gironde.pdf",
+          "type": "pdf",
+          "trouve_sur": "https://www.gironde.gouv.fr/Actualites/Vigilance-ORANGE-feux-de-foret-reconduite-en-Gironde"
+        }
+      ]
+    },
+    {
+      "code": "13",
+      "nom": "Bouches-du-Rhône",
+      "motif": "accès quotidien 1er juin → 30 septembre",
+      "pages_visitees": 8,
+      "trouvailles": [
+        {
+          "departement": "13",
+          "titre": "Feux de forêt - Risque incendie TRÈS SÉVÈRE - Fermeture de TOUS les massifs jeudi 23 juillet 2026",
+          "url": "https://www.bouches-du-rhone.gouv.fr/Actualites/Feux-de-foret-Risque-incendie-TRES-SEVERE-Fermeture-de-TOUS-les-massifs-jeudi-23-juillet-2026",
+          "type": "page",
+          "trouve_sur": "https://www.bouches-du-rhone.gouv.fr/Actualites"
+        }
+      ]
+    },
+    {
+      "code": "2A",
+      "nom": "Corse-du-Sud",
+      "motif": "risque élevé récurrent",
+      "pages_visitees": 8,
+      "trouvailles": [
+        {
+          "departement": "2A",
+          "titre": "Arrêté du 20 juillet 2026 remplaçant l'arrêté de fermeture du massif d'Illarata du 17 juillet 2026",
+          "url": "https://www.corse-du-sud.gouv.fr/Actualites/Actualites/Arrete-du-20-juillet-2026-remplacant-l-arrete-de-fermeture-du-massif-d-Illarata-du-17-juillet-2026",
+          "type": "page",
+          "trouve_sur": "https://www.corse-du-sud.gouv.fr/Actualites/Actualites"
+        },
+        {
+          "departement": "2A",
+          "titre": "Arrêté du 20 juillet 2026 abrogeant l'arrêté de fermeture du massif de BAVELLA du 17 juillet 2026",
+          "url": "https://www.corse-du-sud.gouv.fr/Actualites/Actualites/Arrete-du-20-juillet-2026-abrogeant-l-arrete-de-fermeture-du-massif-de-BAVELLA-du-17-juillet-2026",
+          "type": "page",
+          "trouve_sur": "https://www.corse-du-sud.gouv.fr/Actualites/Actualites"
+        },
+        {
+          "departement": "2A",
+          "titre": "Arrêtés du 17/07/2026 portant fermeture des massifs forestiers de BAVELLA et d’ILLARATA",
+          "url": "https://www.corse-du-sud.gouv.fr/Actualites/Actualites/Arretes-du-17-07-2026-portant-fermeture-des-massifs-forestiers-de-BAVELLA-et-d-ILLARATA",
+          "type": "page",
+          "trouve_sur": "https://www.corse-du-sud.gouv.fr/Actualites/Actualites"
+        }
+      ]
+    }
+  ]
+}

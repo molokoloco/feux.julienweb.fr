@@ -90,6 +90,53 @@ Corrections appliquées :
 **Règle d'usage** : un département à la fois (`--dep 33`), pas les dix d'affilée. La veille se pense
 en passages espacés (une fois par jour suffit largement pour un arrêté), pas en balayage.
 
+### Voisin à connaître : feuxdeforet.fr (audité le 26/07/2026)
+
+C'est le site grand public de référence sur les feux en cours. Il ne fait **pas** le même métier que
+ce projet, et il vaut la peine de savoir précisément où passe la frontière.
+
+**Architecture** — WordPress vitrine + plugin maison `fdf-bridge`, qui ne détient aucune donnée :
+il **proxifie** une API Laravel privée hébergée ailleurs.
+
+| Élément | Valeur |
+|---|---|
+| Backend réel | `https://fdfdata.fr/api/v1` (+ WebSockets Reverb pour le temps réel) |
+| Proxy same-origin | `https://feuxdeforet.fr/fdf/<endpoint>` — *« évite CORS vers fdfdata.fr »* (leur commentaire) |
+| Feux sur la carte | `GET /fdf/cartographie/geojson?scope=web` |
+| Rendu | **MapLibre GL** |
+
+Le GeoJSON : chaque feu est un `Point`, ou une `GeometryCollection` (point **+ polygone de
+contour**). Propriétés `statut` (`douteux` · `probable` · `valide_publie` · `cloture`),
+`etat` (`attaque` · `fixe` · `maitrise` · `eteint`), `contour_updated_at`, et `url`/`titre`
+**seulement si le feu est validé** — un feu non confirmé n'expose que son id et ses coordonnées.
+Bon réflexe éditorial, à reprendre.
+
+**D'où vient leur donnée : de chez eux, à la main.** Aucune trace de FIRMS, EFFIS, Copernicus ou
+VIIRS dans le JS chargé. Le pipeline est : signalement citoyen géolocalisé depuis l'app mobile
+(`com.montardy.feuxdeforet`) → modération humaine (`moderation/schema`, `signalements/{id}/moderation`)
+→ publication, avec une « main courante » horodatée par feu. Les `contour_updated_at` tombent sur
+`07:30:00` / `20:30:00` : saisie humaine, pas cadence machine. **C'est notre doctrine appliquée à un
+autre objet** — l'automatisation détecte, l'humain qualifie.
+
+**Fermé, vérifié le 26/07/2026** — et donc hors de portée sans accord écrit :
+
+```
+/fdf/cartographie/geojson  → 403 {"code":"fdf_proxy_forbidden"}   (nonce WP lié à la session)
+fdfdata.fr/api/v1/…        → 401 {"code":"unauthorized_client"}   (Bearer requis)
+```
+
+Scraper ça reviendrait à siphonner une base construite signalement par signalement par une
+communauté. Si on veut ces données un jour, c'est par mail — même démarche que Valabre.
+
+**Ouverts (200 sans auth)** : `/api/regions` (arbre régions → départements avec slugs) et
+`/fdf-bridge/data/pelicandromes.json` (GeoJSON des pélicandromes).
+
+**Ce qu'ils ne font pas** : les arrêtés, les fermetures de massifs, les périmètres réglementaires.
+Leur propre page « Météo des forêts » énonce mot pour mot notre avertissement — Météo-France + ONF,
+publication ~17 h pour J+1/J+2, *« ce n'est pas un arrêté d'interdiction, ce sont les préfectures qui
+réglementent ou ferment »*. Ils font **« où ça brûle maintenant »**, on fait **« où je n'ai pas le
+droit d'aller aujourd'hui »**. Aucun recouvrement : le lien naturel est croisé, pas concurrent.
+
 ### Étage 3 : sous conditions
 
 `risque-prevention-incendie.fr` (Entente Valabre + préfectures méditerranéennes) publie le niveau
@@ -185,6 +232,32 @@ Le sujet de la page, c'est **l'interdiction** — la météo n'est que le fond d
 Sous le panneau : détail départemental au survol (niveaux J+1/J+2, arrêtés NaviForest, trouvailles
 de veille) et indicateurs de couverture des sources.
 
+#### Fonds de carte — IGN Géoplateforme, vecteur, sans clé
+
+Piste rapportée de l'audit de feuxdeforet.fr : l'**IGN sert les tuiles vectorielles PLAN.IGN en
+libre accès**, sans clé ni compte ni inscription, avec `Access-Control-Allow-Origin: *` — donc
+utilisable depuis `file://`. Quatre styles prêts à l'emploi, tous vérifiés en `200` le 26/07/2026 :
+
+```
+https://data.geopf.fr/annexes/ressources/vectorTiles/styles/PLAN.IGN/{attenue|gris|classique|standard}.json
+https://data.geopf.fr/tms/1.0.0/PLAN.IGN/{z}/{x}/{y}.pbf
+```
+
+Le style est autoporté (glyphes et sprites également sur `data.geopf.fr`), 425 couches.
+**`attenue` est retenu par défaut** : désaturé, donc les massifs interdits en rouge ressortent, et
+contrairement au fond CARTO sombre on lit les **noms de forêts et les routes d'accès** — exactement
+l'information dont a besoin quelqu'un qui vérifie s'il peut aller marcher. Il monte au **zoom 18**
+là où CARTO plafonnait à 12, ce qui rend enfin lisible un périmètre de massif.
+
+Rendu dans Leaflet via `maplibre-gl` + `@maplibre/maplibre-gl-leaflet` (deux CDN, chargés de façon
+non bloquante : si l'un tombe, la page retombe seule sur CARTO). Un sélecteur de fond en haut à
+droite laisse basculer entre les deux.
+
+⚠️ **On tape data.geopf.fr en direct, jamais `tiles.fdfdata.fr`.** feuxdeforet.fr réécrit toutes les
+URL IGN vers son propre cache — c'est leur bande passante, pas un CDN public. Le style « transparent »
+qu'ils exposent n'est d'ailleurs rien d'autre que PLAN.IGN avec la couche de fond retirée, pour le
+superposer à l'ortho-photo : reproductible en trois lignes à partir de la source IGN.
+
 Même parti pris que `feux-foret-carte` : les données sont **embarquées** dans `app/data.js`
 (`window.POC`) plutôt que chargées en `fetch()` — sur `file://`, CORS bloque la lecture des JSON
 locaux. Régénérer `data.js` après chaque collecte.
@@ -214,8 +287,12 @@ il n'est pas là pour décorer.
 - [x] Disjoncteur anti-bannissement (`_http.js`) — testé sous blocage réel
 - [x] Brouillons de demande : Valabre + référent ReAcT
 - [x] **POC carto local** — Leaflet, 96 départements, données embarquées, marche en double-clic
+- [x] **Fond IGN Plan atténué** (vecteur, Géoplateforme, sans clé) — sélecteur de fond, zoom 18,
+      noms de forêts et routes d'accès enfin lisibles sous le périmètre d'interdiction
 - [x] **Contours de massifs OSM** — Fontainebleau, Trois Pignons, Commanderie (204 / 16 / 34 polygones)
 - [x] **Modèle « de quand à quand »** — périodes, dérogations, statut recalculé, abrogations
+- [x] **Kit Claude Design** (`design/`) — prompt maître, design system importable, échantillon de
+      données réelles généré depuis `data/`, inventaire skills/MCP. Rien de maquetté à ce jour
 - [ ] Contours des massifs corses (Bavella, Illarata–Taglio Rosso) : absents d'OSM, à tracer depuis
       les cartes annexées aux arrêtés — c'est le même travail manuel que pour Fontainebleau
 - [ ] Fusion des sorties en un `arretes-forets-fr.json` unique et versionné
@@ -234,5 +311,8 @@ il n'est pas là pour décorer.
 - Précédent VigiEau — [API](https://github.com/MTES-MCT/vigieau-api) · [dataset](https://www.data.gouv.fr/datasets/donnee-secheresse-vigieau)
 - ReAcT — [fiche beta.gouv.fr](https://beta.gouv.fr/startups/re-ac-t.html)
 - Contours : © contributeurs [OpenStreetMap](https://www.openstreetmap.org/copyright), ODbL
+- Fond de carte — © IGN / [Géoplateforme](https://data.geopf.fr), tuiles vectorielles PLAN.IGN,
+  accès libre sans clé (attribution obligatoire)
+- feuxdeforet.fr — site tiers **audité, non consommé** : API privée, `403`/`401` sans autorisation
 
 Code : MIT. **Ce projet n'est pas officiel** et ne remplace aucune publication préfectorale.
