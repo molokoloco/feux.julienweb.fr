@@ -37,7 +37,9 @@ nommément — à corriger le jour même.
 | `collectors/watch-prefectures.js` | ✅ 10 départements, **28 trouvailles, 0 erreur** |
 | `collectors/massifs-osm.js` | ✅ Fontainebleau (204 polygones), Trois Pignons (16), Commanderie (34) |
 | `data/zones-interdites.json` | ✅ 6 zones qualifiées à la main, sourcées |
-| `app/index.html` | ✅ POC 3 colonnes, marche en **double-clic**, sans serveur |
+| `app/index.html` | ✅ POC 3 colonnes, marche en **double-clic**, sans serveur — fond IGN + sélecteur de fond |
+| `app/Feux - Vue principale.html` | ✅ écran 1 du design, carte SVG 2.5D, 59 Ko, **double-clic** |
+| `app/feux-bulletin.js` | ✅ 96 départements × 2 jours, 1,6 Ko, généré par `build-data.js` |
 | `design/` | ✅ kit Claude Design — prompt, design system importable, données réelles, skills |
 
 `npm run collect` enchaîne tout et régénère le POC.
@@ -55,6 +57,13 @@ JulienWeb), `DONNEES-REELLES.json` (extrait généré depuis `data/`, aucune val
 Parti pris retenu : **globe → plongée sur la France → France extrudée par niveau de danger**, massifs
 interdits en volume par-dessus. Implémentation cible React Three Fiber — ce qui contredit le
 « statique d'abord » ci-dessus, donc **à arbitrer avant d'écrire la moindre ligne**.
+
+**Arbitrage tranché le 26/07/2026 pour l'écran 1** : pas de React Three Fiber, pas de WebGL. La
+plongée et l'extrusion sont rendues en **SVG 2.5D** (faces translatées de `-h/cos(tangage)`, flancs
+reconstruits depuis les contours, une seule `scale(1, cos θ)`). 59 Ko contre 690 Ko pour l'export
+bundlé du design, et la page marche toujours en double-clic. Le parti pris visuel est tenu sans
+renier le « statique d'abord ». À reprendre tel quel pour les écrans suivants — sauf besoin
+démontré, pas d'exception.
 
 Trois faits vérifiés le 26/07/2026, à ne pas re-chercher :
 - **aucun MCP Three.js n'existe** (registre : 0 résultat) — ce qui circule sont des skills tiers ;
@@ -140,6 +149,11 @@ Défauts du watcher : 8 pages, profondeur 2, 3 s de pause, 20 s entre départeme
 - ⚠️ **Bug ouvert** : `fitBounds` au chargement dézoome à ~zoom 4,5 malgré `invalidateSize()`, alors
   que la bbox du GeoJSON est saine (lon -5,1→9,6 · lat 41,4→51,1). Contourné par `setView` en dur.
   `fitBounds` déclenché par un clic utilisateur fonctionne, lui, très bien.
+- L'export bundlé de claude.ai/design pèse **690 Ko** (React + ReactDOM + runtime `x-dc`) pour un
+  écran. Il sert de **référence visuelle**, jamais de livrable : on réimplémente en vanilla.
+- `feux-geo.js` livré par le design ne contient **pas** le champ `pts` que son propre code appelle
+  (`skirt(d.pts, …)`) : les flancs d'extrusion n'étaient jamais dessinés. Ils sont reconstruits en
+  parsant les `d` (M/L/Z uniquement, 9 300 segments) — ne pas « corriger » ça en le resupprimant.
 
 ## Structure
 
@@ -147,7 +161,9 @@ Défauts du watcher : 8 pages, profondeur 2, 3 s de pause, 20 s entre départeme
 collectors/  _http.js (lib + disjoncteur) · meteo-forets.js · naviforest.js
              massifs-osm.js · watch-prefectures.js
 data/        prefectures.json · massifs.json · zones-interdites.json (+ sorties)
-app/         index.html (POC) · build-data.js · departements.geojson · massifs.geojson
+app/         index.html (POC Leaflet) · Feux - Vue principale.html (écran 1, SVG 2.5D)
+             build-data.js · departements.geojson · massifs.geojson
+             feux-geo.js (géométries projetées) · feux-bulletin.js (niveaux, généré)
 mails/       2 brouillons — à relire et ENVOYER par Julien, rien n'est parti
 skills/      snapshots locaux des skills globaux (index README.md)
 ```

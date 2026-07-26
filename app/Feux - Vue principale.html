@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Massif fermé ? Interdictions d'accès aux forêts et risque incendie · feux.julienweb.fr</title>
+<meta name="description" content="Arrêtés préfectoraux de fermeture des massifs forestiers et Météo des forêts, agrégés et qualifiés à la main. Projet non officiel.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Squada+One&family=Poppins:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!--
+  Feux - Vue principale.html — implémentation de l'écran « Vue principale »
+  conçu sur claude.ai/design (projet « Design Terminal - Charte sombre »).
+
+  Parti pris repris du POC : la page doit marcher en DOUBLE-CLIC, sans serveur.
+  Donc aucun fetch() (CORS le bloque sur file://) : les données arrivent par
+  <script src> — feux-geo.js (géométries déjà projetées) et feux-bulletin.js
+  (niveaux Météo des forêts des 96 départements, régénéré par build-data.js).
+
+  Aucun runtime : le design d'origine tournait sur React + le runtime « x-dc »
+  de Claude Design (~690 Ko une fois bundlé). Ici c'est du DOM à la main.
+-->
+
+<script src="./feux-geo.js"></script>
+<script src="./feux-bulletin.js"></script>
+
+<style>
+/* ── socle ───────────────────────────────────────────────────────────────── */
+html,body{margin:0;padding:0;background:#0A0812;}
+*{box-sizing:border-box;}
+body{font-family:'Poppins',system-ui,sans-serif;color:#A6A1C0;}
+a{color:#9ED5E1;text-decoration:none;border-bottom:1px solid rgba(158,213,225,.28);}
+a:hover{color:#FFFFFF;border-bottom-color:#9ED5E1;}
+::selection{background:#5A4095;color:#fff;}
+summary::-webkit-details-marker{display:none;}
+summary{list-style:none;}
+.sp{flex:1;}
+
+@keyframes feuxArrivee{
+  0%{transform:scale(1) translateY(0);opacity:1;}
+  45%{transform:scale(2.1) translateY(6%);opacity:1;}
+  82%{transform:scale(7.4) translateY(13%);opacity:.55;}
+  100%{transform:scale(11) translateY(15%);opacity:0;}
+}
+@keyframes feuxVoile{0%,70%{opacity:1;}100%{opacity:0;}}
+@media (prefers-reduced-motion: reduce){*{animation-duration:.001ms !important;transition-duration:.001ms !important;}}
+
+/* ── charpente ───────────────────────────────────────────────────────────── */
+.page{min-height:100vh;background:#0A0812;padding:18px;display:flex;justify-content:center;}
+.wrap{width:100%;max-width:1720px;display:flex;flex-direction:column;gap:14px;}
+.panel{background:#14121F;border:1px solid rgba(255,255,255,.07);border-radius:18px;
+       box-shadow:0 30px 80px -30px rgba(0,0,0,.7);overflow:hidden;}
+
+/* barre de fenêtre */
+.chrome{display:flex;align-items:center;gap:12px;padding:11px 16px;background:#221E36;
+        border-bottom:1px solid rgba(255,255,255,.06);flex-wrap:wrap;}
+.chrome-dots{display:flex;gap:7px;}
+.chrome-dots span{width:12px;height:12px;border-radius:50%;}
+.chrome-path{font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#6C6790;}
+.chrome-maj{font-family:'JetBrains Mono',monospace;font-size:12px;color:#9B96B4;}
+.chrome-sig{color:#9ED5E1;font-size:15px;}
+
+/* en-tête + recherche */
+.hero{padding:20px 14px 16px;display:grid;grid-template-columns:minmax(0,1fr);gap:20px;align-items:end;}
+.kicker{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;
+        text-transform:uppercase;color:#5A5478;margin-bottom:10px;}
+h1{font-family:'Squada One',sans-serif;font-size:38px;line-height:.94;margin:0;color:#FFFFFF;text-wrap:balance;}
+.chapo{margin:14px 0 0;font-weight:300;font-size:15px;line-height:1.55;max-width:56ch;color:#A6A1C0;text-wrap:pretty;}
+.qlabel{display:block;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;
+        text-transform:uppercase;color:#5A5478;margin-bottom:8px;}
+.qbox{display:flex;align-items:center;gap:10px;background:#0D0B16;border:1px solid rgba(255,255,255,.07);
+      border-radius:14px;padding:0 14px;height:52px;}
+.qbox:focus-within{border-color:rgba(158,213,225,.4);}
+.qprompt{font-family:'JetBrains Mono',monospace;color:#F5FF00;font-weight:700;}
+#q{flex:1;background:transparent;border:0;outline:none;color:#FFFFFF;
+   font-family:'JetBrains Mono',monospace;font-size:14px;height:100%;min-width:0;}
+.qbox kbd{font-family:'JetBrains Mono',monospace;font-size:11px;color:#5A5478;
+          border:1px solid rgba(255,255,255,.09);border-radius:5px;padding:2px 6px;}
+.qraccourcis{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;align-items:baseline;}
+.qraccourcis span,.qraccourcis a{font-family:'JetBrains Mono',monospace;font-size:11.5px;}
+.qraccourcis span{color:#6C6790;}
+
+/* avertissement permanent */
+.avert{margin:0 14px 22px;border-left:4px solid #C22C22;background:rgba(194,44,34,.12);
+       border-radius:0 4px 4px 0;padding:14px 18px;}
+.avert-t{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.12em;
+         text-transform:uppercase;color:#FF8A7E;margin-bottom:6px;}
+.avert p{margin:0;font-size:13.5px;line-height:1.5;color:#A6A1C0;font-weight:300;text-wrap:pretty;}
+.avert strong{color:#FF8A7E;font-weight:600;}
+
+/* grille 3 colonnes */
+.grid{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;padding:0 14px 24px;align-items:start;}
+.cols{display:flex;flex-direction:column;gap:12px;order:2;}
+.card{background:#1C192B;border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:14px;}
+.card-t{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;
+        text-transform:uppercase;color:#5A5478;}
+.card-d{font-size:12px;font-weight:300;color:#9B96B4;margin:7px 0 11px;line-height:1.45;}
+
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.stat-n{font-family:'Squada One',sans-serif;font-size:30px;color:#FFFFFF;line-height:1;}
+.stat-n.chaud{color:#E07B00;}
+.stat-l{font-family:'JetBrains Mono',monospace;font-size:11px;color:#6C6790;margin-top:3px;}
+.stats-pied{margin-top:12px;padding-top:11px;border-top:1px dashed rgba(255,255,255,.07);
+            font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#6C6790;line-height:1.55;}
+
+.leg{display:flex;flex-direction:column;gap:6px;}
+.leg.serre{gap:9px;}
+.leg-l{display:flex;align-items:center;gap:9px;}
+.leg-l span:last-child{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#A6A1C0;}
+.leg-l.gris span:last-child{color:#6C6790;}
+.sw{width:26px;border-radius:2px;flex:none;}
+.note-inset{margin-top:11px;padding:9px 10px;background:#0D0B16;border:1px dashed #5A5478;border-radius:8px;
+            font-family:'JetBrains Mono',monospace;font-size:11px;color:#6C6790;line-height:1.5;}
+.sources{font-family:'JetBrains Mono',monospace;font-size:11.5px;line-height:1.85;color:#6C6790;}
+
+/* carte */
+.map{background:#0D0B16;border:1px solid rgba(255,255,255,.07);border-radius:14px;overflow:hidden;
+     display:flex;flex-direction:column;}
+.map-bar{display:flex;align-items:center;gap:10px;padding:10px 12px;
+         border-bottom:1px solid rgba(255,255,255,.06);background:#14121F;flex-wrap:wrap;}
+.seg{display:flex;background:#0D0B16;border:1px solid rgba(255,255,255,.07);border-radius:9px;padding:3px;gap:3px;}
+.seg button{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;border:0;border-radius:7px;
+            padding:6px 12px;cursor:pointer;transition:background .12s;background:transparent;color:#6C6790;}
+.seg button[aria-pressed="true"]{background:#221E36;color:#FFFFFF;}
+.bar-info{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#6C6790;}
+.btn-ghost{font-family:'JetBrains Mono',monospace;font-size:12px;background:transparent;color:#9ED5E1;
+           border:1px solid rgba(158,213,225,.3);border-radius:10px;padding:8px 12px;cursor:pointer;}
+.btn-ghost:hover{border-color:#9ED5E1;}
+.btn-jaune{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;background:#F5FF00;color:#14121F;
+           border:0;border-radius:12px;padding:9px 14px;cursor:pointer;
+           box-shadow:0 8px 24px -8px rgba(245,255,0,.5);transition:transform .12s, box-shadow .12s;}
+.btn-jaune:hover{transform:translateY(-2px);box-shadow:0 12px 28px -8px rgba(245,255,0,.6);}
+
+.scene{position:relative;background:radial-gradient(120% 90% at 50% 8%, #16132a 0%, #0A0812 62%);}
+#carte{display:block;width:100%;height:360px;touch-action:none;cursor:grab;}
+#carte.drag{cursor:grabbing;}
+.scene.zoomfort #couche-labels,.scene.zoomfort #couche-marqueurs{display:none;}
+
+.map-inspect{padding:11px 13px;border-top:1px solid rgba(255,255,255,.06);background:#14121F;
+             display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+#inspectTitre{font-family:'JetBrains Mono',monospace;font-size:12px;color:#9ED5E1;}
+#inspectDetail{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#6C6790;}
+.tilt{display:flex;align-items:center;gap:8px;}
+.tilt label{font-family:'JetBrains Mono',monospace;font-size:11px;color:#5A5478;}
+.tilt input{width:96px;accent-color:#9ED5E1;}
+.map-aide{padding:9px 13px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5A5478;
+          line-height:1.6;border-top:1px dashed rgba(255,255,255,.06);}
+.map-aide em{font-style:normal;color:#6C6790;}
+
+/* séquence d'arrivée */
+.arrivee{position:absolute;inset:0;z-index:3;display:none;align-items:center;justify-content:center;
+         background:radial-gradient(60% 60% at 50% 42%, #0f0d1c 0%, #0A0812 70%);}
+.arrivee.joue{display:flex;animation:feuxVoile 2.7s cubic-bezier(.6,.02,.3,1) forwards;}
+.arrivee-inner{animation:feuxArrivee 2.7s cubic-bezier(.6,.02,.3,1) forwards;transform-origin:50% 34%;}
+.globe{position:relative;width:190px;height:190px;border-radius:50%;
+       background:radial-gradient(70% 70% at 34% 28%, #1d1a33 0%, #100e1e 55%, #07050e 100%);
+       box-shadow:inset -18px -12px 40px rgba(0,0,0,.8), 0 0 60px rgba(94,64,149,.35);}
+.globe .o1{position:absolute;inset:0;border-radius:50%;border:1px solid rgba(158,213,225,.14);}
+.globe .eq{position:absolute;left:0;right:0;top:50%;height:1px;background:rgba(158,213,225,.13);}
+.globe .o2{position:absolute;inset:0 46px;border-radius:50%;border:1px solid rgba(158,213,225,.10);}
+.globe .o3{position:absolute;inset:34px 0;border-radius:50%;border:1px solid rgba(158,213,225,.08);}
+.globe svg{position:absolute;left:47%;top:31%;width:34px;opacity:.95;}
+.arrivee-pied{position:absolute;left:0;right:0;bottom:14px;text-align:center;
+              font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#5A5478;}
+
+/* colonne zones */
+.zones{display:flex;flex-direction:column;gap:12px;order:-1;}
+.zones-t{display:flex;align-items:baseline;gap:10px;}
+.zones-tri{font-family:'JetBrains Mono',monospace;font-size:11px;color:#6C6790;}
+#zonesList{display:flex;flex-direction:column;gap:12px;}
+.zcard{background:#1C192B;border:1px solid rgba(255,255,255,.07);border-left:3px solid #C22C22;
+       border-radius:12px;padding:13px 14px;cursor:pointer;transition:border-color .15s;}
+.zcard.sel{border-color:#9ED5E1;}
+.zcard.pale{background:#161421;opacity:.82;}
+.hide{display:none;}
+.zhead{display:flex;align-items:flex-start;gap:9px;}
+.zid{flex:1;min-width:0;}
+.znom{font-weight:600;font-size:15px;color:#FFFFFF;line-height:1.25;}
+.zdep{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#6C6790;margin-top:3px;}
+.zbadge{flex:none;font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:700;letter-spacing:.05em;
+        text-transform:uppercase;border-radius:3px;padding:4px 7px;white-space:nowrap;color:#FFFFFF;}
+.zbadge.incertain{color:#FFD9A8;border:1px dotted #D98324;
+  background:repeating-linear-gradient(45deg,rgba(180,83,9,.55) 0 4px,rgba(180,83,9,.18) 4px 8px);}
+.zbadge.levee{color:#8FC7A0;border:1px solid #4A7C59;background:rgba(74,124,89,.12);}
+.zperiode{font-family:'JetBrains Mono',monospace;font-size:12px;color:#FFFFFF;margin-top:9px;line-height:1.45;}
+.zcard.pale .zperiode{color:#8FC7A0;}
+.znote{font-size:12.5px;font-weight:300;line-height:1.5;color:#9B96B4;margin-top:6px;text-wrap:pretty;}
+.zperime{margin-top:8px;padding:8px 10px;border-left:3px solid #D98324;background:rgba(180,83,9,.14);
+         border-radius:0 4px 4px 0;font-size:12.5px;font-weight:300;line-height:1.5;color:#FFD9A8;text-wrap:pretty;}
+.zcontour{margin-top:9px;padding:8px 10px;background:#0D0B16;border:1px dashed #5A5478;border-radius:8px;
+          font-family:'JetBrains Mono',monospace;font-size:11px;color:#6C6790;line-height:1.5;}
+.zmeta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:9px;
+       font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#9B96B4;}
+.zmeta a{font-size:11.5px;}
+.zdero{margin-top:9px;background:#0D0B16;border:1px solid rgba(255,255,255,.07);border-radius:8px;}
+.zdero summary{cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;color:#9ED5E1;padding:8px 10px;}
+.zdero-list{padding:2px 10px 10px;display:flex;flex-direction:column;gap:8px;}
+.zdero-list div{display:flex;gap:8px;font-size:12.5px;font-weight:300;line-height:1.5;color:#A6A1C0;}
+.zdero-list div span:first-child{color:#9ED5E1;}
+.zchips{display:flex;flex-wrap:wrap;gap:8px;margin-top:9px;padding-top:9px;
+        border-top:1px dashed rgba(255,255,255,.07);font-family:'JetBrains Mono',monospace;
+        font-size:11.5px;color:#9B96B4;}
+.zvide{background:#0D0B16;border:1px dashed #5A5478;border-radius:12px;padding:12px 13px;
+       font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#6C6790;line-height:1.6;}
+
+footer{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:16px 20px;background:#14121F;
+       border:1px solid rgba(255,255,255,.07);border-radius:18px;}
+footer a{border:0;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#9B96B4;padding-left:9px;}
+footer a.cyber{border-left:3px solid #1E91D4;}
+footer a.fnum{border-left:3px solid #F5FF00;}
+.foot-note{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#6C6790;
+           border-left:1px solid rgba(255,255,255,.07);padding-left:14px;}
+.foot-copy{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#5A5478;}
+
+/* ── points de rupture (transposés des seuils du design : 900 / 1250 / 1480
+      mesurés sur la racine, soit viewport − 36 px de gouttière) ───────────── */
+@media (min-width:660px){ h1{font-size:48px;} }
+@media (min-width:740px){ .hero{padding:26px 24px 20px;} .avert{margin:0 24px 22px;} .grid{padding:0 24px 24px;} }
+
+@media (min-width:940px){
+  .grid{grid-template-columns:minmax(0,1fr) 360px;}
+  .cols{order:0;grid-column:1 / -1;grid-row:1;display:grid;
+        grid-template-columns:repeat(auto-fit,minmax(260px,1fr));align-items:start;}
+  .map{grid-row:2;grid-column:1;}
+  .zones{order:0;grid-row:2;grid-column:2;}
+  #carte{height:480px;}
+}
+@media (min-width:1040px){
+  h1{font-size:64px;}
+  .hero{grid-template-columns:minmax(0,1fr) 420px;gap:32px;}
+}
+@media (min-width:1290px){
+  .grid{grid-template-columns:300px minmax(0,1fr) 380px;}
+  .cols{display:flex;grid-column:auto;grid-row:auto;}
+  .map{grid-row:auto;grid-column:auto;}
+  .zones{grid-row:auto;grid-column:auto;}
+  #carte{height:560px;}
+}
+@media (min-width:1520px){
+  .grid{grid-template-columns:340px minmax(0,1fr) 440px;gap:18px;padding:0 32px 32px;}
+  .hero{padding:32px 32px 24px;grid-template-columns:minmax(0,1fr) 520px;}
+  .avert{margin:0 32px 22px;}
+  h1{font-size:76px;}
+  #carte{height:680px;}
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+<div class="wrap">
+
+  <div class="panel">
+
+    <!-- ── barre de fenêtre ────────────────────────────────────────────── -->
+    <div class="chrome">
+      <div class="chrome-dots">
+        <span style="background:#FF5F57;"></span>
+        <span style="background:#FEBC2E;"></span>
+        <span style="background:#28C840;"></span>
+      </div>
+      <span class="chrome-path">feux.julienweb.fr — ~/vue/france</span>
+      <span class="sp"></span>
+      <span class="chrome-maj" id="chromeMaj">relevé le —</span>
+      <span class="chrome-sig">ツ</span>
+    </div>
+
+    <!-- ── titre + recherche ───────────────────────────────────────────── -->
+    <div class="hero">
+      <div>
+        <div class="kicker">// est-ce fermé ce week-end</div>
+        <h1>CE MASSIF EST-IL<br>FERMÉ AUJOURD'HUI&nbsp;?</h1>
+        <p class="chapo">Les arrêtés préfectoraux de fermeture ne sont publiés nulle part sous forme de flux.
+          On les cherche, on les lit, on les qualifie à la main. Ici, <span id="chapoZones">six</span> zones
+          qualifiées et la Météo des forêts du jour.</p>
+      </div>
+      <div>
+        <label for="q" class="qlabel">// chercher un massif ou un département</label>
+        <div class="qbox">
+          <span class="qprompt">$</span>
+          <input id="q" type="search" placeholder="Fontainebleau, Bavella, 13, Var…" autocomplete="off"
+                 aria-describedby="qAide">
+          <kbd>↵</kbd>
+        </div>
+        <div class="qraccourcis" id="qAide">
+          <span>fréquent :</span>
+          <a href="#zone-fontainebleau">#fontainebleau</a>
+          <a href="#zone-trois-pignons">#trois-pignons</a>
+          <a href="#zone-illarata">#illarata</a>
+          <a href="#zone-13">#bouches-du-rhône</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── avertissement permanent (doctrine : aussi visible que la donnée) ─ -->
+    <div class="avert">
+      <div class="avert-t">avertissement permanent</div>
+      <p>Ceci <strong>n'est pas une carte d'autorisation d'accès</strong>. Le niveau affiché est la Météo des
+        forêts de Météo-France : un indicateur <strong>indicatif</strong>, à la maille du
+        <strong>département</strong>. Seul <strong>l'arrêté préfectoral zonal</strong> autorise ou interdit
+        l'accès à un massif.</p>
+    </div>
+
+    <div class="grid">
+
+      <!-- ── colonne gauche : contexte ─────────────────────────────────── -->
+      <aside class="cols">
+
+        <div class="card">
+          <div class="card-t" style="margin-bottom:12px;">// couverture du jour</div>
+          <div class="stats">
+            <div><div class="stat-n" id="statDeps">—</div><div class="stat-l">départements météo</div></div>
+            <div><div class="stat-n chaud" id="statChauds">—</div><div class="stat-l">en niveau 3 ou 4</div></div>
+            <div><div class="stat-n" id="statZones">—</div><div class="stat-l">zones qualifiées</div></div>
+            <div><div class="stat-n" id="statVeille">—</div><div class="stat-l">trouvailles de veille</div></div>
+          </div>
+          <div class="stats-pied" id="statPied"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-t">// fond départemental</div>
+          <div class="card-d">Météo des forêts, indicatif, maille départementale. Le relief traduit le niveau.</div>
+          <div class="leg">
+            <div class="leg-l"><span class="sw" style="height:11px;background:#3D8B4A;"></span><span>1 · faible</span></div>
+            <div class="leg-l"><span class="sw" style="height:14px;background:#E0B400;"></span><span>2 · modéré</span></div>
+            <div class="leg-l"><span class="sw" style="height:18px;background:#E07B00;"></span><span>3 · élevé</span></div>
+            <div class="leg-l"><span class="sw" style="height:22px;background:#C22C22;"></span><span>4 · très élevé</span></div>
+            <div class="leg-l gris"><span class="sw" style="height:9px;background:#3A3F34;"></span><span>hors saison / non couvert</span></div>
+          </div>
+          <div class="note-inset" id="notePlats"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-t">// couche opposable</div>
+          <div class="card-d">Chaque statut porte une couleur, un libellé et une forme. La couleur seule ne dit jamais rien.</div>
+          <div class="leg serre">
+            <div class="leg-l"><span class="sw" style="height:16px;background:#C22C22;border:2px solid #F0605A;"></span><span>INTERDIT</span></div>
+            <div class="leg-l"><span class="sw" style="height:16px;background:#E04A2F;border:2px solid #FF8A6E;display:flex;align-items:center;justify-content:center;color:#0A0812;font-size:10px;">▲</span><span>INTERDIT — sans terme</span></div>
+            <div class="leg-l"><span class="sw" style="height:16px;border:2px dotted #D98324;background:repeating-linear-gradient(45deg,#B45309 0 4px,rgba(180,83,9,.22) 4px 8px);"></span><span>STATUT INCERTAIN</span></div>
+            <div class="leg-l"><span class="sw" style="height:16px;border:2px solid #4A7C59;background:rgba(74,124,89,.12);"></span><span>levée / expirée</span></div>
+            <div class="leg-l"><span class="sw" style="height:16px;display:flex;align-items:center;justify-content:center;color:#E04A2F;font-size:15px;">⌀</span><span>périmètre non numérisé</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-t" style="margin-bottom:9px;">// sources</div>
+          <div class="sources">
+            <div>◆ <a href="https://meteofrance.com" target="_blank" rel="noopener">Météo-France</a> · Licence Ouverte 2.0</div>
+            <div>◆ IGN / FCBA · contours administratifs</div>
+            <div>◆ <a href="https://www.openstreetmap.org" target="_blank" rel="noopener">OpenStreetMap</a> · ODbL</div>
+            <div>◆ sites &lt;departement&gt;.gouv.fr</div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ── centre : la carte ─────────────────────────────────────────── -->
+      <section class="map">
+        <div class="map-bar">
+          <div class="seg" role="group" aria-label="Jour du bulletin">
+            <button type="button" id="btnJ1" aria-pressed="true">J+1</button>
+            <button type="button" id="btnJ2" aria-pressed="false">J+2</button>
+          </div>
+          <span class="bar-info" id="barBulletin">bulletin du —</span>
+          <span class="sp"></span>
+          <button type="button" class="btn-ghost" id="btnReset">vue France</button>
+          <button type="button" class="btn-jaune" id="btnZoom">Zoomer sur les zones interdites</button>
+        </div>
+
+        <div class="scene" id="scene">
+          <svg id="carte" viewBox="0 0 1000 700" role="img"
+               aria-label="Carte en relief des départements français selon la Météo des forêts, avec les massifs interdits">
+            <defs>
+              <pattern id="hachIncertain" width="7" height="7" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+                <rect width="7" height="7" fill="#8A3F07"></rect>
+                <rect width="3.2" height="7" fill="#B45309"></rect>
+              </pattern>
+            </defs>
+            <g id="couche-relief"></g>
+            <g id="couche-labels"></g>
+            <g id="couche-marqueurs"></g>
+          </svg>
+
+          <div class="arrivee" id="arrivee">
+            <div class="arrivee-inner">
+              <div class="globe">
+                <div class="o1"></div><div class="eq"></div><div class="o2"></div><div class="o3"></div>
+                <svg viewBox="0 0 1000 931" aria-hidden="true"><path id="franceMini" fill="#E07B00"></path></svg>
+              </div>
+            </div>
+            <div class="arrivee-pied">approche · scroll, clic ou touche pour passer</div>
+          </div>
+        </div>
+
+        <div class="map-inspect">
+          <div id="inspectTitre">◆ survolez ou tabulez la carte</div>
+          <div id="inspectDetail"></div>
+          <span class="sp"></span>
+          <div class="tilt">
+            <label for="tilt">tangage</label>
+            <input id="tilt" type="range" min="20" max="55" step="1" value="40" aria-label="Angle de tangage de la carte">
+          </div>
+        </div>
+
+        <div class="map-aide">
+          ◆ glisser pour déplacer · molette pour zoomer · tabulation pour parcourir les zones au clavier<br>
+          ◆ sans WebGL, GPU faible ou <em>prefers-reduced-motion</em> : cette même carte s'affiche à plat,
+          toute l'information reste accessible
+        </div>
+      </section>
+
+      <!-- ── droite : les interdictions ────────────────────────────────── -->
+      <aside class="zones">
+        <div class="zones-t">
+          <div class="card-t">// zones interdites</div>
+          <span class="sp"></span>
+          <span class="zones-tri">tri par urgence</span>
+        </div>
+
+        <div id="zonesList"></div>
+        <div class="zvide hide" id="zvide">◆ aucune zone qualifiée ne correspond à cette recherche.</div>
+
+        <div class="zvide">◆ détection heuristique, non exhaustive et non officielle. Un arrêté peut être manqué.
+          Seul l'arrêté préfectoral publié fait foi.</div>
+      </aside>
+    </div>
+  </div>
+
+  <footer>
+    <a class="cyber" href="https://www.cybermalveillance.gouv.fr/resultat-recherche-prestataire?search=julienweb" target="_blank" rel="noopener">🛡 Cyber.gouv.fr</a>
+    <a class="fnum" href="https://www.francenum.gouv.fr/activateurs/julienwebfr" target="_blank" rel="noopener">🇫🇷 France Num</a>
+    <div class="foot-note">Ce projet n'est pas officiel et ne remplace aucune publication préfectorale.</div>
+    <span class="sp"></span>
+    <div class="foot-copy">© 1998–2026 JulienWeb.fr <span style="color:#9ED5E1;">ツ</span></div>
+  </footer>
+</div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var NS = 'http://www.w3.org/2000/svg';
+  var G = window.FEUX_GEO || null;
+  var B = window.FEUX_BULLETIN || { niveaux: {}, stats: {}, veille: {} };
+
+  var DCOL  = { 1:'#3D8B4A', 2:'#E0B400', 3:'#E07B00', 4:'#C22C22', 0:'#3A3F34' };
+  var HBASE = { 1:5, 2:11, 3:21, 4:30, 0:1.5 };
+  var LIB   = { 1:'faible', 2:'modéré', 3:'élevé', 4:'très élevé' };
+
+  var STAT = {
+    interdit:  { c:'#C22C22', b:'#F0605A', lib:'INTERDIT',              rang:0 },
+    sansterme: { c:'#E04A2F', b:'#FF8A6E', lib:'INTERDIT — sans terme', rang:1 },
+    incertain: { c:'#B45309', b:'#D98324', lib:'STATUT INCERTAIN',      rang:2 },
+    levee:     { c:'#4A7C59', b:'#6FA37E', lib:'levée',                 rang:3 }
+  };
+
+  // ── Les six zones qualifiées à la main ──────────────────────────────────
+  // Texte repris tel quel du design ; `fin` n'est ajouté que là où l'arrêté
+  // porte une date de fin VÉRIFIÉE, pour que le décompte et la péremption se
+  // calculent au lieu d'être figés dans la page (l'arrêté 77 expire le 31/07).
+  var ZONES = [
+    { k:'fontainebleau', st:'interdit', nom:'Forêt domaniale de Fontainebleau', dep:'77 · Seine-et-Marne',
+      periode:'du 24 au 31 juillet 2026 inclus', fin:'2026-07-31',
+      note:'Arrêté lu intégralement. Fin le 31/07/2026 inclus.',
+      arrete:'arrêté 2026/CAB/SIDPC/1223',
+      src:'https://www.seine-et-marne.gouv.fr/contenu/telechargement/73028/593148/file/20260724-2026_CAB_SIDPC_1223%20-%20portant%20interdiction%20fr%C3%A9quentation%20for%C3%A8t%20domaniales%20Fontainebleau%20et%20de%20la%20commanderie.pdf',
+      lien:'voir le PDF', chips:['arrêté lu intégralement','relevé le 26/07/2026'] },
+
+    { k:'commanderie', st:'interdit', nom:'Forêt domaniale de la Commanderie', dep:'77 · Seine-et-Marne',
+      periode:'du 24 au 31 juillet 2026 inclus', fin:'2026-07-31',
+      note:'Même arrêté que Fontainebleau.',
+      arrete:'arrêté 2026/CAB/SIDPC/1223',
+      src:'https://www.seine-et-marne.gouv.fr/contenu/telechargement/73028/593148/file/20260724-2026_CAB_SIDPC_1223%20-%20portant%20interdiction%20fr%C3%A9quentation%20for%C3%A8t%20domaniales%20Fontainebleau%20et%20de%20la%20commanderie.pdf',
+      lien:'voir le PDF', chips:['arrêté lu intégralement','relevé le 26/07/2026'] },
+
+    { k:'illarata', st:'sansterme', nom:'Illarata – Taglio Rosso', dep:'2A · Corse-du-Sud · commune de Zonza',
+      periode:'depuis le 17 juillet 2026 · aucune date de fin dans l’arrêté',
+      note:'Arrêté du 20/07 en vigueur depuis le 21/07 à 6h00 : il remplace celui du 17/07 et maintient l’interdiction. Elle court tant qu’un nouvel arrêté ne la lève pas.',
+      contour:'périmètre défini par la carte n°1 annexée au PDF, non numérisée',
+      arrete:'arrêté 2A-2026-07-20-00007',
+      src:'https://www.corse-du-sud.gouv.fr/contenu/telechargement/18181/117452/file/Arr%C3%AAt%C3%A9%20du%2020%20juillet%202026%20n%C2%B0%202A-2026-07-20-00007%20rempla%C3%A7ant%20l%27arr%C3%A9t%C3%A9%20de%20fermeture%20du%20massif%20d%27Illarata%20-Taglio%20Rossodu%2017%20juillet%202026.pdf',
+      lien:'voir le PDF (scanné)', chips:['arrêté lu intégralement','relevé le 26/07/2026'],
+      derogations:[
+        'Véhicules : accès autorisé entre le PR7+750 et le PR9 de la RD168A ; parking municipal du PR9 limité à 260 véhicules ; stationnement interdit le long de la RD168A.',
+        'Piétons : site des « Trois Piscines » (PR10+350) accessible EXCLUSIVEMENT par la navette communale de Zonza depuis le parking du PR9.',
+        'Dans tous les cas : pistes forestières, chemins et sentiers restent interdits ; évacuation immédiate en cas de départ de feu.'
+      ] },
+
+    { k:'trois-pignons', st:'incertain', nom:'Forêt domaniale des Trois Pignons', dep:'77 + 91 · arrêté interdépartemental',
+      periode:'depuis le 24 juin 2026 · fin conditionnée à la fin de la vigilance rouge canicule',
+      note:'Aucune date de fin dans l’arrêté, seulement une condition. Impossible de dire depuis l’arrêté seul si l’interdiction court encore aujourd’hui. On ne tranche pas à votre place.',
+      arrete:'arrêté AP 2026 CAB SIDPC 1009',
+      src:'https://www.seine-et-marne.gouv.fr/Actualites/Salle-de-presse/Prevention-feux-de-foret-fermeture-des-Trois-Pignons',
+      lien:'voir la page préfecture', chips:['confiance sur les dates : partielle','relevé le 26/07/2026'] },
+
+    { k:'bavella', st:'levee', nom:'Massif de Bavella', dep:'2A · Corse-du-Sud',
+      periode:'du 17 au 20 juillet 2026 · levée',
+      note:'Fermé le 17/07, abrogé le 20/07 par l’arrêté 2A-2026-07-20-00006. Trois jours : le type d’interdiction qu’aucun flux national ne suit.',
+      contour:'aucun polygone OpenStreetMap ne porte ce nom · périmètre à tracer depuis l’arrêté',
+      arrete:'arrêté du 17/07/2026 (numéro non publié)',
+      src:'https://www.corse-du-sud.gouv.fr/Actualites/Actualites/Arrete-du-20-juillet-2026-abrogeant-l-arrete-de-fermeture-du-massif-de-BAVELLA-du-17-juillet-2026',
+      lien:'voir l’abrogation', chips:['arrêté lu intégralement','relevé le 26/07/2026'] },
+
+    { k:'13', st:'levee', nom:'Tous les massifs des Bouches-du-Rhône', dep:'13 · portée départementale',
+      periode:'journée du 23 juillet 2026 · expirée',
+      note:'Fermeture de tous les massifs pour la seule journée du 23/07 (risque très sévère). Régime quotidien : l’accès est réévalué chaque jour, revenez la veille de votre sortie.',
+      arrete:'aucun numéro d’arrêté publié sur la page',
+      src:'https://www.bouches-du-rhone.gouv.fr/Actualites/Feux-de-foret-Risque-incendie-TRES-SEVERE-Fermeture-de-TOUS-les-massifs-jeudi-23-juillet-2026',
+      lien:'voir la page préfecture', chips:['détection heuristique','relevé le 26/07/2026'], badge:'expirée' }
+  ];
+
+  // ── Résolution des dates ────────────────────────────────────────────────
+  // Une interdiction dont l'arrêté porte un terme VÉRIFIÉ cesse d'être
+  // affichée « en vigueur » passé ce terme : c'est un fait lu dans l'arrêté,
+  // pas une déduction. Les zones sans terme (ou à terme conditionnel) ne
+  // bougent jamais toutes seules — cf. doctrine, on ne tranche pas.
+  var AUJ = new Date(); AUJ.setHours(0, 0, 0, 0);
+  var MOIS = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+
+  function jourFR(iso) {
+    var d = new Date(iso + 'T00:00:00');
+    return d.getDate() + ' ' + MOIS[d.getMonth()] + ' ' + d.getFullYear();
+  }
+  function jourCourt(iso) {
+    var p = String(iso).split('-');
+    return p.length === 3 ? p[2] + '/' + p[1] + '/' + p[0] : String(iso);
+  }
+
+  ZONES.forEach(function (z) {
+    z.stEff = z.st;
+    z.periodeEff = z.periode;
+    if (!z.fin || (z.st !== 'interdit' && z.st !== 'sansterme')) return;
+    var reste = Math.round((new Date(z.fin + 'T00:00:00') - AUJ) / 86400000);
+    if (reste > 0) {
+      z.periodeEff = z.periode + ' · encore ' + reste + ' jour' + (reste > 1 ? 's' : '');
+    } else if (reste === 0) {
+      z.periodeEff = z.periode + ' · dernier jour';
+    } else {
+      z.stEff = 'levee';
+      z.badge = 'expirée';
+      z.periodeEff = z.periode + ' · terminée depuis le ' + jourFR(z.fin);
+      z.perime = 'Cet arrêté a expiré le ' + jourFR(z.fin) + '. Sauf arrêté de remplacement, l’interdiction ' +
+                 'n’est plus en vigueur — mais aucun arrêté de remplacement n’a été lu ici. ' +
+                 'Vérifiez la page de la préfecture avant de partir.';
+    }
+  });
+
+  ZONES.sort(function (a, b) { return STAT[a.stEff].rang - STAT[b.stEff].rang; });
+
+  // massifs cartographiés → statut effectif de la zone du même nom
+  var MASSIF_STAT = {};
+  ZONES.forEach(function (z) { MASSIF_STAT[z.k] = z.stEff; });
+
+  // ── état ────────────────────────────────────────────────────────────────
+  var S = { jour:1, tilt:40, relief:1, sel:null, view:null, focus:-1, k:1, zoomFort:false };
+
+  function $(id) { return document.getElementById(id); }
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c];
+    });
+  }
+  function mix(hex, dark, t) {
+    var p = function (h) { return [parseInt(h.slice(1,3),16), parseInt(h.slice(3,5),16), parseInt(h.slice(5,7),16)]; };
+    var a = p(hex), b = p(dark);
+    return '#' + a.map(function (v, i) {
+      return Math.round(v * (1 - t) + b[i] * t).toString(16).padStart(2, '0');
+    }).join('');
+  }
+
+  function ky()          { return Math.cos(S.tilt * Math.PI / 180); }
+  function niveau(code)  { var n = B.niveaux[code]; return (n && n[S.jour - 1]) || 0; }
+  function hauteur(code) { return HBASE[niveau(code)] * S.relief; }
+
+  // ── géométrie : contours → anneaux de points, pour extruder les flancs ──
+  // feux-geo.js ne livre que des `d` (M/L/Z). On en déduit les arêtes une
+  // fois pour toutes ; seules les arêtes tournées vers le bas sont dessinées,
+  // les autres passeraient de toute façon sous la face supérieure.
+  function anneaux(d) {
+    return d.split('M').slice(1).map(function (sub) {
+      var flat = [];
+      sub.replace(/Z\s*$/, '').split('L').forEach(function (p) {
+        var xy = p.trim().split(/[\s,]+/);
+        if (xy.length >= 2) { flat.push(+xy[0], +xy[1]); }
+      });
+      if (flat.length >= 4) { flat.push(flat[0], flat[1]); }  // referme l'anneau
+      return flat;
+    }).filter(function (f) { return f.length >= 6; });
+  }
+
+  function flancs(rings, h) {
+    if (h < 2) return '';
+    var dy = -h / ky(), out = [];
+    for (var r = 0; r < rings.length; r++) {
+      var f = rings[r], aire = 0, i;
+      for (i = 0; i < f.length - 2; i += 2) { aire += f[i] * f[i+3] - f[i+2] * f[i+1]; }
+      var sgn = aire > 0 ? -1 : 1;
+      for (i = 0; i < f.length - 2; i += 2) {
+        var x0 = f[i], y0 = f[i+1], x1 = f[i+2], y1 = f[i+3];
+        if (sgn * (x1 - x0) <= 0) continue;                   // arête cachée
+        out.push('M', x0, ' ', y0, 'L', x1, ' ', y1,
+                 'L', x1, ' ', (y1 + dy).toFixed(1),
+                 'L', x0, ' ', (y0 + dy).toFixed(1), 'Z');
+      }
+    }
+    return out.join('');
+  }
+
+  // ── construction de la carte ────────────────────────────────────────────
+  var depNodes = [], massifNodes = [], marqueurs = [], echelles = [], parDep = {};
+
+  function el(tag, attrs) {
+    var n = document.createElementNS(NS, tag);
+    for (var a in attrs) { if (attrs[a] != null) n.setAttribute(a, attrs[a]); }
+    return n;
+  }
+
+  function selectionner(cle) {
+    if (S.sel === cle) return;
+    S.sel = cle;
+    peindreSelection();
+  }
+
+  function marqueur(parent, cle, nom, pos, geo) {
+    var g = el('g', { tabindex:'0', role:'button', style:'cursor:pointer;' });
+    var ligne = el('line', { x1:0, y1:0, x2:0, y2:geo.y2, 'stroke-dasharray':geo.dash });
+    var rond  = el('circle', { cx:0, cy:geo.y2, r:geo.r, fill:'#0D0B16' });
+    var txt   = el('text', { x:0, y:geo.ty, 'text-anchor':'middle',
+                             'font-family':"'JetBrains Mono',monospace", 'font-size':geo.fs });
+    g.appendChild(ligne); g.appendChild(rond); g.appendChild(txt);
+    parent.appendChild(g);
+    ['click', 'mouseenter', 'focus'].forEach(function (ev) {
+      g.addEventListener(ev, function () { selectionner(cle); });
+    });
+    echelles.push({ g:g, pos:pos });
+    return { cle:cle, nom:nom, g:g, ligne:ligne, rond:rond, txt:txt, geo:geo, pos:pos };
+  }
+
+  function construire() {
+    var relief = $('couche-relief'), labels = $('couche-labels'), marks = $('couche-marqueurs');
+
+    // du nord au sud : le sud se dessine par-dessus, l'extrusion reste lisible
+    G.deps.slice().sort(function (a, b) { return a.y - b.y; }).forEach(function (d) {
+      var g = el('g');
+      var flanc = el('path');
+      var face  = el('path', {
+        d:d.d, 'stroke-linejoin':'round', 'vector-effect':'non-scaling-stroke',
+        tabindex:'0', role:'button', style:'outline:none;cursor:pointer;'
+      });
+      g.appendChild(flanc); g.appendChild(face); relief.appendChild(g);
+
+      var lg = el('g');
+      var t  = el('text', { 'text-anchor':'middle', y:4,
+                            'font-family':"'JetBrains Mono',monospace", 'font-weight':'600' });
+      lg.appendChild(t); labels.appendChild(lg);
+
+      var node = { d:d, rings:anneaux(d.d), flanc:flanc, face:face, txt:t };
+      depNodes.push(node); parDep[d.c] = node;
+      echelles.push({ g:lg, pos:function () { return [d.x, d.y * ky() - hauteur(d.c)]; } });
+
+      ['click', 'mouseenter', 'focus'].forEach(function (ev) {
+        face.addEventListener(ev, function () { selectionner(d.c); });
+      });
+    });
+
+    G.massifs.forEach(function (m) {
+      var p = el('path', {
+        d:m.d, 'vector-effect':'non-scaling-stroke',
+        tabindex:'0', role:'button', style:'outline:none;cursor:pointer;'
+      });
+      relief.appendChild(p);
+      massifNodes.push({ m:m, el:p });
+      ['click', 'mouseenter', 'focus'].forEach(function (ev) {
+        p.addEventListener(ev, function () { selectionner(m.cle); });
+      });
+      marqueurs.push(marqueur(marks, m.cle, m.nom, function () {
+        return [m.x, m.y * ky() - (hauteur(m.dep) + 6 * S.relief)];
+      }, { r:7.5, sw:1.5, fs:11, y2:-30, ty:-25.6, dash:null }));
+    });
+
+    // Corse : deux zones sans périmètre numérisé — repérées, jamais dessinées
+    var d2A = G.deps.find(function (d) { return d.c === '2A'; });
+    if (d2A) {
+      [{ k:'illarata', dx:-72 }, { k:'bavella', dx:72 }].forEach(function (mk) {
+        var z = ZONES.find(function (x) { return x.k === mk.k; });
+        if (!z) return;
+        marqueurs.push(marqueur(marks, mk.k, z.nom, function () {
+          return [d2A.x + mk.dx * S.k, d2A.y * ky() - hauteur('2A')];
+        }, { r:9, sw:1.6, fs:12, y2:-34, ty:-29.4, dash:'3.5 2.5' }));
+      });
+    }
+
+    var mini = $('franceMini');
+    if (mini) { mini.setAttribute('d', G.deps.map(function (d) { return d.d; }).join('')); }
+  }
+
+  // ── peinture ────────────────────────────────────────────────────────────
+  function peindreRelief() {
+    var ratio = ky();
+    depNodes.forEach(function (n) {
+      var niv = niveau(n.d.c), h = hauteur(n.d.c);
+      var col = S.zoomFort ? mix(DCOL[niv], '#0A0812', .5) : DCOL[niv];
+      n.flanc.setAttribute('d', flancs(n.rings, h));
+      n.flanc.setAttribute('fill', mix(col, '#07050E', .58));
+      n.face.setAttribute('transform', 'translate(0,' + (-h / ratio).toFixed(2) + ')');
+      n.face.setAttribute('fill', col);
+      n.face.setAttribute('aria-label', n.d.n + ' (' + n.d.c + ') — ' +
+        (niv ? ('niveau ' + niv + ', ' + LIB[niv]) : 'niveau non renseigné dans le bulletin'));
+      n.txt.textContent = niv ? n.d.c : '';
+      n.txt.setAttribute('font-size', niv >= 3 ? 13 : 11);
+      n.txt.setAttribute('fill', (niv === 2 || niv === 3) ? '#0A0812' : '#FFFFFF');
+    });
+
+    massifNodes.forEach(function (n) {
+      var st = STAT[MASSIF_STAT[n.m.cle]] || STAT.incertain;
+      var inc = MASSIF_STAT[n.m.cle] === 'incertain';
+      var lift = hauteur(n.m.dep) + 6 * S.relief;
+      n.el.setAttribute('transform', 'translate(0,' + (-lift / ratio).toFixed(2) + ')');
+      n.el.setAttribute('fill', inc ? 'url(#hachIncertain)' : st.c);
+      n.el.setAttribute('aria-label', n.m.nom + ' — ' + st.lib);
+    });
+
+    marqueurs.forEach(function (n) {
+      var z = ZONES.find(function (x) { return x.k === n.cle; });
+      var st = STAT[z ? z.stEff : 'incertain'];
+      var inc = z && z.stEff === 'incertain';
+      var sansContour = !!(z && z.contour);
+      n.couleur = st.b;
+      n.txt.textContent = sansContour ? (z.stEff === 'levee' ? '⌀' : '▲') : (inc ? '▨' : '■');
+      n.g.setAttribute('aria-label', n.nom + ' — ' + ((z && z.badge) || st.lib) +
+        (sansContour ? ' · périmètre non numérisé' : ''));
+    });
+
+    $('couche-relief').setAttribute('transform', 'scale(1,' + ratio.toFixed(4) + ')');
+    peindreSelection();
+  }
+
+  function peindreSelection() {
+    depNodes.forEach(function (n) {
+      var actif = S.sel === n.d.c, niv = niveau(n.d.c);
+      n.face.setAttribute('stroke', actif ? '#9ED5E1'
+        : (niv ? 'rgba(10,8,18,.55)' : 'rgba(255,255,255,.055)'));
+      n.face.setAttribute('stroke-width', actif ? 1.8 : 0.6);
+    });
+    massifNodes.forEach(function (n) {
+      var actif = S.sel === n.m.cle;
+      var st = STAT[MASSIF_STAT[n.m.cle]] || STAT.incertain;
+      var inc = MASSIF_STAT[n.m.cle] === 'incertain';
+      n.el.setAttribute('stroke', actif ? '#9ED5E1' : st.b);
+      n.el.setAttribute('stroke-width', actif ? 2 : 1.2);
+      n.el.setAttribute('stroke-dasharray', inc ? '2.6 1.8' : 'none');
+    });
+    marqueurs.forEach(function (n) {
+      var actif = S.sel === n.cle, c = n.couleur || '#9ED5E1';
+      n.ligne.setAttribute('stroke', c);
+      n.ligne.setAttribute('stroke-width', actif ? n.geo.sw + 0.6 : n.geo.sw);
+      n.rond.setAttribute('stroke', c);
+      n.rond.setAttribute('stroke-width', actif ? n.geo.sw + 0.6 : n.geo.sw);
+      n.rond.setAttribute('r', actif ? n.geo.r + 1.5 : n.geo.r);
+      n.txt.setAttribute('fill', c);
+      n.txt.setAttribute('font-size', actif ? n.geo.fs + 2 : n.geo.fs);
+    });
+
+    [].forEach.call(document.querySelectorAll('.zcard'), function (c) {
+      c.classList.toggle('sel', c.getAttribute('data-k') === S.sel);
+    });
+    peindreInspect();
+  }
+
+  function peindreInspect() {
+    var t = '◆ survolez ou tabulez la carte';
+    var d = 'départements extrudés selon le niveau J+' + S.jour;
+    if (S.sel) {
+      // une clé de zone peut valoir un code département (le 13 est une
+      // fermeture à portée départementale) : dans ce cas on montre les deux,
+      // le niveau météo ne remplaçant jamais l'arrêté.
+      var z = ZONES.find(function (x) { return x.k === S.sel; });
+      var n = parDep[S.sel];
+      if (n) {
+        var niv = niveau(S.sel);
+        t = '◆ ' + n.d.n + ' (' + n.d.c + ')';
+        d = niv
+          ? 'Météo des forêts J+' + S.jour + ' : niveau ' + niv + ', ' + LIB[niv] +
+            ' · indicatif, ne vaut pas autorisation'
+          : 'niveau du jour absent du bulletin · rien n’est deviné';
+        if (z) { d = (z.badge || STAT[z.stEff].lib) + ' · ' + z.periodeEff + ' — ' + d; }
+      } else if (z) {
+        t = '◆ ' + z.nom;
+        d = (z.badge || STAT[z.stEff].lib) + ' · ' + z.periodeEff;
+      }
+    }
+    $('inspectTitre').textContent = t;
+    $('inspectDetail').textContent = d;
+  }
+
+  // ── cadrage ─────────────────────────────────────────────────────────────
+  function vueParDefaut() { return { x:-40, y:-60, w:1080, h:G.h * ky() + 140 }; }
+  function vue() { return S.view || vueParDefaut(); }
+  function cadrer(v) { if (v) { S.view = v; placer(); } }
+
+  function placer() {
+    var v = vue(), svg = $('carte');
+    var r = svg.getBoundingClientRect();
+    if (r.width && r.height) { S.k = Math.max(v.w / r.width, v.h / r.height); }
+    svg.setAttribute('viewBox', v.x + ' ' + v.y + ' ' + v.w + ' ' + v.h);
+
+    var zf = v.w < 420;
+    if (zf !== S.zoomFort) {
+      S.zoomFort = zf;
+      $('scene').classList.toggle('zoomfort', zf);
+      depNodes.forEach(function (n) {
+        var col = zf ? mix(DCOL[niveau(n.d.c)], '#0A0812', .5) : DCOL[niveau(n.d.c)];
+        n.face.setAttribute('fill', col);
+        n.flanc.setAttribute('fill', mix(col, '#07050E', .58));
+      });
+    }
+
+    var k = S.k.toFixed(4);
+    echelles.forEach(function (e) {
+      var p = e.pos();
+      e.g.setAttribute('transform',
+        'translate(' + p[0].toFixed(1) + ',' + p[1].toFixed(1) + ') scale(' + k + ')');
+    });
+  }
+
+  function vueDep(code) {
+    var n = parDep[code];
+    if (!n) return null;
+    var minX = 1e9, maxX = -1e9, minY = 1e9, maxY = -1e9;
+    n.rings.forEach(function (f) {
+      for (var i = 0; i < f.length; i += 2) {
+        if (f[i] < minX) minX = f[i];
+        if (f[i] > maxX) maxX = f[i];
+        if (f[i+1] < minY) minY = f[i+1];
+        if (f[i+1] > maxY) maxY = f[i+1];
+      }
+    });
+    var h = hauteur(code), m = Math.max(18, (maxX - minX) * .2);
+    var y0 = minY * ky() - h, y1 = maxY * ky();
+    return { x:minX - m, y:y0 - m - 26, w:(maxX - minX) + 2 * m, h:(y1 - y0) + 2 * m + 26 };
+  }
+
+  function vueMassifs() {
+    if (!G.massifs.length) return vueDep('77');
+    var xs = G.massifs.map(function (m) { return m.x; });
+    var ys = G.massifs.map(function (m) { return m.y * ky() - hauteur(m.dep) - 8; });
+    var cx = (Math.min.apply(null, xs) + Math.max.apply(null, xs)) / 2;
+    var cy = (Math.min.apply(null, ys) + Math.max.apply(null, ys)) / 2;
+    var w = Math.max(46, (Math.max.apply(null, xs) - Math.min.apply(null, xs)) + 34);
+    return { x:cx - w / 2, y:cy - w * .36, w:w, h:w * .72 };
+  }
+
+  function vueCorse() {
+    var n = parDep['2A'];
+    if (!n) return null;
+    var w = 200, h = w * .72, cy = n.d.y * ky() - hauteur('2A') - 12;
+    return { x:n.d.x - w / 2, y:cy - h / 2, w:w, h:h };
+  }
+
+  // ── colonne des zones ───────────────────────────────────────────────────
+  function rendreZones() {
+    $('zonesList').innerHTML = ZONES.map(function (z) {
+      var st = STAT[z.stEff];
+      var badge = z.badge || st.lib;
+      var cls = 'zbadge' + (z.stEff === 'incertain' ? ' incertain' : (z.stEff === 'levee' ? ' levee' : ''));
+      var style = (z.stEff === 'incertain' || z.stEff === 'levee') ? ''
+                : ' style="border:1px solid ' + st.b + ';background:' + st.c + ';"';
+      return '' +
+      '<div class="zcard' + (z.stEff === 'levee' ? ' pale' : '') + '" id="zone-' + esc(z.k) + '"' +
+        ' data-k="' + esc(z.k) + '" style="border-left-color:' + st.c + ';">' +
+        '<div class="zhead">' +
+          '<div class="zid">' +
+            '<div class="znom">' + esc(z.nom) + '</div>' +
+            '<div class="zdep">' + esc(z.dep) + '</div>' +
+          '</div>' +
+          '<div class="' + cls + '"' + style + '>' + esc(badge) + '</div>' +
+        '</div>' +
+        '<div class="zperiode">' + esc(z.periodeEff) + '</div>' +
+        '<div class="znote">' + esc(z.note) + '</div>' +
+        (z.perime  ? '<div class="zperime">⚠ ' + esc(z.perime) + '</div>' : '') +
+        (z.contour ? '<div class="zcontour">⌀ ' + esc(z.contour) + '</div>' : '') +
+        '<div class="zmeta"><span>' + esc(z.arrete) + '</span><span class="sp"></span>' +
+          '<a href="' + esc(z.src) + '" target="_blank" rel="noopener">→ ' + esc(z.lien) + '</a></div>' +
+        (z.derogations
+          ? '<div class="zdero"><details><summary>▸ ' + z.derogations.length +
+            ' dérogations · accès qui restent autorisés</summary><div class="zdero-list">' +
+            z.derogations.map(function (dg) {
+              return '<div><span>◆</span><span>' + esc(dg) + '</span></div>';
+            }).join('') + '</div></details></div>'
+          : '') +
+        '<div class="zchips">' +
+          z.chips.map(function (c) { return '<span>◆ ' + esc(c) + '</span>'; }).join('') +
+        '</div>' +
+      '</div>';
+    }).join('');
+
+    [].forEach.call(document.querySelectorAll('.zcard'), function (c) {
+      ['click', 'mouseenter'].forEach(function (ev) {
+        c.addEventListener(ev, function () { selectionner(c.getAttribute('data-k')); });
+      });
+      [].forEach.call(c.querySelectorAll('a, summary'), function (n) {
+        n.addEventListener('click', function (e) { e.stopPropagation(); });
+      });
+    });
+  }
+
+  // ── colonne de gauche : compteurs tirés du bulletin, jamais écrits en dur ─
+  function rendreCompteurs() {
+    var codes = Object.keys(B.niveaux || {});
+    var chauds = codes.filter(function (c) { return niveau(c) >= 3; }).length;
+    var plats  = G ? G.deps.filter(function (d) { return !niveau(d.c); }).length : 0;
+
+    $('statDeps').textContent   = codes.length || '—';
+    $('statChauds').textContent = codes.length ? chauds : '—';
+    $('statZones').textContent  = ZONES.length;
+    $('statVeille').textContent = (B.veille && B.veille.trouvailles) || '—';
+    $('chapoZones').textContent = ['zéro','une','deux','trois','quatre','cinq','six'][ZONES.length] || ZONES.length;
+
+    var avecContour = G ? G.massifs.length : 0;
+    var sansContour = ZONES.filter(function (z) { return z.contour; }).length;
+    $('statPied').innerHTML =
+      '◆ ' + avecContour + ' massif' + (avecContour > 1 ? 's' : '') + ' avec contour<br>' +
+      '◆ ' + sansContour + ' massif' + (sansContour > 1 ? 's' : '') + ' sans contour<br>' +
+      '◆ ' + ((B.veille && B.veille.departements) || 0) + ' départements veillés';
+
+    var leBulletin = B.bulletin_du ? jourCourt(B.bulletin_du) : '—';
+    $('notePlats').textContent = plats
+      ? '⌀ ' + plats + (plats > 1 ? ' départements restent plats' : ' département reste plat') +
+        ' : leur niveau n’est pas dans le bulletin du ' + leBulletin + '. Rien n’est deviné.'
+      : '◆ les ' + (codes.length || 96) + ' départements ont un niveau dans le bulletin du ' + leBulletin +
+        '. Un département sans donnée resterait plat : rien n’est deviné.';
+
+    var maj = B.genere_le ? new Date(B.genere_le) : null;
+    $('chromeMaj').textContent = 'relevé le ' + leBulletin + (maj
+      ? ' · ' + String(maj.getHours()).padStart(2, '0') + 'h' + String(maj.getMinutes()).padStart(2, '0')
+      : '');
+    $('barBulletin').textContent = 'bulletin du ' + leBulletin;
+  }
+
+  // ── recherche ───────────────────────────────────────────────────────────
+  function normaliser(s) {
+    return String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  }
+
+  function chercher(txt, valider) {
+    var q = normaliser(txt).trim(), n = 0;
+    [].forEach.call(document.querySelectorAll('.zcard'), function (c) {
+      var z = ZONES.find(function (x) { return x.k === c.getAttribute('data-k'); });
+      var ok = !q || normaliser(z.nom + ' ' + z.dep + ' ' + z.k + ' ' + z.arrete).indexOf(q) >= 0;
+      c.classList.toggle('hide', !ok);
+      if (ok) n++;
+    });
+    $('zvide').classList.toggle('hide', n > 0 || !q);
+    if (!valider || !q || !G) return;
+
+    var z = ZONES.find(function (x) { return normaliser(x.nom + ' ' + x.dep + ' ' + x.k).indexOf(q) >= 0; });
+    if (z) {
+      selectionner(z.k);
+      var carte = $('zone-' + z.k);
+      if (carte) carte.scrollIntoView({ behavior:'smooth', block:'center' });
+      if (z.k === 'illarata' || z.k === 'bavella') cadrer(vueCorse());
+      else if (G.massifs.some(function (m) { return m.cle === z.k; })) cadrer(vueMassifs());
+      else if (parDep[z.dep.slice(0, 2)]) cadrer(vueDep(z.dep.slice(0, 2)));
+      return;
+    }
+    var d = G.deps.find(function (x) {
+      return normaliser(x.c) === q || normaliser(x.n).indexOf(q) === 0;
+    });
+    if (d) { selectionner(d.c); cadrer(vueDep(d.c)); }
+  }
+
+  // ── séquence d'arrivée ──────────────────────────────────────────────────
+  function arrivee() {
+    var v = $('arrivee');
+    var rm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var vu = false;
+    try {
+      vu = sessionStorage.getItem('feux-hero-vu') === '1' && !/hero=1/.test(location.search + location.hash);
+    } catch (e) { /* sessionStorage peut être refusé en file:// */ }
+    if (rm || vu) return;
+
+    v.classList.add('joue');
+    var fini = false;
+    var evs = ['wheel', 'pointerdown', 'keydown', 'touchstart'];
+    var fin = function () {
+      if (fini) return;
+      fini = true;
+      clearTimeout(t);
+      v.classList.remove('joue');
+      try { sessionStorage.setItem('feux-hero-vu', '1'); } catch (e) {}
+      evs.forEach(function (e) { window.removeEventListener(e, fin); });
+    };
+    var t = setTimeout(fin, 2700);
+    evs.forEach(function (e) { window.addEventListener(e, fin, { passive:true }); });
+  }
+
+  // ── interactions ────────────────────────────────────────────────────────
+  function brancherCarte() {
+    var svg = $('carte'), drag = null;
+
+    svg.addEventListener('wheel', function (e) {
+      e.preventDefault();
+      var v = vue(), f = e.deltaY > 0 ? 1.12 : 1 / 1.12;
+      cadrer({ x:v.x + v.w * (1 - f) / 2, y:v.y + v.h * (1 - f) / 2, w:v.w * f, h:v.h * f });
+    }, { passive:false });
+
+    svg.addEventListener('pointerdown', function (e) {
+      if (e.button !== 0) return;
+      if (svg.setPointerCapture) { svg.setPointerCapture(e.pointerId); }
+      svg.classList.add('drag');
+      drag = { px:e.clientX, py:e.clientY, v:vue(), r:svg.getBoundingClientRect() };
+    });
+    svg.addEventListener('pointermove', function (e) {
+      if (!drag) return;
+      var dx = (e.clientX - drag.px) * drag.v.w / drag.r.width;
+      var dy = (e.clientY - drag.py) * drag.v.h / drag.r.height;
+      cadrer({ x:drag.v.x - dx, y:drag.v.y - dy, w:drag.v.w, h:drag.v.h });
+    });
+    ['pointerup', 'pointercancel'].forEach(function (ev) {
+      svg.addEventListener(ev, function () { drag = null; svg.classList.remove('drag'); });
+    });
+
+    if (window.ResizeObserver) { new ResizeObserver(placer).observe(svg); }
+    else { window.addEventListener('resize', placer); }
+  }
+
+  function brancherBarre() {
+    function setJour(j) {
+      S.jour = j;
+      $('btnJ1').setAttribute('aria-pressed', j === 1 ? 'true' : 'false');
+      $('btnJ2').setAttribute('aria-pressed', j === 2 ? 'true' : 'false');
+      peindreRelief();
+      placer();
+      rendreCompteurs();
+    }
+    $('btnJ1').addEventListener('click', function () { setJour(1); });
+    $('btnJ2').addEventListener('click', function () { setJour(2); });
+
+    $('btnReset').addEventListener('click', function () {
+      S.focus = -1; S.sel = null; S.view = null;
+      $('btnZoom').textContent = 'Zoomer sur les zones interdites';
+      peindreSelection();
+      placer();
+    });
+
+    var cibles = [
+      { label:'Zone suivante : Corse-du-Sud ▸',   vue:vueMassifs, sel:'fontainebleau' },
+      { label:'Zone suivante : Seine-et-Marne ▸', vue:vueCorse,   sel:'illarata' }
+    ];
+    $('btnZoom').addEventListener('click', function () {
+      S.focus = (S.focus + 1) % 2;
+      var c = cibles[S.focus];
+      selectionner(c.sel);
+      cadrer(c.vue());
+      $('btnZoom').textContent = c.label;
+      var carte = $('zone-' + c.sel);
+      if (carte) carte.scrollIntoView({ behavior:'smooth', block:'nearest' });
+    });
+
+    var raf = 0;
+    $('tilt').addEventListener('input', function (e) {
+      S.tilt = +e.target.value;
+      if (raf) return;
+      raf = requestAnimationFrame(function () { raf = 0; peindreRelief(); placer(); });
+    });
+
+    var q = $('q');
+    q.addEventListener('input', function () { chercher(q.value, false); });
+    q.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter')  { e.preventDefault(); chercher(q.value, true); }
+      if (e.key === 'Escape') { q.value = ''; chercher('', false); }
+    });
+
+    window.addEventListener('hashchange', versAncre);
+  }
+
+  function versAncre() {
+    var m = /^#zone-(.+)$/.exec(location.hash);
+    if (!m) return;
+    var cle = decodeURIComponent(m[1]);
+    if (ZONES.some(function (z) { return z.k === cle; })) { selectionner(cle); }
+  }
+
+  // ── démarrage ───────────────────────────────────────────────────────────
+  function demarrer() {
+    rendreZones();
+    rendreCompteurs();
+    versAncre();
+
+    if (!G || !G.deps || !G.deps.length) {
+      $('scene').innerHTML =
+        '<div style="padding:44px 18px;text-align:center;font-family:\'JetBrains Mono\',monospace;' +
+        'font-size:12.5px;color:#6C6790;line-height:1.7;">⌀ app/feux-geo.js est introuvable —' +
+        ' la carte ne peut pas être dessinée.<br>Les interdictions restent lisibles à droite.</div>';
+      $('inspectTitre').textContent = '◆ carte indisponible';
+      $('inspectDetail').textContent = 'app/feux-geo.js manquant';
+      return;
+    }
+
+    construire();
+    peindreRelief();
+    placer();
+    brancherCarte();
+    brancherBarre();
+    arrivee();
+  }
+
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', demarrer); }
+  else { demarrer(); }
+})();
+</script>
+</body>
+</html>
