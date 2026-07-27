@@ -24,6 +24,11 @@ Scaling (machine dédiée OVH) volontairement repoussé : on le traite si le tra
 Ne pas fusionner avec `feux-foret-carte` : il raconte un cas précis (un arrêté, un PDF scanné
 illisible, une carte reconstruite) cité par l'article. Il reste tel quel.
 
+Le dossier de travail d'origine `_Claude/Projects/Feux-de-foret-2026/` a été **archivé ici le
+27/07/2026** : son matériau (PDF de l'arrêté 77, OCR relu, carte annexe ONF, infographie de
+l'article) vit dans [archive/2026-07_fontainebleau/](archive/2026-07_fontainebleau/_ARCHIVE.md),
+immuable. Le dossier d'origine n'existe plus.
+
 ⏰ **Échéance 31/07/2026** : l'arrêté 77 expire. Passé cette date, l'article #11311 **et** le repo
 `feux-foret-carte` affirment une interdiction qui n'existe plus. Sujet de sécurité, préfecture citée
 nommément — à corriger le jour même.

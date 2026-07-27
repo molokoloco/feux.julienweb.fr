@@ -1,0 +1,68 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8">
+<!--
+  Infographie fermeture forets Fontainebleau (adapte de og_card_julienweb.html, charte JulienWeb).
+  Rendu 1200x630 via render_html_to_png.js. Faits sources : sources/arrete-77-1223_EXTRAIT.md
+-->
+<link href="https://fonts.googleapis.com/css2?family=Squada+One&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:1200px;height:630px;overflow:hidden}
+  body{font-family:'Poppins',sans-serif;background:linear-gradient(135deg,#0F4C75 0%,#3d2e7a 52%,#5A4095 100%);color:#fff;position:relative}
+  .glow{position:absolute;border-radius:50%;filter:blur(70px);opacity:.5}
+  .glow1{width:420px;height:420px;background:#E25822;top:-160px;right:-120px}
+  .glow2{width:360px;height:360px;background:#5A4095;bottom:-150px;left:-100px}
+  .wrap{position:relative;z-index:2;height:100%;padding:54px 64px;display:flex;flex-direction:column}
+  .kicker{font-size:16px;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:#FFB08A}
+  h1{font-family:'Squada One',sans-serif;font-size:60px;line-height:1.04;letter-spacing:.5px;margin:14px 0 6px;max-width:1040px}
+  h1 .y{color:#F5FF00}
+  .sub{font-size:20px;font-weight:300;color:rgba(255,255,255,.85);max-width:920px;line-height:1.5}
+  .massifs{display:flex;gap:22px;margin:34px 0 0;flex:1;align-items:center}
+  .massif{flex:1;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:22px;padding:26px 18px;display:flex;flex-direction:column;align-items:center;gap:10px}
+  .massif svg{width:54px;height:54px}
+  .mtitle{font-family:'Squada One',sans-serif;font-size:27px;letter-spacing:1px;color:#9ED5E1;text-align:center}
+  .mtag{font-size:14px;font-weight:600;color:#FF7A59;background:rgba(226,88,34,.18);border:1px solid rgba(226,88,34,.45);padding:3px 14px;border-radius:12px;letter-spacing:2px}
+  .banner{margin:30px 0 14px;background:#F5FF00;color:#2A2746;border-radius:16px;padding:14px 26px;display:flex;align-items:center;justify-content:center;gap:14px}
+  .banner .big{font-family:'Squada One',sans-serif;font-size:29px;letter-spacing:1px}
+  .banner .small{font-size:15px;font-weight:600;max-width:420px;line-height:1.3}
+  .footer{display:flex;align-items:center;gap:14px;font-size:15px;color:rgba(255,255,255,.7);font-weight:300}
+  .footer b{font-family:'Squada One',sans-serif;font-weight:400;color:#fff;font-size:19px;letter-spacing:.5px}
+  .footer b span{color:#1E91D4}
+  .badge{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);padding:4px 12px;border-radius:14px;font-size:13px}
+</style></head>
+<body>
+<div class="glow glow1"></div><div class="glow glow2"></div>
+<div class="wrap">
+  <div class="kicker">Incendies juillet 2026 &bull; Seine-et-Marne</div>
+  <h1>For&ecirc;ts de Fontainebleau <span class="y">ferm&eacute;es au public</span></h1>
+  <p class="sub">Acc&egrave;s, circulation et pr&eacute;sence interdits par arr&ecirc;t&eacute; pr&eacute;fectoral n&deg;2026/CAB/SIDPC/1223 du 24 juillet 2026.</p>
+
+  <div class="massifs">
+    <div class="massif">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#9ED5E1" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L7 9 h3 L6 15 h4 L8 20 h8 L14 15 h4 L14 9 h3 Z"/><line x1="12" y1="20" x2="12" y2="22"/></svg>
+      <div class="mtitle">Fontainebleau</div>
+      <div class="mtag">FERM&Eacute;</div>
+    </div>
+    <div class="massif">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#9ED5E1" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L7 9 h3 L6 15 h4 L8 20 h8 L14 15 h4 L14 9 h3 Z"/><line x1="12" y1="20" x2="12" y2="22"/></svg>
+      <div class="mtitle">Trois-Pignons</div>
+      <div class="mtag">FERM&Eacute;</div>
+    </div>
+    <div class="massif">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#9ED5E1" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L7 9 h3 L6 15 h4 L8 20 h8 L14 15 h4 L14 9 h3 Z"/><line x1="12" y1="20" x2="12" y2="22"/></svg>
+      <div class="mtitle">La Commanderie</div>
+      <div class="mtag">FERM&Eacute;</div>
+    </div>
+  </div>
+
+  <div class="banner">
+    <span class="big">Jusqu'au 31 juillet 2026 inclus</span>
+    <span class="small">R&eacute;ouverture possible ensuite selon d&eacute;cision de la pr&eacute;fecture 77</span>
+  </div>
+
+  <div class="footer">
+    <b>Julien<span>Web</span>.fr</b>
+    <span class="badge">Carte interactive des massifs ferm&eacute;s</span>
+    <span class="badge">Source : pr&eacute;fecture de Seine-et-Marne</span>
+  </div>
+</div>
+</body></html>
