@@ -1,0 +1,13 @@
+# feux.julienweb.fr — projet en cours, volontairement désindexé (27/07/2026).
+#
+# Le crawl est AUTORISÉ à dessein : la désindexation passe par la balise
+# <meta name="robots" content="noindex"> et par l'en-tête X-Robots-Tag
+# (cf .htaccess). Un « Disallow: / » ici serait contre-productif — il
+# empêcherait les robots de LIRE ce noindex, et l'URL pourrait rester
+# indexée en tant qu'URL nue, sans contenu ni description.
+#
+# Pour rendre le site visible : retirer le noindex du .htaccess ET de
+# index.html, puis déclarer un Sitemap ci-dessous.
+
+User-agent: *
+Allow: /

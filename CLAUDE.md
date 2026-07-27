@@ -176,11 +176,54 @@ data/        prefectures.json · massifs.json · zones-interdites.json (+ sortie
 app/         index.html (POC Leaflet) · Feux - Vue principale.html (écran 1, SVG 2.5D)
              build-data.js · departements.geojson · massifs.geojson
              feux-geo.js (géométries projetées) · feux-bulletin.js (niveaux, généré)
+             robots.txt · .htaccess (déployés avec le POC)
+ops/scripts/ _sftp_op.js (déploiement SFTP — aucun secret dedans)
 mails/       2 brouillons — à relire et ENVOYER par Julien, rien n'est parti
 skills/      snapshots locaux des skills globaux (index README.md)
 ```
 
 `app/data.js` est **gitignoré** (~1,4 Mo régénéré à chaque collecte).
+
+## Mise en ligne — https://feux.julienweb.fr
+
+**En ligne depuis le 27/07/2026, en `noindex`** : visible pour qui a l'URL, absent des moteurs.
+Docroot OVH `/home/UTILISATEUR-FTP/feux/`, même hébergement mutualisé que julienweb.fr.
+
+⚠️ **Ce qui est en ligne depuis le 27/07 au soir, c'est la maquette Claude Design, pas l'app
+branchée sur les collecteurs.** Arbitrage de Julien : « c'est pas une vraie prod, on écrase ».
+
+| Fichier | Rôle |
+|---|---|
+| `app/index.html` | **déployé** — export Claude Design « Vue principale (autonome) », React bundlé, **données figées dans le fichier** (arrêtés du 23–24/07) |
+| `app/index-collecteurs.html` | l'app vanilla précédente, branchée sur `data.js` — **conservée pour revenir en arrière** |
+| `design/Feux - Vue principale (autonome).html` | l'export d'origine, intact |
+
+Revenir à l'app branchée : `cp app/index-collecteurs.html app/index.html` puis redéployer.
+
+```bash
+npm run poc                                              # régénérer app/data.js AVANT
+node ops/scripts/_sftp_op.js --target=feux preset poc    # déployer
+```
+
+Trois choses à ne pas oublier :
+
+- **La maquette n'utilise pas `data.js`.** Le preset le pousse encore — inoffensif, et utile le jour
+  où on rebascule. Mais tant que la maquette est en ligne, **`npm run poc` ne change rien à ce que
+  voit le visiteur** : ses données sont dans le HTML.
+- **`app/data.js` est gitignoré mais doit être déployé** quand l'app branchée est en ligne. Un clone
+  frais ne l'a pas ; déployer sans `npm run poc` publierait un bulletin périmé.
+- **Le `noindex` tient en trois pièces cohérentes** — `<meta robots>`, `X-Robots-Tag` dans
+  `.htaccess`, et un `robots.txt` qui **autorise** le crawl. Le dernier point est délibéré : bloquer
+  le crawl empêcherait les robots de lire le noindex. Pour publier pour de bon, retirer les deux
+  premiers, pas le troisième.
+  ⚠️ **Piège propre à la maquette** : le bundler réécrit tout le document au chargement et efface le
+  `<head>` du fichier. Une balise `<meta robots>` posée dans le `<head>` extérieur **disparaît du
+  DOM**. Elle doit être injectée dans le `<script type="__bundler/template">`. Constaté et corrigé le
+  27/07 — c'est l'en-tête HTTP du `.htaccess` qui protégeait entre-temps.
+
+Détail, pièges et procédure de vérification : [skills/deploy-ftp-feux/SKILL.md](skills/deploy-ftp-feux/SKILL.md).
+Les credentials vivent dans la config partagée `../Julienweb.fr-public/.deploy-ftp.json` — **jamais
+dans ce dépôt**.
 
 ## Skills locaux
 

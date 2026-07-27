@@ -1,0 +1,33 @@
+# feux.julienweb.fr — OVH mutualisé clusterNNN, docroot /home/UTILISATEUR-FTP/feux/
+
+# --- Désindexation volontaire (POC en cours, posée le 27/07/2026) -----------
+# À retirer le jour de la mise en visibilité publique, en même temps que la
+# balise <meta name="robots"> de index.html. Les deux, pas l'une des deux.
+<IfModule mod_headers.c>
+    Header set X-Robots-Tag "noindex, nofollow, noarchive"
+</IfModule>
+
+# --- Compression -----------------------------------------------------------
+# data.js pèse ~1,4 Mo brut : sans gzip, le premier rendu est inutilisable
+# sur une connexion mobile.
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml
+    AddOutputFilterByType DEFLATE application/javascript application/json
+    AddOutputFilterByType DEFLATE application/geo+json image/svg+xml
+</IfModule>
+
+# --- Cache -----------------------------------------------------------------
+# data.js est régénéré à chaque collecte : cache court, sinon les visiteurs
+# voient un bulletin périmé. Le HTML n'est pas mis en cache du tout.
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType application/javascript "access plus 1 hours"
+    ExpiresByType application/json "access plus 1 hours"
+</IfModule>
+<IfModule mod_headers.c>
+    <FilesMatch "\.html$">
+        Header set Cache-Control "no-cache, must-revalidate"
+    </FilesMatch>
+</IfModule>
+
+DirectoryIndex index.html

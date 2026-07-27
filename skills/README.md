@@ -6,6 +6,7 @@ Priorité : un snapshot local, s'il existe, l'emporte sur son canonique.
 | Skill | Trigger | Canonique | Rôle ici |
 |---|---|---|---|
 | [wrap-up](wrap-up/SKILL.md) | `/wrap-up` | `~/.claude/skills/wrap-up/SKILL.md` | fin de session : synthèse, memory, CLAUDE.md/README, **vérité des données**, frontière avec les projets voisins, mails, commit local |
+| [deploy-ftp-feux](deploy-ftp-feux/SKILL.md) | `/deploy-ftp` | `D:/Google Drive/_Claude/skills/web/deploy-ftp/SKILL.md` | mise en ligne du POC sur `feux.julienweb.fr` : cible SFTP figée, preset `poc`, piège du `data.js` gitignoré, doctrine `noindex` |
 
 ## Conventions
 

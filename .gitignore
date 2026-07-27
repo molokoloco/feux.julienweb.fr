@@ -10,6 +10,11 @@ data/.veille-state.json
 # tout son contenu vient de data/*.json et app/departements.geojson, déjà versionnés.
 app/data.js
 
+# Credentials de déploiement. La config vit normalement dans le sibling
+# ../Julienweb.fr-public/ — cette ligne est un filet de sécurité au cas où une
+# copie atterrirait ici. Un mot de passe FTP commité est un mot de passe brûlé.
+.deploy-ftp.json
+
 # Google Drive
 .tmp.drivedownload/
 .tmp.driveupload/
