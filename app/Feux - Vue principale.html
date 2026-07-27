@@ -58,6 +58,8 @@ summary{list-style:none;}
 .chrome-dots{display:flex;gap:7px;}
 .chrome-dots span{width:12px;height:12px;border-radius:50%;}
 .chrome-path{font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#6C6790;}
+.chrome-ver{font-family:'JetBrains Mono',monospace;font-size:11px;color:#9ED5E1;
+            border:1px solid rgba(158,213,225,.35);border-radius:5px;padding:1px 6px;}
 .chrome-maj{font-family:'JetBrains Mono',monospace;font-size:12px;color:#9B96B4;}
 .chrome-sig{color:#9ED5E1;font-size:15px;}
 
@@ -261,6 +263,9 @@ footer a.fnum{border-left:3px solid #F5FF00;}
         <span style="background:#28C840;"></span>
       </div>
       <span class="chrome-path">feux.julienweb.fr — ~/vue/france</span>
+      <!-- Version : écrasée par feux-bulletin.js (source unique = package.json).
+           Le « 0.3.0 » en dur n'est qu'un filet si le fichier généré manque. -->
+      <span class="chrome-ver" id="chromeVer">v0.3.0</span>
       <span class="sp"></span>
       <span class="chrome-maj" id="chromeMaj">relevé le —</span>
       <span class="chrome-sig">ツ</span>
@@ -431,7 +436,8 @@ footer a.fnum{border-left:3px solid #F5FF00;}
     <a class="fnum" href="https://www.francenum.gouv.fr/activateurs/julienwebfr" target="_blank" rel="noopener">🇫🇷 France Num</a>
     <div class="foot-note">Ce projet n'est pas officiel et ne remplace aucune publication préfectorale.</div>
     <span class="sp"></span>
-    <div class="foot-copy">© 1998–2026 JulienWeb.fr <span style="color:#9ED5E1;">ツ</span></div>
+    <div class="foot-copy">© 1998–2026 JulienWeb.fr · <span id="footVer">v0.3.0</span>
+      <span style="color:#9ED5E1;">ツ</span></div>
   </footer>
 </div>
 </div>
@@ -930,6 +936,11 @@ footer a.fnum{border-left:3px solid #F5FF00;}
         ' : leur niveau n’est pas dans le bulletin du ' + leBulletin + '. Rien n’est deviné.'
       : '◆ les ' + (codes.length || 96) + ' départements ont un niveau dans le bulletin du ' + leBulletin +
         '. Un département sans donnée resterait plat : rien n’est deviné.';
+
+    if (B.version) {
+      $('chromeVer').textContent = 'v' + B.version;
+      $('footVer').textContent = 'v' + B.version;
+    }
 
     var maj = B.genere_le ? new Date(B.genere_le) : null;
     $('chromeMaj').textContent = 'relevé le ' + leBulletin + (maj

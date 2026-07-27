@@ -422,7 +422,10 @@ function restant(z){
     kpi('Veille préfectures', `${suivis}/101`, 'crawl borné, départements à risque') +
     kpi('Trouvailles de veille', (veille.stats && veille.stats.trouvailles) || 0, '');
 
+  // Version : lue dans les données générées (source unique = package.json).
+  // Le « 0.3.0 » en dur n'est qu'un filet si data.js n'a pas été régénéré.
   $('#pied').innerHTML =
+    `<b>feux.julienweb.fr v${esc(window.POC.version || '0.3.0')}</b> — ` +
     `Sources : Météo-France (Licence Ouverte 2.0) · NaviForest IGN + FCBA · sites préfectoraux. ` +
     `Contours : © contributeurs OpenStreetMap, ODbL. POC non officiel — ne remplace aucune publication préfectorale.`;
 })();

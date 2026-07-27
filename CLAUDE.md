@@ -9,7 +9,14 @@ Créé le 26/07/2026 depuis [Julienweb.fr](../Julienweb.fr/CLAUDE.md) (article #
 > Le paysage des sources et les commandes vivent dans [README.md](README.md).
 > Mettre à jour CE fichier à chaque session ; ne jamais réécrire HANDOFF.md.
 
-**Nature** : site statique sur le sous-domaine `feux.julienweb.fr` (nom validé, **non déployé**).
+**Version courante : `0.3.0`** — taguée `v0.3.0` le 27/07/2026. Historique et procédure de release :
+[CHANGELOG.md](CHANGELOG.md). La version vit dans `package.json` et **nulle part ailleurs à la
+main** : `node app/build-data.js` la recopie dans `app/data.js` + `app/feux-bulletin.js`, les deux
+pages l'affichent depuis là. Les `v0.3.0` en dur dans les HTML sont des filets, pas la source.
+
+**Nature** : site statique sur le sous-domaine `feux.julienweb.fr`. **Vérifié le 27/07/2026** : le
+sous-domaine **existe** (DNS + vhost OVH, `200 Apache`) mais sa **racine est vide** — la réponse est
+un « Index of / » sans un fichier. Rien de ce dépôt n'est publié, aucun automatisme de publication.
 Pas de WordPress. Statique d'abord, React seulement si l'interactivité le justifie.
 Scaling (machine dédiée OVH) volontairement repoussé : on le traite si le trafic arrive.
 
@@ -33,7 +40,7 @@ immuable. Le dossier d'origine n'existe plus.
 `feux-foret-carte` affirment une interdiction qui n'existe plus. Sujet de sécurité, préfecture citée
 nommément — à corriger le jour même.
 
-## État au 26/07/2026 — 7 commits, tout tourne
+## État au 27/07/2026 — v0.3.0, 10 commits, tout tourne
 
 | Brique | État |
 |---|---|
@@ -44,7 +51,7 @@ nommément — à corriger le jour même.
 | `data/zones-interdites.json` | ✅ 6 zones qualifiées à la main, sourcées |
 | `app/index.html` | ✅ POC 3 colonnes, marche en **double-clic**, sans serveur — fond IGN + sélecteur de fond |
 | `app/Feux - Vue principale.html` | ✅ écran 1 du design, carte SVG 2.5D, 59 Ko, **double-clic** |
-| `app/feux-bulletin.js` | ✅ 96 départements × 2 jours, 1,6 Ko, généré par `build-data.js` |
+| `app/feux-bulletin.js` | ✅ 96 départements × 2 jours, 2 Ko, généré par `build-data.js` (porte la version) |
 | `design/` | ✅ kit Claude Design — prompt, design system importable, données réelles, skills |
 
 `npm run collect` enchaîne tout et régénère le POC.

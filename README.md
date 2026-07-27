@@ -3,9 +3,14 @@
 Généralisation nationale de [feux-foret-carte](https://github.com/molokoloco/feux-foret-carte)
 (carte des massifs fermés autour de Fontainebleau, arrêté 77 n°2026/CAB/SIDPC/1223 du 24/07/2026).
 
+**Version `0.3.0`** — voir [CHANGELOG.md](CHANGELOG.md).
+
 **Objectif** : produire un flux JSON normalisé « où est-ce fermé, où est-ce dangereux », mis à jour
-tout seul, et l'afficher sur une carte statique. Cible de déploiement : sous-domaine statique de
-julienweb.fr (nom `feux.julienweb.fr` retenu par défaut, non déployé à ce jour — trivial à renommer).
+tout seul, et l'afficher sur une carte statique.
+
+**Déploiement, état réel au 27/07/2026** : le sous-domaine `feux.julienweb.fr` **existe** (DNS +
+vhost Apache/OVH, répond `200`) mais sa **racine est vide** — il renvoie un « Index of / » sans un
+seul fichier. Rien de ce dépôt n'y est publié, et aucune publication n'est automatisée.
 
 ---
 
@@ -276,7 +281,7 @@ il n'est pas là pour décorer.
 
 ---
 
-## État d'avancement
+## État d'avancement — v0.3.0
 
 - [x] Cartographie des sources (recherche documentée ci-dessus)
 - [x] Collecteur Météo des forêts — **fonctionnel, données du jour**
@@ -298,7 +303,11 @@ il n'est pas là pour décorer.
 - [ ] Fusion des sorties en un `arretes-forets-fr.json` unique et versionné
 - [ ] Cadrage carte : `fitBounds` dézoome à ~zoom 4,5 même après `invalidateSize()`, alors que la
       bbox du GeoJSON est saine. Contourné par un `setView` en dur. À élucider si le front se durcit
-- [ ] Automatisation quotidienne + déploiement sous-domaine
+- [x] **Écran 1 du design en vanilla** — carte SVG 2.5D, 59 Ko, double-clic (`app/Feux - Vue principale.html`)
+- [x] **Versionnage visible** — `package.json` seul point de vérité, propagé par `build-data.js`,
+      affiché dans le pied du POC et la barre de fenêtre de l'écran 1 ; `CHANGELOG.md` + tag `v0.3.0`
+- [ ] Automatisation quotidienne + **déploiement** : le sous-domaine existe, sa racine est vide —
+      rien n'est publié, il n'y a pas encore de commande de publication
 - [ ] Scaling : à reconsidérer seulement si le trafic l'impose (machine dédiée OVH)
 
 ---

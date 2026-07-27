@@ -14,6 +14,11 @@ const path = require('path');
 const RACINE = path.join(__dirname, '..');
 const lire = (p) => JSON.parse(fs.readFileSync(path.join(RACINE, p), 'utf8'));
 
+// Version affichée par les deux pages. Point de vérité unique : package.json.
+// Ne PAS la recopier à la main dans les HTML — le fallback en dur qui y figure
+// ne sert qu'au cas où le fichier généré manque (page ouverte sans collecte).
+const VERSION = lire('package.json').version;
+
 const geo = lire('app/departements.geojson');
 const mdf = lire('data/meteo-forets.json');
 const navi = lire('data/naviforest.json');
@@ -24,6 +29,7 @@ try { veille = lire('data/veille-prefectures.json'); } catch { /* veille pas enc
 
 // On n'embarque que ce dont la page a besoin : l'historique 14 jours reste dans data/.
 const paquet = {
+  version: VERSION,
   genere_le: new Date().toISOString(),
   geo,
   mdf: { bulletin_du: mdf.bulletin_du, bulletin: mdf.bulletin, stats: mdf.stats, avertissement: mdf.avertissement },
@@ -47,6 +53,7 @@ mdf.bulletin.forEach((d) => {
 });
 
 const bulletin = {
+  version: VERSION,
   genere_le: paquet.genere_le,
   bulletin_du: mdf.bulletin_du,
   avertissement: mdf.avertissement,
@@ -61,7 +68,7 @@ fs.writeFileSync(sortieBulletin, 'window.FEUX_BULLETIN = ' + JSON.stringify(bull
 
 const ko = Math.round(fs.statSync(sortie).size / 1024);
 console.log(
-  `✅ app/data.js — ${ko} Ko · bulletin ${paquet.mdf.bulletin_du} · ` +
+  `✅ app/data.js — v${VERSION} · ${ko} Ko · bulletin ${paquet.mdf.bulletin_du} · ` +
     `${paquet.geo.features.length} départements · ${paquet.navi.stats.arretes_total} arrêté(s) NaviForest · ` +
     `${paquet.veille.stats.trouvailles || 0} trouvaille(s) de veille`
 );
