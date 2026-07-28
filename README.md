@@ -325,8 +325,9 @@ il n'est pas là pour décorer.
   accès libre sans clé (attribution obligatoire)
 - feuxdeforet.fr — site tiers **audité, non consommé** : API privée, `403`/`401` sans autorisation
 
-Code : [MIT](LICENSE). Données : licences respectives des sources, détaillées dans le fichier
-[LICENSE](LICENSE). **Ce projet n'est pas officiel** et ne remplace aucune publication préfectorale.
+Code : [MIT](LICENSE). Données : licences respectives des producteurs (ODbL, Licence Ouverte 2.0,
+IGN), détaillées dans [LICENSE-DONNEES.md](LICENSE-DONNEES.md) avec l'avertissement à propager.
+**Ce projet n'est pas officiel** et ne remplace aucune publication préfectorale.
 
 ## Contribuer, signaler
 

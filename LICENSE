@@ -19,21 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
----
-
-La licence MIT ci-dessus couvre LE CODE de ce dépôt.
-
-Les DONNÉES qu'il collecte et redistribue relèvent de leurs licences propres :
-
-- Contours de massifs — © contributeurs OpenStreetMap, licence ODbL
-  https://www.openstreetmap.org/copyright
-- Météo des forêts — Météo-France, Licence Ouverte 2.0
-- Fonds de carte — © IGN / Géoplateforme, attribution obligatoire
-- Arrêtés préfectoraux — documents administratifs publics, cités et liés à leur
-  source officielle
-
-AVERTISSEMENT — Ce projet n'est pas officiel et ne remplace aucune publication
-préfectorale. Seul l'arrêté préfectoral publié fait foi. La « Météo des forêts »
-est un indicateur départemental indicatif : elle n'autorise ni n'interdit
-l'accès à un massif.

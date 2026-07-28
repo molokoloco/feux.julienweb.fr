@@ -19,7 +19,9 @@ en `noindex`. Pas de WordPress. Statique d'abord, React seulement si l'interacti
 Scaling (machine dédiée OVH) volontairement repoussé : on le traite si le trafic arrive.
 
 **Dépôt public depuis le 28/07/2026** : <https://github.com/molokoloco/feux.julienweb.fr>, licence
-MIT ([LICENSE](LICENSE) couvre aussi les licences de données). Conséquence permanente sur la façon
+MIT ([LICENSE](LICENSE) ; les licences de données vivent à part dans
+[LICENSE-DONNEES.md](LICENSE-DONNEES.md) — GitHub ne détecte la licence que si `LICENSE` contient le
+texte canonique **et rien d'autre**). Conséquence permanente sur la façon
 d'écrire ici — voir 🔒 dans « Mise en ligne » : **aucun identifiant, nom de cluster ou chemin absolu
 de docroot ne doit réapparaître dans un fichier versionné.**
 
