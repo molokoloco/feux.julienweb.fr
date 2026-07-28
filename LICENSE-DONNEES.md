@@ -15,6 +15,7 @@ l'attribution est obligatoire.
 | Météo des forêts (danger feu J+1/J+2) | Météo-France, via data.gouv.fr | **Licence Ouverte 2.0** | « Source : Météo-France » |
 | Arrêtés préfectoraux référencés | IGN + FCBA (NaviForest) | consultation, index non exhaustif | lien vers la source, jamais la seule référence |
 | Fonds de carte vectoriels PLAN.IGN | IGN / Géoplateforme | accès libre sans clé | « © IGN / Géoplateforme » |
+| Densité forestière du fond de carte (`app/foret-france.webp`) | IGN — **BD Forêt® V2** | **Licence Ouverte 2.0** | « Source : IGN — BD Forêt® V2 » |
 | Textes des arrêtés préfectoraux | préfectures de département | documents administratifs publics | cités et liés à leur PDF officiel |
 
 **Conséquence pratique de l'ODbL** : si vous réutilisez les contours de massifs et que vous les

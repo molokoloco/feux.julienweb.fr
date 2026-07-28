@@ -126,6 +126,46 @@ les sites préfectoraux depuis l'IP OVH ferait bannir **l'IP partagée avec juli
 « Politesse de crawl »). La collecte préfectorale reste donc locale ; seules les sources stables
 (CSV Météo-France, IGN) sont candidates à un rafraîchissement serveur.
 
+## Texture forestière du fond de carte — faite le 29/07/2026
+
+`npm run texture` produit `app/foret-france.webp` (1400 × 1303, **81 Ko**) : un **masque de
+luminance** de la densité forestière française, calé au pixel sur la carte 2.5D.
+
+Trois faits mesurés ce jour-là, à ne pas re-chercher :
+
+- **`app/feux-geo.js` est en Lambert-93 (EPSG:2154)** — établi en réajustant ses 93 départements sur
+  `departements.geojson` reprojeté : écart max **1,55 px SVG** (Corse-du-Sud), échelle isotrope à
+  0,3 % près. Web Mercator et équirectangulaire échouent d'un ordre de grandeur. Échelle :
+  **1 142,96 m par pixel SVG**. Emprise de la viewBox `0 0 1000 930.9` en EPSG:2154 :
+  X 99 460 → 1 242 422, Y 6 047 686 → 7 111 669.
+- **GDAL, QGIS et ogr2ogr ne sont pas installés, et on n'en a pas besoin** : le WMS de l'IGN
+  (`data.geopf.fr/wms-r/wms`) accepte `CRS=EPSG:2154` avec une bbox arbitraire et **reprojette côté
+  serveur**. Une requête, une image déjà cadrée. ⚠️ En WMS 1.3.0 la bbox est `Xmin,Ymin,Xmax,Ymax`
+  (est d'abord) — l'ordre inverse renvoie un `200` avec une image **vide**, pas une erreur.
+- **Le WMS ne sait pas rendre en WebP** (`400`). L'encodage final emprunte le `sharp` de l'app
+  img-optim ; absent, le script écrit un PNG et le dit. La page livrée garde zéro dépendance.
+
+Deux partis pris à ne pas « corriger » :
+
+- **C'est un masque, pas une texture couleur.** La teinte des faces porte déjà le niveau de danger ;
+  une texture colorée se battrait avec cette échelle et abîmerait la seule couche indicative de la
+  page. On ne garde que « y a-t-il de la forêt ici », le front le remplit d'un vert de la charte.
+- **C'est flou exprès.** À 1 143 m/px, BD Forêt est du bruit : 1,4 Mo en PNG, 536 Ko en WebP, et
+  illisible comme motif. Ce qu'on veut est une *densité*, pas la limite parcellaire d'un bois de
+  3 ha. Le lissage la fait apparaître et divise le poids par huit.
+
+Le script **remesure la calibration à chaque passage** et refuse de produire au-delà de 3 px
+d'écart : `feux-geo.js` vient de Claude Design, hors de ce dépôt, et une constante en dur poserait
+la texture de travers **en silence** le jour où le fichier revient recadré.
+
+`texture` n'est **pas** dans `npm run collect` : BD Forêt bouge au mieux une fois par an, et chaque
+passage frappe l'IGN. À relancer à la main quand `feux-geo.js` change, pas plus.
+
+⚠️ **Au déploiement de la V0.4** : le preset SFTP `poc` ne pousse aujourd'hui que
+`index.html, data.js, robots.txt, .htaccess` — hérité de la maquette autonome, qui embarquait tout.
+Il faudra y ajouter `foret-france.webp`, `feux-geo.js` et `feux-bulletin.js`, sans quoi la page
+déployée cherchera une texture absente. Le preset vit dans le `.deploy-ftp.json` hors dépôt.
+
 ## Mini-API PHP + cron — écrite et testée le 28/07/2026, pas encore déployée
 
 Vit dans [server/](server/SPEC.md). **Deux producteurs, un seul fichier public** :
@@ -253,8 +293,10 @@ data/        prefectures.json · massifs.json · zones-interdites.json (+ sortie
 app/         index.html (POC Leaflet) · Feux - Vue principale.html (écran 1, SVG 2.5D)
              build-data.js · departements.geojson · massifs.geojson
              feux-geo.js (géométries projetées) · feux-bulletin.js (niveaux, généré)
+             foret-france.webp (masque de densité forestière, généré, 81 Ko)
              robots.txt · .htaccess (déployés avec le POC)
 ops/         build-socle.js (produit data/socle.json, la part HUMAINE du flux)
+             build-texture.js (produit app/foret-france.webp — voir ci-dessous)
              scripts/_sftp_op.js (déploiement SFTP — aucun secret dedans)
 server/      mini-API PHP — SPEC.md · cron.php (CLI seul) · api.php · lib/feux.php
 mails/       2 brouillons — à relire et ENVOYER par Julien, rien n'est parti (HORS DÉPÔT)

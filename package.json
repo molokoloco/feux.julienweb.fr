@@ -15,6 +15,7 @@
     "veille": "node collectors/watch-prefectures.js",
     "poc": "node app/build-data.js",
     "socle": "node ops/build-socle.js",
+    "texture": "node ops/build-texture.js",
     "collect": "npm run meteo && npm run naviforest && npm run massifs && npm run veille && npm run poc && npm run socle"
   }
 }
