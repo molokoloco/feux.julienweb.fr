@@ -1,21 +1,52 @@
-# feux.julienweb.fr — arrêtés forêt & risque feu, en données exploitables
+# 🔥 Feux — Ce massif est-il fermé aujourd'hui ?
 
-Généralisation nationale de [feux-foret-carte](https://github.com/molokoloco/feux-foret-carte)
-(carte des massifs fermés autour de Fontainebleau, arrêté 77 n°2026/CAB/SIDPC/1223 du 24/07/2026).
+[![Node](https://img.shields.io/badge/node-%3E=18-339933?logo=node.js&logoColor=white)](https://nodejs.org)
+[![Zéro dépendance](https://img.shields.io/badge/dépendances-0-brightgreen)](package.json)
+[![Statut](https://img.shields.io/badge/statut-POC%20en%20ligne-orange)](https://feux.julienweb.fr)
+[![Version](https://img.shields.io/badge/version-0.3.0-blue)](CHANGELOG.md)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![Données](https://img.shields.io/badge/données-ODbL%20%C2%B7%20Licence%20Ouverte-lightgrey)](LICENSE-DONNEES.md)
+[![Made by](https://img.shields.io/badge/made%20by-JulienWeb.fr-5A4095)](https://julienweb.fr)
 
-**Version `0.3.0`** — voir [CHANGELOG.md](CHANGELOG.md).
+[![Carte des massifs fermés de Fontainebleau, Trois-Pignons et la Commanderie](https://github.com/molokoloco/feux.julienweb.fr/blob/main/archive/2026-07_fontainebleau/carte/apercu-2026-07-26.png?raw=true "Le cas fondateur : Fontainebleau, juillet 2026")](https://github.com/molokoloco/feux.julienweb.fr/blob/main/archive/2026-07_fontainebleau/carte/apercu-2026-07-26.png)
 
-**Objectif** : produire un flux JSON normalisé « où est-ce fermé, où est-ce dangereux », mis à jour
-tout seul, et l'afficher sur une carte statique.
+> **Les arrêtés préfectoraux de fermeture des forêts ne sont publiés nulle part sous forme de flux.**
+> Ce projet les collecte, les vérifie et les cartographie — pour que la question
+> « ai-je le droit d'aller marcher là, aujourd'hui ? » ait enfin une réponse lisible.
 
-**En ligne** : <https://feux.julienweb.fr> — depuis le 27/07/2026, volontairement en `noindex`
-tant que le POC n'est pas stabilisé (visible pour qui a l'URL, absent des moteurs). Ce qui y est
-publié aujourd'hui est la maquette de l'écran 1 ; la bascule sur l'application branchée aux
-collecteurs est en cours. La publication est manuelle, elle n'est pas encore automatisée.
+> 🌐 **En ligne** : [feux.julienweb.fr](https://feux.julienweb.fr) *(POC, volontairement en `noindex`)*
+> 📝 **Article d'origine** : [Forêt de Fontainebleau fermée : j'ai refait la carte que la préfecture n'a pas su publier](https://julienweb.fr/blog/foret-fontainebleau-fermee-carte/11311/)
+> 🌲 **Prédécesseur** : [molokoloco/feux-foret-carte](https://github.com/molokoloco/feux-foret-carte) — le cas Fontainebleau, figé
+
+| | |
+|---|---|
+| 🔎 **Sources** | Météo des forêts (Météo-France) · NaviForest (IGN + FCBA) · sites préfectoraux · OpenStreetMap |
+| 🗺️ **Couverture** | **96 départements** en danger feu · 27 arrêtés permanents · 6 zones d'interdiction qualifiées |
+| 🧭 **Modèle** | « quoi, de quand à quand » — dates, dérogations, abrogations, **confiance des dates** |
+| 🛡️ **Politesse** | disjoncteur anti-bannissement, cache disque, séquentiel, UA joignable |
+| 🖥️ **Front** | page autonome — **double-clic, sans serveur, sans build** |
+| ⚖️ **Doctrine** | l'automatisation détecte, **l'humain qualifie** |
+
+**Stack** : Node.js 18+ · **zéro dépendance npm** · Leaflet + MapLibre (CDN) · SVG 2.5D
 
 ---
 
-## Le constat qui justifie ce projet
+### ⚡ TL;DR
+
+```bash
+git clone https://github.com/molokoloco/feux.julienweb.fr.git
+cd feux.julienweb.fr
+npm run collect     # météo + naviforest + massifs + veille + build
+```
+
+Puis **double-clic sur `app/index.html`**. Aucun serveur, aucune dépendance à installer.
+
+> ⚠️ Avant de lancer `npm run collect`, lisez [🚨 La plateforme préfectorale bannit vite](#-la-plateforme-préfectorale-bannit-vite--leçon-payée-le-26072026).
+> Ce n'est pas une formule de style : l'IP de ce projet a été bannie en deux minutes.
+
+---
+
+### 🎯 Le problème
 
 La question de départ était : *« existe-t-il un flux structuré qui recense les arrêtés
 préfectoraux ? »*. Réponse, après vérification le 26/07/2026 : **non**, et ce n'est pas faute
@@ -40,30 +71,29 @@ porte la verticale*, jamais en transversal.
 
 ---
 
-## Architecture — deux étages
+### 🗺️ Architecture — quatre étages
 
-### Étage 1 : socle national, zéro scraping
+#### 1️⃣ Socle national, zéro scraping
 
 | Collecteur | Source | Ce qu'on obtient | Vérifié |
 |---|---|---|---|
-| `meteo-forets.js` | Météo-France via data.gouv | Danger feu J+1/J+2 par département, **96 départements**, Licence Ouverte 2.0, **sans clé API** | ✅ bulletin du jour |
-| `naviforest.js` | [NaviForest](https://naviforest.ign.fr/arretes-prefectoraux-acces-massifs-forestiers) (IGN + FCBA) | Arrêtés permanents (emploi du feu, brûlage) + date de fin de validité | ⚠️ **25/96 départements** |
+| [`meteo-forets.js`](collectors/meteo-forets.js) | Météo-France via data.gouv | Danger feu J+1/J+2 par département, **96 départements**, Licence Ouverte 2.0, **sans clé API** | ✅ bulletin du jour |
+| [`naviforest.js`](collectors/naviforest.js) | [NaviForest](https://naviforest.ign.fr/arretes-prefectoraux-acces-massifs-forestiers) (IGN + FCBA) | Arrêtés permanents (emploi du feu, brûlage) + date de fin de validité | ⚠️ **25/96 départements** |
 
-**La bonne surprise** : l'archive annuelle de la Météo des forêts
-(`mdf_2026.csv.gz`) est présentée comme un historique, mais elle est **rafraîchie
-quotidiennement** — dernière ligne = jour même, 14:50 UTC. C'est donc un vrai flux national
-quotidien, gratuit et sans inscription. L'API temps réel du portail Météo-France (avec clé
-applicative) devient inutile.
+**La bonne surprise** : l'archive annuelle de la Météo des forêts (`mdf_2026.csv.gz`) est présentée
+comme un historique, mais elle est **rafraîchie quotidiennement** — dernière ligne = jour même,
+14:50 UTC. C'est donc un vrai flux national quotidien, gratuit et sans inscription. L'API temps réel
+du portail Météo-France (avec clé applicative) devient inutile.
 
 **La mauvaise surprise** : NaviForest ne couvre que 25 départements sur 96, et **le 77 est vide** —
 l'arrêté Fontainebleau qui a lancé ce projet n'y figure pas. C'est un index, pas une source de
 vérité. L'IGN décline d'ailleurs explicitement toute responsabilité sur les omissions.
 
-### Étage 2 : événementiel, là où ça compte
+#### 2️⃣ Événementiel, là où ça compte
 
-`watch-prefectures.js` — crawl borné de la branche Actualités/Publications des sites préfectoraux,
-filtré par mots-clés (forêt/massif/incendie + arrêté/interdiction/restriction), avec état persistant
-pour ne signaler que le neuf.
+[`watch-prefectures.js`](collectors/watch-prefectures.js) — crawl borné de la branche
+Actualités/Publications des sites préfectoraux, filtré par mots-clés (forêt/massif/incendie +
+arrêté/interdiction/restriction), avec état persistant pour ne signaler que le neuf.
 
 Ce qui rend l'exercice tenable : **les 101 sites tournent sur le même CMS**.
 
@@ -75,266 +105,338 @@ Ce qui rend l'exercice tenable : **les 101 sites tournent sur le même CMS**.
 | `/rss.xml`, `/rss`, `/feed`, `/sitemap.xml`, `/robots.txt` | ❌ 404 |
 
 Un adaptateur + une table de domaines, pas 101 scrapers. Départements suivis :
-33, 40, 77, 83, 13, 30, 34, 66, 2A, 2B (cf. `data/prefectures.json`).
+33, 40, 77, 83, 13, 30, 34, 66, 2A, 2B (cf. [`data/prefectures.json`](data/prefectures.json)).
 
-#### ⚠️ La plateforme préfectorale bannit vite — leçon payée le 26/07/2026
+#### 3️⃣ Contours de massifs
 
-Premier jet du watcher : 400 ms de pause, 30 pages × 10 départements. **IP bannie en ~2 minutes.**
-Signature : connexion acceptée puis fermée sèchement — `curl` renvoie `000` en 0,1 s, Node renvoie
-`fetch failed` / `UND_ERR_SOCKET`. Le blocage frappe **tous les sites préfectoraux d'un coup**
-(plateforme mutualisée), pendant que `naviforest.ign.fr` continuait de répondre 200 : c'est bien un
-anti-crawl côté plateforme, pas une panne locale.
-
-Corrections appliquées :
-
-- défauts divisés : **8 pages, profondeur 2, 3 s de pause**, 20 s entre deux départements
-- backoff exponentiel (3 s → 9 s → 27 s) au lieu de linéaire
-- **disjoncteur** dans `_http.js` : à la 3ᵉ fermeture sèche sur un hôte, on abandonne ce département
-  proprement avec un diagnostic, au lieu d'empiler 22 échecs identiques et d'allonger le bannissement
-- `429` / `503` comptent aussi pour le disjoncteur
-
-**Règle d'usage** : un département à la fois (`--dep 33`), pas les dix d'affilée. La veille se pense
-en passages espacés (une fois par jour suffit largement pour un arrêté), pas en balayage.
-
-### Voisin à connaître : feuxdeforet.fr (audité le 26/07/2026)
-
-C'est le site grand public de référence sur les feux en cours. Il ne fait **pas** le même métier que
-ce projet, et il vaut la peine de savoir précisément où passe la frontière.
-
-**Architecture** — WordPress vitrine + plugin maison `fdf-bridge`, qui ne détient aucune donnée :
-il **proxifie** une API Laravel privée hébergée ailleurs.
-
-| Élément | Valeur |
-|---|---|
-| Backend réel | `https://fdfdata.fr/api/v1` (+ WebSockets Reverb pour le temps réel) |
-| Proxy same-origin | `https://feuxdeforet.fr/fdf/<endpoint>` — *« évite CORS vers fdfdata.fr »* (leur commentaire) |
-| Feux sur la carte | `GET /fdf/cartographie/geojson?scope=web` |
-| Rendu | **MapLibre GL** |
-
-Le GeoJSON : chaque feu est un `Point`, ou une `GeometryCollection` (point **+ polygone de
-contour**). Propriétés `statut` (`douteux` · `probable` · `valide_publie` · `cloture`),
-`etat` (`attaque` · `fixe` · `maitrise` · `eteint`), `contour_updated_at`, et `url`/`titre`
-**seulement si le feu est validé** — un feu non confirmé n'expose que son id et ses coordonnées.
-Bon réflexe éditorial, à reprendre.
-
-**D'où vient leur donnée : de chez eux, à la main.** Aucune trace de FIRMS, EFFIS, Copernicus ou
-VIIRS dans le JS chargé. Le pipeline est : signalement citoyen géolocalisé depuis l'app mobile
-(`com.montardy.feuxdeforet`) → modération humaine (`moderation/schema`, `signalements/{id}/moderation`)
-→ publication, avec une « main courante » horodatée par feu. Les `contour_updated_at` tombent sur
-`07:30:00` / `20:30:00` : saisie humaine, pas cadence machine. **C'est notre doctrine appliquée à un
-autre objet** — l'automatisation détecte, l'humain qualifie.
-
-**Fermé, vérifié le 26/07/2026** — et donc hors de portée sans accord écrit :
-
-```
-/fdf/cartographie/geojson  → 403 {"code":"fdf_proxy_forbidden"}   (nonce WP lié à la session)
-fdfdata.fr/api/v1/…        → 401 {"code":"unauthorized_client"}   (Bearer requis)
-```
-
-Scraper ça reviendrait à siphonner une base construite signalement par signalement par une
-communauté. Si on veut ces données un jour, c'est par mail — même démarche que Valabre.
-
-**Ouverts (200 sans auth)** : `/api/regions` (arbre régions → départements avec slugs) et
-`/fdf-bridge/data/pelicandromes.json` (GeoJSON des pélicandromes).
-
-**Ce qu'ils ne font pas** : les arrêtés, les fermetures de massifs, les périmètres réglementaires.
-Leur propre page « Météo des forêts » énonce mot pour mot notre avertissement — Météo-France + ONF,
-publication ~17 h pour J+1/J+2, *« ce n'est pas un arrêté d'interdiction, ce sont les préfectures qui
-réglementent ou ferment »*. Ils font **« où ça brûle maintenant »**, on fait **« où je n'ai pas le
-droit d'aller aujourd'hui »**. Aucun recouvrement : le lien naturel est croisé, pas concurrent.
-
-### Étage 3 : sous conditions
-
-`risque-prevention-incendie.fr` (Entente Valabre + préfectures méditerranéennes) publie le niveau
-d'accès **quotidien par massif et ZAPEF** — la maille la plus fine qui existe. La page charge ses
-données en asynchrone, donc un endpoint JSON existe. **On ne le tape pas sans autorisation** :
-données à valeur réglementaire, interdiction pénalement sanctionnée. Demande écrite en attente
-(brouillon conservé hors dépôt).
-
----
-
-## Commandes
-
-```bash
-node collectors/meteo-forets.js --fresh        # bulletin national du jour + 14 j d'historique
-```
-
-```bash
-node collectors/naviforest.js --fresh          # arrêtés permanents par département
-```
-
-```bash
-node collectors/watch-prefectures.js --dep 33  # veille sur UN département (recommandé)
-```
-
-Options communes : `--fresh` force le réseau (sinon cache disque 2-6 h).
-Watcher : `--pages 8 --depth 2 --pause 3000 --pause-dep 20000` (défauts).
-Ne pas remonter ces valeurs sans avoir lu l'encadré « bannissement » ci-dessous.
-
-Sorties dans `data/` : `meteo-forets.json`, `naviforest.json`, `veille-prefectures.json`.
-
-### Étage 4 : les contours de massifs, et ce qu'ils révèlent
-
-`massifs-osm.js` récupère les contours depuis OpenStreetMap, à partir du registre curaté
-`data/massifs.json`.
+[`massifs-osm.js`](collectors/massifs-osm.js) récupère les contours depuis OpenStreetMap, à partir
+du registre curaté [`data/massifs.json`](data/massifs.json).
 
 **Pourquoi curaté et pas automatique** : le nom d'un massif dans un arrêté ne correspond pas à un
 objet OSM. Vérifié le 26/07/2026 — « massif de Bavella » et « massif d'Illarata » n'existent dans
 OSM ni en relation ni en way (seulement un col, un village, des routes) ; les forêts voisines
 s'appellent « Forêt Territoriale de Tova » et « Forêt de Valdu ». Une correspondance devinée par nom
 produirait des contours faux sur un sujet où l'erreur vaut une amende. Un massif sans contour fiable
-est donc **conservé sans géométrie** et affiché comme tel : ne pas savoir dessiner une zone
-n'autorise pas à la taire.
+est donc **conservé sans géométrie** et affiché comme tel.
 
-Pièges Overpass, tous rencontrés :
+#### 4️⃣ Sous conditions — non consommé
 
-| Symptôme | Cause / remède |
+`risque-prevention-incendie.fr` (Entente Valabre + préfectures méditerranéennes) publie le niveau
+d'accès **quotidien par massif et ZAPEF** — la maille la plus fine qui existe. La page charge ses
+données en asynchrone, donc un endpoint JSON existe. **On ne le tape pas sans autorisation** :
+données à valeur réglementaire, interdiction pénalement sanctionnée. Demande écrite en attente.
+
+---
+
+### 🚨 La plateforme préfectorale bannit vite — leçon payée le 26/07/2026
+
+Premier jet du watcher : 400 ms de pause, 30 pages × 10 départements. **IP bannie en ~2 minutes.**
+
+Signature : connexion acceptée puis fermée sèchement — `curl` renvoie `000` en 0,1 s, Node renvoie
+`fetch failed` / `UND_ERR_SOCKET`. Le blocage frappe **tous les sites préfectoraux d'un coup**
+(plateforme mutualisée), pendant que `naviforest.ign.fr` continuait de répondre 200 : c'est bien un
+anti-crawl côté plateforme, pas une panne locale. Le ban est tombé au bout de ~6 minutes.
+
+Corrections appliquées dans [`collectors/_http.js`](collectors/_http.js) :
+
+- défauts divisés : **8 pages, profondeur 2, 3 s de pause**, 20 s entre deux départements
+- backoff exponentiel (3 s → 9 s → 27 s) au lieu de linéaire
+- **disjoncteur** : à la 3ᵉ fermeture sèche sur un hôte, on abandonne ce département proprement avec
+  un diagnostic, au lieu d'empiler 22 échecs identiques et d'allonger le bannissement
+- `429` / `503` comptent aussi pour le disjoncteur
+- User-Agent descriptif et **joignable**, cache disque, requêtes strictement séquentielles
+
+**Règles d'usage, non négociables :**
+
+| ✅ À faire | ❌ À ne pas faire |
 |---|---|
-| `406` | User-Agent générique type Mozilla → UA descriptif obligatoire |
-| « Query timed out after 64 seconds » | regex de nom non bornée géographiquement → borner par id ou bbox |
-| Réponse XML au lieu de JSON | `overpass-api.de` saturé → bascule automatique sur miroir |
-| Géométrie éclatée ou vide | ne PAS recoller les anneaux soi-même (81 anneaux incohérents pour Fontainebleau, zéro pour la Commanderie) → `polygons.openstreetmap.fr` assemble côté serveur |
+| Un département à la fois (`--dep 33`) | Les dix d'affilée |
+| Un passage par jour | Une boucle horaire |
+| Attendre des dizaines de minutes après un `000` | Insister — ça allonge le ban |
+| Garder les valeurs par défaut | Remonter les compteurs « pour tester plus vite » |
 
-### Interdictions : quoi, de quand à quand
+---
 
-`data/zones-interdites.json` répond à la seule question qui compte sur le terrain. Le modèle est
-conçu pour la réalité des arrêtés, pas pour un cas idéal :
+### 🧭 Doctrine — ce qui n'est pas négociable
 
-- `fin: null` + `fin_condition` — beaucoup d'arrêtés ne fixent **aucune date de fin**
-  (ex. Trois Pignons : « jusqu'à la fin de la vigilance rouge canicule »)
-- `abroge_par` — une interdiction peut être levée en trois jours (Bavella : 17/07 → 20/07)
-- `derogations` — ce qui reste autorisé malgré l'interdiction, souvent l'info la plus utile
-- `confiance_dates` — distingue **« l'arrêté ne fixe pas de terme »** (fait vérifié → *INTERDIT sans
-  terme*) de **« nous n'avons pas lu l'arrêté »** (→ *statut incertain*). Ne jamais confondre les deux.
+**1. Météo des forêts ≠ autorisation d'accès.** Indicateur *indicatif* et *départemental*. Seul
+l'**arrêté préfectoral zonal** est opposable. Des gens se font verbaliser chaque année à cause de
+cette confusion.
 
-Le statut est **recalculé à l'ouverture de la page** : le champ `statut` du JSON est celui constaté
-au relevé, il vieillit.
+**2. L'automatisation s'arrête à la détection, la qualification reste humaine.** Les dates ne sont
+pas sur les pages, elles sont dans des PDF **scannés**. Extraire une date de fin par OCR sans
+relecture, quand une amende en dépend, n'est pas acceptable.
 
-**Pourquoi le remplissage est manuel** : les dates ne sont pas sur la page d'actualité, elles sont
-dans le PDF, et ces PDF sont scannés — `pdftotext` a rendu **32 octets** sur l'arrêté Illarata.
-Lecture faite par rendu Ghostscript 150 dpi + vision, comme sur feux-foret-carte. Extraire une date
-de fin d'un PDF scanné sans relecture humaine, quand une amende en dépend, n'est pas acceptable :
-**l'automatisation s'arrête à la détection, la qualification reste humaine.**
+**3. Ne jamais confondre ces deux cas :**
 
-### POC local
+| Cas | Nature | Statut affiché |
+|---|---|---|
+| « l'arrêté ne fixe pas de terme » | **fait vérifié** | *INTERDIT sans terme* |
+| « nous n'avons pas lu l'arrêté » | **doute** | *statut incertain* |
 
-```bash
-node app/build-data.js
+C'est le champ `confiance_dates`. Confondre les deux, c'est soit rassurer à tort, soit crier au loup.
+
+**4. Une zone sans contour reste affichée.** Ne pas savoir dessiner un périmètre n'autorise pas à
+taire l'interdiction.
+
+**5. Jamais de correspondance devinée** entre un nom d'arrêté et un objet cartographique.
+
+---
+
+### 📁 Structure du projet
+
+```
+collectors/          — les collecteurs, un fichier par source
+  _http.js           — lib HTTP : cache, backoff, disjoncteur anti-bannissement
+  meteo-forets.js    — Météo des forêts, 96 départements, CSV data.gouv
+  naviforest.js      — arrêtés permanents IGN + FCBA
+  watch-prefectures.js — veille bornée des sites préfectoraux
+  massifs-osm.js     — contours OSM via Overpass + polygons.openstreetmap.fr
+data/                — registres curatés + sorties de collecte
+  prefectures.json   — table des domaines préfectoraux
+  massifs.json       — registre curaté nom d'arrêté → objet OSM (saisi à la main)
+  zones-interdites.json — les interdictions qualifiées : quoi, de quand à quand
+app/                 — le front, autonome
+  index.html         — la page déployée
+  index-collecteurs.html — l'app branchée sur data.js (repli)
+  Feux - Vue principale.html — écran 1 du design, SVG 2.5D
+  build-data.js      — embarque data/*.json dans app/data.js (CORS file://)
+  feux-geo.js        — géométries projetées · feux-bulletin.js — niveaux (généré)
+  robots.txt · .htaccess — déployés avec le POC
+design/              — kit Claude Design : prompts, design system, données réelles
+archive/             — le cas fondateur Fontainebleau, figé (arrêté, OCR, cartes)
+skills/              — snapshots locaux des procédures (déploiement, wrap-up)
+ops/scripts/         — helper de déploiement SFTP (aucun secret dedans)
 ```
 
-Puis **double-clic sur `app/index.html`**. Aucun serveur, aucune dépendance à installer.
+---
+
+### 🔄 Pipeline A → Z
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  1. COLLECTE            npm run collect                      │
+│                                                              │
+│  meteo-forets.js   ──►  data/meteo-forets.json               │
+│  naviforest.js     ──►  data/naviforest.json                 │
+│  massifs-osm.js    ──►  app/massifs.geojson                  │
+│  watch-prefectures ──►  data/veille-prefectures.json         │
+│                              │                               │
+│                              ▼                               │
+│     ┌── QUALIFICATION HUMAINE ─────────────────────────┐    │
+│     │  Le watcher signale une page « candidate ».      │    │
+│     │  Un humain ouvre le PDF de l'arrêté :            │    │
+│     │    · pdftotext → 32 octets (le PDF est scanné)   │    │
+│     │    · Ghostscript 150 dpi → PNG → lecture vision  │    │
+│     │    · relecture ligne à ligne contre le scan      │    │
+│     │              ▼                                    │    │
+│     │  data/zones-interdites.json  (saisi à la main)   │    │
+│     │  + confiance_dates : verifiee | doute            │    │
+│     └───────────────────────────────────────────────────┘    │
+│                              │                               │
+│  2. BUILD               node app/build-data.js               │
+│                              │                               │
+│         data/*.json  ──►  app/data.js  (window.POC)          │
+│                              │                               │
+│  3. AFFICHAGE           double-clic sur app/index.html       │
+│                              ▼                               │
+│     Statut recalculé à l'ouverture · péremption auto  ✅     │
+└──────────────────────────────────────────────────────────────┘
+```
+
+> Le statut stocké dans le JSON est celui **constaté au relevé** : il vieillit. La page le recalcule
+> à chaque ouverture, sinon elle afficherait une interdiction expirée comme si elle courait encore.
+
+---
+
+### 🧩 Le modèle « quoi, de quand à quand »
+
+[`data/zones-interdites.json`](data/zones-interdites.json) répond à la seule question qui compte sur
+le terrain. Le modèle est conçu pour la réalité des arrêtés, pas pour un cas idéal :
+
+| Champ | Pourquoi il existe |
+|---|---|
+| `fin: null` + `fin_condition` | beaucoup d'arrêtés ne fixent **aucune date de fin** (ex. Trois Pignons : « jusqu'à la fin de la vigilance rouge canicule ») |
+| `abroge_par` | une interdiction peut être levée en trois jours (Bavella : 17/07 → 20/07) |
+| `derogations` | ce qui reste autorisé malgré l'interdiction — souvent l'info la plus utile |
+| `confiance_dates` | distingue le **fait vérifié** du **doute** (cf. doctrine n°3) |
+| `avertissement` | l'avertissement doctrinal, transporté dans la donnée elle-même |
+
+---
+
+### 🖥️ Le front — autonome par conception
+
+**Pourquoi les données sont embarquées** : sur `file://`, CORS bloque la lecture des JSON locaux.
+`node app/build-data.js` les injecte donc dans `app/data.js` (`window.POC`). La page marche en
+double-clic, sans serveur, sans build, sans compte — comme [feux-foret-carte](https://github.com/molokoloco/feux-foret-carte).
 
 Le sujet de la page, c'est **l'interdiction** — la météo n'est que le fond de carte :
 
 - panneau **« Zones interdites »** en tête, trié par urgence : *INTERDIT* → *sans terme* →
   *statut incertain* → *levée* / *expirée*
-- chaque zone affiche sa **période en clair** (« du 24 au 31 juillet 2026 inclus · encore 5 jours »,
-  « depuis le 17 juillet 2026 — aucune date de fin dans l'arrêté »), son numéro d'arrêté, ses
-  dérogations dépliables, et un lien direct vers l'arrêté
-- **contours de massifs** superposés en rouge, cliquables ; bouton *Zoomer sur les zones interdites*
-- le fond départemental **s'efface au zoom** pour ne pas masquer les massifs
+- chaque zone affiche sa **période en clair**, son numéro d'arrêté, ses dérogations dépliables et un
+  lien direct vers l'arrêté
+- **contours de massifs** superposés en rouge, cliquables ; le fond départemental s'efface au zoom
 - les zones **sans contour cartographiable** restent listées, avec la raison
 
-Sous le panneau : détail départemental au survol (niveaux J+1/J+2, arrêtés NaviForest, trouvailles
-de veille) et indicateurs de couverture des sources.
+#### Fonds de carte — IGN Géoplateforme, vectoriel, sans clé
 
-#### Fonds de carte — IGN Géoplateforme, vecteur, sans clé
-
-Piste rapportée de l'audit de feuxdeforet.fr : l'**IGN sert les tuiles vectorielles PLAN.IGN en
-libre accès**, sans clé ni compte ni inscription, avec `Access-Control-Allow-Origin: *` — donc
-utilisable depuis `file://`. Quatre styles prêts à l'emploi, tous vérifiés en `200` le 26/07/2026 :
+L'**IGN sert les tuiles vectorielles PLAN.IGN en libre accès**, sans clé ni compte, avec
+`Access-Control-Allow-Origin: *` — donc utilisable depuis `file://`. Quatre styles, tous vérifiés
+en `200` le 26/07/2026 :
 
 ```
 https://data.geopf.fr/annexes/ressources/vectorTiles/styles/PLAN.IGN/{attenue|gris|classique|standard}.json
 https://data.geopf.fr/tms/1.0.0/PLAN.IGN/{z}/{x}/{y}.pbf
 ```
 
-Le style est autoporté (glyphes et sprites également sur `data.geopf.fr`), 425 couches.
 **`attenue` est retenu par défaut** : désaturé, donc les massifs interdits en rouge ressortent, et
-contrairement au fond CARTO sombre on lit les **noms de forêts et les routes d'accès** — exactement
-l'information dont a besoin quelqu'un qui vérifie s'il peut aller marcher. Il monte au **zoom 18**
-là où CARTO plafonnait à 12, ce qui rend enfin lisible un périmètre de massif.
-
-Rendu dans Leaflet via `maplibre-gl` + `@maplibre/maplibre-gl-leaflet` (deux CDN, chargés de façon
-non bloquante : si l'un tombe, la page retombe seule sur CARTO). Un sélecteur de fond en haut à
-droite laisse basculer entre les deux.
-
-⚠️ **On tape data.geopf.fr en direct, jamais `tiles.fdfdata.fr`.** feuxdeforet.fr réécrit toutes les
-URL IGN vers son propre cache — c'est leur bande passante, pas un CDN public. Le style « transparent »
-qu'ils exposent n'est d'ailleurs rien d'autre que PLAN.IGN avec la couche de fond retirée, pour le
-superposer à l'ortho-photo : reproductible en trois lignes à partir de la source IGN.
-
-Même parti pris que `feux-foret-carte` : les données sont **embarquées** dans `app/data.js`
-(`window.POC`) plutôt que chargées en `fetch()` — sur `file://`, CORS bloque la lecture des JSON
-locaux. Régénérer `data.js` après chaque collecte.
+contrairement à un fond sombre on lit les **noms de forêts et les routes d'accès** — exactement
+l'information dont a besoin quelqu'un qui vérifie s'il peut aller marcher. Il monte au **zoom 18**.
 
 ---
 
-## L'avertissement qui n'est pas négociable
+### 🕳️ Pièges déjà payés — ne pas les repayer
 
-La **Météo des forêts** est un indicateur **indicatif et départemental**. Elle ne dit pas si un
-massif est ouvert ou fermé. Seul **l'arrêté préfectoral zonal** autorise ou interdit l'accès.
-
-Des gens se font verbaliser chaque année à cause de cette confusion, et les amendes ne sont pas
-symboliques. Tout affichage issu de ce projet doit porter l'avertissement de façon aussi visible que
-la donnée elle-même. Les collecteurs le propagent déjà dans le JSON (champ `avertissement`) :
-il n'est pas là pour décorer.
+| Symptôme | Cause / remède |
+|---|---|
+| Overpass renvoie `406` | User-Agent générique type Mozilla → **UA descriptif obligatoire** |
+| « Query timed out after 64 seconds » | regex de nom non bornée → borner par id ou bbox |
+| Réponse XML au lieu de JSON | `overpass-api.de` saturé → bascule sur un miroir |
+| Géométrie éclatée ou vide | **ne PAS recoller les anneaux soi-même** (81 anneaux incohérents pour Fontainebleau, zéro pour la Commanderie) → `polygons.openstreetmap.fr` assemble côté serveur |
+| `pdftotext` rend 32 octets | le PDF est **scanné** → Ghostscript `-sDEVICE=png16m -r150` puis lecture visuelle |
+| `fetch()` d'un JSON local échoue | CORS sur `file://` → données embarquées via `build-data.js` |
+| `fitBounds` dézoome à ~4,5 au chargement | bug ouvert, contourné par un `setView` en dur — `fitBounds` déclenché par un clic fonctionne |
 
 ---
 
-## État d'avancement — v0.3.0
+### 🏘️ Le voisin à connaître — feuxdeforet.fr
+
+Site grand public de référence sur les feux **en cours**. Il ne fait **pas** le même métier, et il
+vaut la peine de savoir où passe la frontière.
+
+|  | feuxdeforet.fr | ce projet |
+|---|---|---|
+| Question traitée | **« où ça brûle maintenant »** | **« où je n'ai pas le droit d'aller aujourd'hui »** |
+| Donnée | signalements citoyens modérés à la main | arrêtés préfectoraux + danger météo |
+| Accès | API privée — `403` / `401` sans autorisation | ouvert |
+
+Aucun recouvrement : le lien naturel est croisé, pas concurrent. Leur pipeline est d'ailleurs
+**notre doctrine appliquée à un autre objet** — signalement citoyen, puis modération humaine, puis
+publication. Audité le 26/07/2026, **non consommé** : scraper leur base reviendrait à siphonner un
+travail communautaire. Si on veut ces données un jour, c'est par mail.
+
+---
+
+### ✅ État d'avancement — v0.3.0
 
 - [x] Cartographie des sources (recherche documentée ci-dessus)
-- [x] Collecteur Météo des forêts — **fonctionnel, données du jour**
+- [x] Collecteur Météo des forêts — **fonctionnel**, 96 départements, données du jour
 - [x] Parseur NaviForest — **fonctionnel**, 27 arrêtés / 25 départements
-- [x] Watcher préfectures — **fonctionnel** (a trouvé « Vigilance ORANGE feu de forêt reconduite en
-      Gironde » du 16/07/2026), puis **durci** après bannissement de l'IP. Le passage sur les 10
-      départements reste à rejouer une fois le blocage retombé
-- [x] Disjoncteur anti-bannissement (`_http.js`) — testé sous blocage réel
-- [x] Brouillons de demande : Valabre + référent ReAcT
-- [x] **POC carto local** — Leaflet, 96 départements, données embarquées, marche en double-clic
-- [x] **Fond IGN Plan atténué** (vecteur, Géoplateforme, sans clé) — sélecteur de fond, zoom 18,
-      noms de forêts et routes d'accès enfin lisibles sous le périmètre d'interdiction
+- [x] Watcher préfectures — **fonctionnel** (28 trouvailles, 0 erreur), puis **durci** après bannissement
+- [x] Disjoncteur anti-bannissement — testé sous blocage réel
+- [x] **POC carto local** — Leaflet, 96 départements, données embarquées, double-clic
+- [x] **Fond IGN Plan atténué** — vectoriel, sans clé, zoom 18
 - [x] **Contours de massifs OSM** — Fontainebleau, Trois Pignons, Commanderie (204 / 16 / 34 polygones)
 - [x] **Modèle « de quand à quand »** — périodes, dérogations, statut recalculé, abrogations
-- [x] **Kit Claude Design** (`design/`) — prompt maître, design system importable, échantillon de
-      données réelles généré depuis `data/`, inventaire skills/MCP. Rien de maquetté à ce jour
-- [ ] Contours des massifs corses (Bavella, Illarata–Taglio Rosso) : absents d'OSM, à tracer depuis
-      les cartes annexées aux arrêtés — c'est le même travail manuel que pour Fontainebleau
+- [x] **Écran 1 en vanilla** — carte SVG 2.5D, 59 Ko, double-clic
+- [x] **Mise en ligne** — [feux.julienweb.fr](https://feux.julienweb.fr), en `noindex`
 - [ ] Fusion des sorties en un `arretes-forets-fr.json` unique et versionné
-- [ ] Cadrage carte : `fitBounds` dézoome à ~zoom 4,5 même après `invalidateSize()`, alors que la
-      bbox du GeoJSON est saine. Contourné par un `setView` en dur. À élucider si le front se durcit
-- [x] **Écran 1 du design en vanilla** — carte SVG 2.5D, 59 Ko, double-clic (`app/Feux - Vue principale.html`)
-- [x] **Versionnage visible** — `package.json` seul point de vérité, propagé par `build-data.js`,
-      affiché dans le pied du POC et la barre de fenêtre de l'écran 1 ; `CHANGELOG.md` + tag `v0.3.0`
-- [ ] Automatisation quotidienne + **déploiement** : le sous-domaine existe, sa racine est vide —
-      rien n'est publié, il n'y a pas encore de commande de publication
-- [ ] Scaling : à reconsidérer seulement si le trafic l'impose (machine dédiée OVH)
+- [ ] Contours des massifs corses (Bavella, Illarata) — absents d'OSM, à tracer à la main
+- [ ] Mini-API PHP + cron pour un rafraîchissement quotidien côté serveur
+- [ ] Automatisation de la publication
 
 ---
 
-## Sources & licences
+### 📜 Sources & licences
 
-- Météo des forêts — Météo-France, [archives sur data.gouv.fr](https://www.data.gouv.fr/datasets/archives-de-la-meteo-des-forets), Licence Ouverte 2.0
-- NaviForest — [IGN + FCBA](https://naviforest.ign.fr/arretes-prefectoraux-acces-massifs-forestiers)
-- Arrêtés préfectoraux — sites `<departement>.gouv.fr`, seul l'arrêté publié fait foi
-- Précédent VigiEau — [API](https://github.com/MTES-MCT/vigieau-api) · [dataset](https://www.data.gouv.fr/datasets/donnee-secheresse-vigieau)
-- ReAcT — [fiche beta.gouv.fr](https://beta.gouv.fr/startups/re-ac-t.html)
-- Contours : © contributeurs [OpenStreetMap](https://www.openstreetmap.org/copyright), ODbL
-- Fond de carte — © IGN / [Géoplateforme](https://data.geopf.fr), tuiles vectorielles PLAN.IGN,
-  accès libre sans clé (attribution obligatoire)
-- feuxdeforet.fr — site tiers **audité, non consommé** : API privée, `403`/`401` sans autorisation
+**Code : [MIT](LICENSE).** Les **données** restent sous la licence de leur producteur — détail,
+attribution et conséquences pratiques dans **[LICENSE-DONNEES.md](LICENSE-DONNEES.md)**.
 
-Code : [MIT](LICENSE). Données : licences respectives des producteurs (ODbL, Licence Ouverte 2.0,
-IGN), détaillées dans [LICENSE-DONNEES.md](LICENSE-DONNEES.md) avec l'avertissement à propager.
-**Ce projet n'est pas officiel** et ne remplace aucune publication préfectorale.
+| Donnée | Producteur | Licence |
+|---|---|---|
+| Contours de massifs | contributeurs OpenStreetMap | **ODbL** |
+| Météo des forêts | Météo-France (data.gouv.fr) | **Licence Ouverte 2.0** |
+| Fonds de carte PLAN.IGN | IGN / Géoplateforme | accès libre, attribution obligatoire |
+| Arrêtés référencés | IGN + FCBA (NaviForest) | index non exhaustif |
+| Textes des arrêtés | préfectures de département | documents administratifs publics |
 
-## Contribuer, signaler
+---
+
+### ⚠️ L'avertissement qui n'est pas négociable
+
+> La **Météo des forêts** est un indicateur **indicatif et départemental**. Elle ne dit pas si un
+> massif est ouvert ou fermé. Seul **l'arrêté préfectoral zonal** autorise ou interdit l'accès.
+
+Des gens se font verbaliser chaque année à cause de cette confusion, et les amendes ne sont pas
+symboliques. Tout affichage issu de ce projet doit porter l'avertissement de façon **aussi visible
+que la donnée elle-même**. Les collecteurs le propagent déjà dans le JSON (champ `avertissement`) :
+il n'est pas là pour décorer, et le retirer à l'affichage est un contresens.
+
+---
+
+### 🛡️ Disclaimer
+
+> **Ce projet n'est pas officiel et ne remplace aucune publication préfectorale.**
+
+En utilisant, copiant, forkant ou adaptant ce code, vous acceptez ce qui suit :
+
+1. **Seul l'arrêté fait foi** — les données présentées ici sont une reconstruction à partir de
+   sources publiques. En cas de divergence, de doute, ou tout simplement de zone limitrophe, c'est
+   le texte de l'arrêté préfectoral publié qui s'applique, pas cette carte.
+
+2. **Aucune garantie d'exhaustivité** — la couverture est partielle et le reste : NaviForest ne
+   couvre que 25 départements sur 96, la veille ne suit que 10 départements, et une interdiction
+   peut être publiée sans que ce projet la détecte. **L'absence d'arrêté affiché ne signifie pas
+   que l'accès est autorisé.**
+
+3. **Responsabilité personnelle** — vous êtes seul responsable de vos décisions d'accès à un massif
+   forestier et de leurs conséquences, y compris pénales. L'auteur ne peut être tenu responsable
+   d'une amende, d'un dommage ou d'un accident.
+
+4. **Politesse de crawl** — si vous forkez les collecteurs, respectez les limites qui y sont
+   codées. Elles ne sont pas prudentielles, elles sont **empiriques** : l'IP de ce projet a été
+   bannie en deux minutes pour les avoir sous-estimées.
+
+5. **Usage raisonnable** — ce dépôt est publié pour que d'autres puissent refaire l'exercice sur
+   leur département, pas pour marteler les serveurs de l'État.
+
+**TL;DR** — En cas de doute, lisez l'arrêté. Cette carte vous aide à le trouver, elle ne le remplace pas. 🌲
+
+---
+
+### 🤝 Contribuer & signaler
 
 Une zone mal cartographiée, un arrêté manquant, une date fausse : ouvrez une
-[issue](https://github.com/molokoloco/feux.julienweb.fr/issues). Sur ce sujet, une erreur de
-donnée peut coûter une amende à quelqu'un — les corrections sont les bienvenues et prioritaires.
+[issue](https://github.com/molokoloco/feux.julienweb.fr/issues). Sur ce sujet, une erreur de donnée
+peut coûter une amende à quelqu'un — les corrections sont prioritaires.
 
-Ce dépôt ne contient **aucun identifiant ni secret de déploiement**, par construction : la
-configuration de publication vit hors dépôt, et l'historique a été purgé le 28/07/2026 des détails
-d'infrastructure qui s'y étaient glissés (nom de cluster, utilisateur SFTP, chemin de docroot).
+Particulièrement bienvenus : les **contours de massifs corses** (Bavella, Illarata–Taglio Rosso),
+absents d'OpenStreetMap et à tracer depuis les cartes annexées aux arrêtés.
+
+> 🔐 Ce dépôt ne contient **aucun identifiant ni secret de déploiement**, par construction : la
+> configuration de publication vit hors dépôt, et l'historique a été purgé le 28/07/2026 des détails
+> d'infrastructure qui s'y étaient glissés.
+
+---
+
+### 👤 Auteur
+
+**Julien Guézennec** — Développeur web freelance & consultant IA depuis 1998
+🌐 [JulienWeb.fr](https://julienweb.fr) · 📍 Pantin (93), France · Activateur **France Num** certifié · référencé **Cyber.gouv.fr**
+
+Studio web indépendant spécialisé en **développement WordPress**, **SEO/GEO local**,
+**e-commerce**, **Google/Facebook Ads** et **formation numérique** pour artisans,
+indépendants et TPE de **Seine-Saint-Denis** et du Grand Paris.
+
+> 💡 Ce projet illustre une conviction de métier : **une information publique illisible est une
+> information qui n'existe pas**. Les polygones des massifs sont publics depuis des années, les
+> arrêtés sont des documents publics — il manquait juste que quelqu'un branche les deux.
+> Besoin de rendre vos données exploitables ?
+> 👉 [julienweb.fr/contacter-julienweb-fr](https://julienweb.fr/contacter-julienweb-fr/)
+
+📬 Newsletter IA : **La Gueznet IA** — la veille hebdo sur l'IA appliquée au web et au commerce local.
+
+---
+
+<sub>Écrit à Pantin (93) avec ☕, Node.js et beaucoup de PDF scannés · © 2026 Julien Guézennec — JulienWeb.fr</sub>
