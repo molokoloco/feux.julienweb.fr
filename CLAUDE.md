@@ -126,6 +126,44 @@ les sites préfectoraux depuis l'IP OVH ferait bannir **l'IP partagée avec juli
 « Politesse de crawl »). La collecte préfectorale reste donc locale ; seules les sources stables
 (CSV Météo-France, IGN) sont candidates à un rafraîchissement serveur.
 
+## Mini-API PHP + cron — écrite et testée le 28/07/2026, pas encore déployée
+
+Vit dans [server/](server/SPEC.md). **Deux producteurs, un seul fichier public** :
+
+- **poste local (Node)** → `npm run socle` produit `data/socle.json` : zones qualifiées à la main,
+  registre des massifs, veille préfectorale, avertissements. Poussé par SFTP. **PHP ne l'écrit
+  jamais**, il le lit, le valide *fail closed* et refuse de publier s'il est incomplet ;
+- **serveur (PHP, 1×/jour, CLI)** → `server/cron.php` télécharge les deux seules sources autorisées,
+  fusionne avec le socle et écrit `data/arretes.json` de façon atomique (temporaire + `rename`) ;
+- **Apache** sert `data/arretes.json` en statique. Zéro PHP dans le chemin critique.
+
+**Aucun site préfectoral n'est jamais interrogé depuis le serveur** — liste blanche d'hôtes qui
+refuse l'URL avant de l'ouvrir. Le bannissement du 26/07 a coûté 6 minutes en local ; depuis l'IP
+OVH, il coûterait un dossier abuse au nom de l'entreprise et la réputation de l'IP qui expédie le
+courrier client de julienweb.fr. Et le gain serait nul : la veille produit des *candidats* qu'un
+humain doit lire, pas de la donnée publiable.
+
+Arbitrages tranchés, à ne pas re-arbitrer :
+
+| Question | Tranché |
+|---|---|
+| `statut_calcule` côté serveur | **Jeté.** Le front recalcule déjà le statut à l'ouverture. Deux implémentations de la même règle, dans deux langages, sur un champ qui conditionne une amende = dérive garantie |
+| NaviForest depuis le serveur | **Gardé**, 1 req/jour en conditionnel. L'IGN répondait `200` pendant le blocage du 26/07. Retrait = une ligne |
+| CORS ouvert sur `arretes.json` | **Assumé.** Le `noindex` protège la page, pas la donnée ; le flux réutilisable est l'objectif affiché |
+| Déclencheur web du cron | **Supprimé**, secret compris. CLI uniquement. Un secret qui n'existe pas ne fuit pas |
+
+**Vérifié en local le 28/07** : `php -l` passe sur les trois fichiers, et un passage complet a produit
+un `arretes.json` de 53 Ko — bulletin du jour sur 96 départements, 30 arrêtés, 0 dégradation, les 6
+zones avec `confiance_dates` et `avertissement` intacts, et **aucun** `statut_calcule`.
+PHP n'est pas au PATH : le binaire utilisé est celui de Local by Flywheel
+(`~/AppData/Roaming/Local/lightning-services/php-8.2.27+1/bin/win64/php.exe`), à lancer avec
+`-d extension=php_curl.dll -d extension=php_openssl.dll -d curl.cainfo=<bundle CA de Git>` — sans
+quoi il échoue sur la vérification du certificat. **Le code refuse alors de publier plutôt que de
+désactiver la vérification** : c'est voulu, ne pas le « corriger ».
+
+⚠️ Le `.htaccess` durci se pousse **avant** les fichiers PHP. Refuser l'accès à un fichier absent est
+sans effet ; le refuser à un fichier déjà en ligne est trop tard.
+
 ## Doctrine — ce qui n'est pas négociable
 
 **1. Météo des forêts ≠ autorisation d'accès.** Indicateur *indicatif*, *départemental*. Seul
@@ -216,7 +254,9 @@ app/         index.html (POC Leaflet) · Feux - Vue principale.html (écran 1, S
              build-data.js · departements.geojson · massifs.geojson
              feux-geo.js (géométries projetées) · feux-bulletin.js (niveaux, généré)
              robots.txt · .htaccess (déployés avec le POC)
-ops/scripts/ _sftp_op.js (déploiement SFTP — aucun secret dedans)
+ops/         build-socle.js (produit data/socle.json, la part HUMAINE du flux)
+             scripts/_sftp_op.js (déploiement SFTP — aucun secret dedans)
+server/      mini-API PHP — SPEC.md · cron.php (CLI seul) · api.php · lib/feux.php
 mails/       2 brouillons — à relire et ENVOYER par Julien, rien n'est parti (HORS DÉPÔT)
 skills/      snapshots locaux des skills globaux (index README.md)
 ```

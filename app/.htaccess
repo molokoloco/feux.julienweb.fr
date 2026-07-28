@@ -1,34 +1,141 @@
 # feux.julienweb.fr — hébergement mutualisé Apache. Ce fichier est public :
 # n'y écrire ni identifiant, ni nom de cluster, ni chemin absolu du docroot.
+#
+# Il couvre le front statique ET le flux JSON produit par server/cron.php.
+# Les protections des scripts internes sont posées AVANT que ces scripts soient
+# déployés : refuser l'accès à un fichier absent est sans effet, refuser l'accès
+# à un fichier qu'on vient de téléverser est trop tard.
+
+# --- Hygiène de base --------------------------------------------------------
+
+# Pas de listing : /data/ ne doit pas exposer son inventaire.
+# (Demande AllowOverride Options|Indexes. C'est le cas sur le mutualisé OVH ;
+#  si Apache renvoie un 500 après dépôt, c'est CETTE ligne — la commenter.)
+Options -Indexes
+
+# `ServerSignature Off` demande AllowOverride All et n'est pas garanti ici.
+# Volontairement laissé de côté : gain nul, risque de 500 sur tout le vhost.
+
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+
+# --- Scripts internes : jamais atteignables depuis le web -------------------
+#
+# cron.php tourne en CLI (cron OVH), et EXCLUSIVEMENT en CLI : le déclencheur
+# HTTP a été supprimé le 28/07/2026, secret compris. Le script refuse déjà
+# lui-même toute exécution hors CLI (404 muet) ; ce refus Apache en est la
+# seconde couche, au cas où ce .htaccess serait fusionné de travers.
+#
+# ⚠️ Ne PAS rouvrir ce bloc pour « dépanner ». S'il faut un jour déclencher le
+#    cron par le web, ça se décide dans cron.php avec une authentification
+#    écrite pour ça — pas en retirant un verrou Apache.
+
+<Files "cron.php">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</Files>
+
+# La bibliothèque partagée n'est pas un point d'entrée (elle a déjà sa garde
+# FEUX_BOOT en PHP ; ceci en est la ceinture).
+RedirectMatch 404 ^/lib(/|$)
+
+# Fichiers de travail qui ne doivent JAMAIS sortir : temporaires d'écriture
+# atomique, verrous, journaux, instantanés, socle humain.
+<FilesMatch "(?i)\.(log|lock|bak|tmp|ini|sample)$|^\.|(^|\.)socle\.json$|^snap-">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Ceinture supplémentaire sur les temporaires d'écriture atomique
+# (data/.arretes.json.tmp.xxxx — déjà couverts par le ^\. ci-dessus).
+RedirectMatch 404 (?i)\.tmp\.[a-f0-9]+$
+
+
+# --- Le flux public : data/arretes.json ------------------------------------
+#
+# C'est LE contrat avec le front (`fetch('data/arretes.json')`). Servi par
+# Apache, en statique. Aucun PHP dans ce chemin.
+
+<Files "arretes.json">
+    ForceType application/json
+    <IfModule mod_headers.c>
+        # Donnée publique (Licence Ouverte 2.0 côté Météo-France), sans cookie
+        # ni credential : ouverture CORS assumée pour permettre la réutilisation.
+        # Volontairement PAS de Allow-Credentials.
+        Header set Access-Control-Allow-Origin "*"
+        Header set Access-Control-Allow-Methods "GET, HEAD, OPTIONS"
+        Header set Access-Control-Max-Age "86400"
+
+        # Le bulletin Météo des forêts est produit une fois par jour (17 h).
+        # 15 min de fraîcheur + tolérance au périmé pendant la revalidation :
+        # un amont muet ne doit pas se traduire par une carte vide.
+        Header set Cache-Control "public, max-age=900, stale-while-revalidate=3600, stale-if-error=86400"
+    </IfModule>
+</Files>
+
+# Pas de règle de préflight : un `fetch()` GET sans en-tête personnalisé est une
+# requête « simple » au sens CORS, donc jamais préflightée. Ajouter une règle
+# OPTIONS ici serait du bruit — et [R=204] est mal supporté selon les versions.
+
+
+# --- Compression ------------------------------------------------------------
+# arretes.json fait quelques dizaines de Ko, data.js ~1,4 Mo brut : sans gzip
+# le premier rendu est inutilisable en mobile.
+
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml
+    AddOutputFilterByType DEFLATE application/javascript text/javascript
+    AddOutputFilterByType DEFLATE application/json application/geo+json
+    AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+<IfModule mod_brotli.c>
+    AddOutputFilterByType BROTLI_COMPRESS application/json application/javascript text/html
+</IfModule>
+
+
+# --- Cache par type ---------------------------------------------------------
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType application/json          "access plus 15 minutes"
+    ExpiresByType application/geo+json      "access plus 7 days"
+    ExpiresByType application/javascript    "access plus 1 hours"
+    ExpiresByType image/svg+xml             "access plus 7 days"
+</IfModule>
+
+<IfModule mod_headers.c>
+    # Le HTML porte la version affichée : jamais de cache dur dessus.
+    <FilesMatch "\.html$">
+        Header set Cache-Control "no-cache, must-revalidate"
+    </FilesMatch>
+    # Les géométries ne bougent qu'à la main : cache long, elles pèsent lourd.
+    <FilesMatch "\.geojson$">
+        Header set Cache-Control "public, max-age=604800"
+    </FilesMatch>
+</IfModule>
+
 
 # --- Désindexation volontaire (POC en cours, posée le 27/07/2026) -----------
 # À retirer le jour de la mise en visibilité publique, en même temps que la
 # balise <meta name="robots"> de index.html. Les deux, pas l'une des deux.
+# Le robots.txt, lui, doit continuer d'AUTORISER le crawl : un Disallow
+# empêcherait les robots de LIRE le noindex.
+
 <IfModule mod_headers.c>
     Header set X-Robots-Tag "noindex, nofollow, noarchive"
-</IfModule>
-
-# --- Compression -----------------------------------------------------------
-# data.js pèse ~1,4 Mo brut : sans gzip, le premier rendu est inutilisable
-# sur une connexion mobile.
-<IfModule mod_deflate.c>
-    AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml
-    AddOutputFilterByType DEFLATE application/javascript application/json
-    AddOutputFilterByType DEFLATE application/geo+json image/svg+xml
-</IfModule>
-
-# --- Cache -----------------------------------------------------------------
-# data.js est régénéré à chaque collecte : cache court, sinon les visiteurs
-# voient un bulletin périmé. Le HTML n'est pas mis en cache du tout.
-<IfModule mod_expires.c>
-    ExpiresActive On
-    ExpiresByType application/javascript "access plus 1 hours"
-    ExpiresByType application/json "access plus 1 hours"
-</IfModule>
-<IfModule mod_headers.c>
-    <FilesMatch "\.html$">
-        Header set Cache-Control "no-cache, must-revalidate"
-    </FilesMatch>
 </IfModule>
 
 DirectoryIndex index.html

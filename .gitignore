@@ -10,6 +10,16 @@ data/.veille-state.json
 # tout son contenu vient de data/*.json et app/departements.geojson, déjà versionnés.
 app/data.js
 
+# Socle du flux : régénéré par `npm run socle` à partir de data/*.json, tous
+# versionnés. Le committer dupliquerait ~50 Ko de donnée déjà présente, et
+# ferait diverger deux copies du même fait le jour où l'une est éditée à la main.
+data/socle.json
+
+# Sortie du cron PHP + copie locale du socle servant aux tests de server/cron.php.
+# Le contrat public, c'est ce fichier-là — mais il est PRODUIT sur le serveur,
+# pas versionné : le commiter publierait un bulletin figé qui vieillit en silence.
+server/data/
+
 # Credentials de déploiement. La config vit normalement dans le sibling
 # ../Julienweb.fr-public/ — cette ligne est un filet de sécurité au cas où une
 # copie atterrirait ici. Un mot de passe FTP commité est un mot de passe brûlé.

@@ -2,12 +2,12 @@
   "source": "https://naviforest.ign.fr/arretes-prefectoraux-acces-massifs-forestiers",
   "producteur": "IGN + FCBA (NaviForest)",
   "avertissement": "Index non officiel. La mise à jour relève des services de l'État en département : des arrêtés peuvent manquer ou ne plus être en vigueur. Seul l'arrêté préfectoral fait foi.",
-  "collecte": "2026-07-26T15:32:17.450Z",
+  "collecte": "2026-07-28T15:16:26.170Z",
   "stats": {
     "departements_listes": 96,
     "departements_avec_arrete": 25,
     "departements_sans_arrete": 71,
-    "arretes_total": 27
+    "arretes_total": 30
   },
   "departements": [
     {
@@ -115,15 +115,8 @@
     },
     {
       "departement": "16",
-      "nom": "CHARENTE",
-      "arretes": [
-        {
-          "fichier": "16_AP_restriction_temporaire_travaux_forestier.pdf",
-          "url": "https://naviforest.ign.fr/uploads/arretes/16_AP_restriction_temporaire_travaux_forestier.pdf",
-          "validite_texte": "Valide jusqu'au 27-07-2026",
-          "valide_jusqu_au": "2026-07-27"
-        }
-      ]
+      "nom": null,
+      "arretes": []
     },
     {
       "departement": "17",
@@ -177,8 +170,8 @@
         {
           "fichier": "23_AP_restriction_temporaire_travaux_forestier.pdf",
           "url": "https://naviforest.ign.fr/uploads/arretes/23_AP_restriction_temporaire_travaux_forestier.pdf",
-          "validite_texte": "Valide jusqu'au 27-07-2026",
-          "valide_jusqu_au": "2026-07-27"
+          "validite_texte": "Valide jusqu'au 31-07-2026",
+          "valide_jusqu_au": "2026-07-31"
         }
       ]
     },
@@ -260,6 +253,12 @@
           "url": "https://naviforest.ign.fr/uploads/arretes/33_Reglement_interdepartemental_protection_foret_contre_incendies.pdf",
           "validite_texte": "Valide jusqu'au 31-12-2030",
           "valide_jusqu_au": "2030-12-31"
+        },
+        {
+          "fichier": "33_AP_restriction_temporaire_travaux_forestier.pdf",
+          "url": "https://naviforest.ign.fr/uploads/arretes/33_AP_restriction_temporaire_travaux_forestier.pdf",
+          "validite_texte": "Valide jusqu'au 14-08-2026",
+          "valide_jusqu_au": "2026-08-14"
         }
       ]
     },
@@ -316,6 +315,12 @@
           "url": "https://naviforest.ign.fr/uploads/arretes/40_Reglement_interdepartemental_protection_foret_contre_incendie.pdf",
           "validite_texte": "Valide jusqu'au 31-12-2030",
           "valide_jusqu_au": "2030-12-31"
+        },
+        {
+          "fichier": "40_AP_restriction_temporaire_travaux_forestier.pdf",
+          "url": "https://naviforest.ign.fr/uploads/arretes/40_AP_restriction_temporaire_travaux_forestier.pdf",
+          "validite_texte": "Valide jusqu'au 14-08-2026",
+          "valide_jusqu_au": "2026-08-14"
         }
       ]
     },
@@ -386,6 +391,12 @@
           "url": "https://naviforest.ign.fr/uploads/arretes/47_Reglement_interdepartemental_protection_foret_contre_incendie.pdf",
           "validite_texte": "Valide jusqu'au 31-12-2030",
           "valide_jusqu_au": "2030-12-31"
+        },
+        {
+          "fichier": "47_AP_restriction_temporaire_travaux_forestier.pdf",
+          "url": "https://naviforest.ign.fr/uploads/arretes/47_AP_restriction_temporaire_travaux_forestier.pdf",
+          "validite_texte": "Valide jusqu'au 14-08-2026",
+          "valide_jusqu_au": "2026-08-14"
         }
       ]
     },
@@ -585,8 +596,8 @@
         {
           "fichier": "79_AP_restriction_temporaire_travaux_forestier.pdf",
           "url": "https://naviforest.ign.fr/uploads/arretes/79_AP_restriction_temporaire_travaux_forestier.pdf",
-          "validite_texte": "Valide jusqu'au 27-07-2026",
-          "valide_jusqu_au": "2026-07-27"
+          "validite_texte": "Valide jusqu'au 10-08-2026",
+          "valide_jusqu_au": "2026-08-10"
         }
       ]
     },
@@ -627,15 +638,22 @@
         {
           "fichier": "86_AP_restriction_temporaire_travaux_forestier.pdf",
           "url": "https://naviforest.ign.fr/uploads/arretes/86_AP_restriction_temporaire_travaux_forestier.pdf",
-          "validite_texte": "Valide jusqu'au 27-07-2026",
-          "valide_jusqu_au": "2026-07-27"
+          "validite_texte": "Valide jusqu'au 03-08-2026",
+          "valide_jusqu_au": "2026-08-03"
         }
       ]
     },
     {
       "departement": "87",
-      "nom": null,
-      "arretes": []
+      "nom": "HAUTE-VIENNE",
+      "arretes": [
+        {
+          "fichier": "87_AP_restriction_temporaire_travaux_forestier.pdf",
+          "url": "https://naviforest.ign.fr/uploads/arretes/87_AP_restriction_temporaire_travaux_forestier.pdf",
+          "validite_texte": "Valide jusqu'au 30-07-2026",
+          "valide_jusqu_au": "2026-07-30"
+        }
+      ]
     },
     {
       "departement": "88",

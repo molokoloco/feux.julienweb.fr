@@ -14,6 +14,7 @@
     "massifs": "node collectors/massifs-osm.js",
     "veille": "node collectors/watch-prefectures.js",
     "poc": "node app/build-data.js",
-    "collect": "npm run meteo && npm run naviforest && npm run massifs && npm run veille && npm run poc"
+    "socle": "node ops/build-socle.js",
+    "collect": "npm run meteo && npm run naviforest && npm run massifs && npm run veille && npm run poc && npm run socle"
   }
 }
