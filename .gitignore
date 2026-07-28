@@ -15,6 +15,13 @@ app/data.js
 # copie atterrirait ici. Un mot de passe FTP commité est un mot de passe brûlé.
 .deploy-ftp.json
 
+# Correspondance en préparation. Ce sont des brouillons NON ENVOYÉS, adressés à
+# des tiers nommés (agent public, association). Le dépôt étant public depuis le
+# 28/07/2026, ils n'y ont pas leur place : publier sa stratégie de démarche avant
+# de l'avoir engagée dessert la démarche, et sème des adresses nominatives dans
+# un dépôt moissonnable. Ils restent sur le disque, versionnés par Drive.
+mails/
+
 # Google Drive
 .tmp.drivedownload/
 .tmp.driveupload/

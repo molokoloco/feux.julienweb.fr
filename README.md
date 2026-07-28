@@ -8,9 +8,10 @@ Généralisation nationale de [feux-foret-carte](https://github.com/molokoloco/f
 **Objectif** : produire un flux JSON normalisé « où est-ce fermé, où est-ce dangereux », mis à jour
 tout seul, et l'afficher sur une carte statique.
 
-**Déploiement, état réel au 27/07/2026** : le sous-domaine `feux.julienweb.fr` **existe** (DNS +
-vhost Apache/OVH, répond `200`) mais sa **racine est vide** — il renvoie un « Index of / » sans un
-seul fichier. Rien de ce dépôt n'y est publié, et aucune publication n'est automatisée.
+**En ligne** : <https://feux.julienweb.fr> — depuis le 27/07/2026, volontairement en `noindex`
+tant que le POC n'est pas stabilisé (visible pour qui a l'URL, absent des moteurs). Ce qui y est
+publié aujourd'hui est la maquette de l'écran 1 ; la bascule sur l'application branchée aux
+collecteurs est en cours. La publication est manuelle, elle n'est pas encore automatisée.
 
 ---
 
@@ -148,7 +149,7 @@ droit d'aller aujourd'hui »**. Aucun recouvrement : le lien naturel est croisé
 d'accès **quotidien par massif et ZAPEF** — la maille la plus fine qui existe. La page charge ses
 données en asynchrone, donc un endpoint JSON existe. **On ne le tape pas sans autorisation** :
 données à valeur réglementaire, interdiction pénalement sanctionnée. Demande écrite en attente
-(cf. `mails/01-valabre-acces-massifs.md`).
+(brouillon conservé hors dépôt).
 
 ---
 
@@ -324,4 +325,15 @@ il n'est pas là pour décorer.
   accès libre sans clé (attribution obligatoire)
 - feuxdeforet.fr — site tiers **audité, non consommé** : API privée, `403`/`401` sans autorisation
 
-Code : MIT. **Ce projet n'est pas officiel** et ne remplace aucune publication préfectorale.
+Code : [MIT](LICENSE). Données : licences respectives des sources, détaillées dans le fichier
+[LICENSE](LICENSE). **Ce projet n'est pas officiel** et ne remplace aucune publication préfectorale.
+
+## Contribuer, signaler
+
+Une zone mal cartographiée, un arrêté manquant, une date fausse : ouvrez une
+[issue](https://github.com/molokoloco/feux.julienweb.fr/issues). Sur ce sujet, une erreur de
+donnée peut coûter une amende à quelqu'un — les corrections sont les bienvenues et prioritaires.
+
+Ce dépôt ne contient **aucun identifiant ni secret de déploiement**, par construction : la
+configuration de publication vit hors dépôt, et l'historique a été purgé le 28/07/2026 des détails
+d'infrastructure qui s'y étaient glissés (nom de cluster, utilisateur SFTP, chemin de docroot).

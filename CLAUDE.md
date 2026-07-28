@@ -14,11 +14,14 @@ Créé le 26/07/2026 depuis [Julienweb.fr](../Julienweb.fr/CLAUDE.md) (article #
 main** : `node app/build-data.js` la recopie dans `app/data.js` + `app/feux-bulletin.js`, les deux
 pages l'affichent depuis là. Les `v0.3.0` en dur dans les HTML sont des filets, pas la source.
 
-**Nature** : site statique sur le sous-domaine `feux.julienweb.fr`. **Vérifié le 27/07/2026** : le
-sous-domaine **existe** (DNS + vhost OVH, `200 Apache`) mais sa **racine est vide** — la réponse est
-un « Index of / » sans un fichier. Rien de ce dépôt n'est publié, aucun automatisme de publication.
-Pas de WordPress. Statique d'abord, React seulement si l'interactivité le justifie.
+**Nature** : site statique sur le sous-domaine `feux.julienweb.fr`, **en ligne depuis le 27/07/2026**
+en `noindex`. Pas de WordPress. Statique d'abord, React seulement si l'interactivité le justifie.
 Scaling (machine dédiée OVH) volontairement repoussé : on le traite si le trafic arrive.
+
+**Dépôt public depuis le 28/07/2026** : <https://github.com/molokoloco/feux.julienweb.fr>, licence
+MIT ([LICENSE](LICENSE) couvre aussi les licences de données). Conséquence permanente sur la façon
+d'écrire ici — voir 🔒 dans « Mise en ligne » : **aucun identifiant, nom de cluster ou chemin absolu
+de docroot ne doit réapparaître dans un fichier versionné.**
 
 ## Frontière avec les projets voisins
 
@@ -86,6 +89,40 @@ Trois faits vérifiés le 26/07/2026, à ne pas re-chercher :
 
 L'outil `DesignSync` de Claude Code peut pousser le design system directement dans claude.ai/design,
 mais demande une autorisation interactive du scope design.
+
+## V0.4 en cours — circuit de design inversé (acté le 28/07/2026)
+
+**Le circuit « maquette React → réimplémentation vanilla à la main » est abandonné.** Claude Design
+édite désormais **directement `app/Feux - Vue principale.html`**, et ce fichier est le livrable
+déployé. Motif : toute modification faite dans le `.dc.html` devait être reportée à la main dans le
+vanilla — dérive garantie, travail payé deux fois. On perd les panneaux de réglages live de
+l'éditeur ; on gagne zéro réimplémentation et zéro bundle de 690 Ko. Le
+`design/Feux - Vue principale (autonome).html` reste comme **archive** de l'écran 1.
+
+Prompt V0.4 prêt à coller : [design/PROMPT-CLAUDE-DESIGN-V04.md](design/PROMPT-CLAUDE-DESIGN-V04.md)
+(le [prompt V1](design/PROMPT-CLAUDE-DESIGN.md) reste en archive, il n'est pas remplacé).
+
+Décisions de cadrage prises avec ce prompt, à ne pas re-arbitrer :
+
+| Question | Tranché |
+|---|---|
+| Échelle visée | **20 à 40 arrêtés** simultanés, pas 6 — la colonne de droite est redécoupée en « en vigueur » / « levées » repliées |
+| Cible | **Mobile primaire** — la réponse (carte + statut) visible sans scroll sur téléphone |
+| Cadre « fausse fenêtre Mac » | **Supprimé**, le contenu occupe la vraie page |
+| Endpoint temps réel | **`data/arretes.json`, nom figé.** Le front tente `fetch()` et retombe **silencieusement** sur les données embarquées si ça échoue — la page doit continuer à marcher en double-clic sur `file://` |
+| Monétisation | placeholder pub neutre, **jamais entre la question et la réponse** |
+
+**Contenu de la page** : le bloc explicatif de bas de page est distillé de l'article #11311 et du
+brouillon Reddit (`Julienweb.fr/content/`). En reprendre l'**argument**, jamais les paragraphes :
+dupliquer le texte entre `julienweb.fr` et `feux.julienweb.fr` créerait du contenu dupliqué entre
+deux domaines qu'on contrôle. L'article porte le SEO grand public, ce site porte l'outil ; les deux
+se citent.
+
+**Chantier séparé, en parallèle** : mini-API PHP + cron OVH servant `data/arretes.json`. Contrainte
+qui domine tout le reste — **Node n'existe pas sur le mutualisé**, et surtout un cron qui crawlerait
+les sites préfectoraux depuis l'IP OVH ferait bannir **l'IP partagée avec julienweb.fr** (cf.
+« Politesse de crawl »). La collecte préfectorale reste donc locale ; seules les sources stables
+(CSV Météo-France, IGN) sont candidates à un rafraîchissement serveur.
 
 ## Doctrine — ce qui n'est pas négociable
 
@@ -178,7 +215,7 @@ app/         index.html (POC Leaflet) · Feux - Vue principale.html (écran 1, S
              feux-geo.js (géométries projetées) · feux-bulletin.js (niveaux, généré)
              robots.txt · .htaccess (déployés avec le POC)
 ops/scripts/ _sftp_op.js (déploiement SFTP — aucun secret dedans)
-mails/       2 brouillons — à relire et ENVOYER par Julien, rien n'est parti
+mails/       2 brouillons — à relire et ENVOYER par Julien, rien n'est parti (HORS DÉPÔT)
 skills/      snapshots locaux des skills globaux (index README.md)
 ```
 
@@ -187,7 +224,12 @@ skills/      snapshots locaux des skills globaux (index README.md)
 ## Mise en ligne — https://feux.julienweb.fr
 
 **En ligne depuis le 27/07/2026, en `noindex`** : visible pour qui a l'URL, absent des moteurs.
-Docroot OVH `/home/UTILISATEUR-FTP/feux/`, même hébergement mutualisé que julienweb.fr.
+Hébergement mutualisé OVH, le même que julienweb.fr.
+
+🔒 **Ce dépôt est public depuis le 28/07/2026.** Ne jamais y réécrire le nom du cluster, l'utilisateur
+SFTP ni le chemin absolu du docroot : ils ont été purgés du dépôt *et de son historique* ce jour-là,
+précisément parce qu'ils constituent une cible de force brute sur un compte qui voit **tout**
+l'hébergement, julienweb.fr compris. Ces valeurs se lisent dans le `.deploy-ftp.json` hors dépôt.
 
 ⚠️ **Ce qui est en ligne depuis le 27/07 au soir, c'est la maquette Claude Design, pas l'app
 branchée sur les collecteurs.** Arbitrage de Julien : « c'est pas une vraie prod, on écrase ».
@@ -237,5 +279,8 @@ lecture humaine du PDF. Index : [skills/README.md](skills/README.md).
 ## En attente de Julien
 
 - Envoyer `mails/01-valabre-acces-massifs.md` (conditions de réutilisation des données d'accès)
-- Envoyer `mails/02-react-betagouv.md` (code source de ReAcT — `jean-luc.girel@aube.gouv.fr`)
+- Envoyer `mails/02-react-betagouv.md` (code source de ReAcT — destinataire dans le frontmatter)
 - Arbitrer le 31/07 sur l'article #11311 et le repo `feux-foret-carte`
+
+> `mails/` est **hors dépôt depuis le 28/07/2026** (gitignoré, purgé de l'historique) : ce sont des
+> brouillons non envoyés adressés à des tiers nommés. Ils restent sur le disque.

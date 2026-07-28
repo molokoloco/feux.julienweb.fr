@@ -1,6 +1,6 @@
 ---
 name: deploy-ftp-feux
-description: Déploiement SFTP du front statique feux.julienweb.fr — OVH mutualisé clusterNNN, docroot /home/UTILISATEUR-FTP/feux, preset poc. Trigger /deploy-ftp depuis ce projet.
+description: Déploiement SFTP du front statique feux.julienweb.fr — hébergement mutualisé OVH, preset poc. Cible et identifiants dans la config hors dépôt. Trigger /deploy-ftp depuis ce projet.
 trigger: /deploy-ftp
 ---
 
@@ -17,13 +17,20 @@ Pousse le front statique du POC sur le sous-domaine. Deux fichiers utiles, aucun
 | | |
 |---|---|
 | **Protocole** | **SFTP port 22** — FTPS explicite REFUSÉ par le cluster OVH |
-| Host / user | `ftp.clusterNNN.hosting.ovh.net` / `UTILISATEUR-FTP` |
-| **Docroot** | `/home/UTILISATEUR-FTP/feux/` (provisionné côté OVH le 2026-07-26) |
+| Host / user / docroot | **jamais écrits ici** — ils vivent dans la config hors dépôt (voir ci-dessous) |
 | Source locale | `../feux.julienweb.fr/app/` — **le dépôt git est la source de vérité, pas de miroir local** |
 | URL | https://feux.julienweb.fr/ |
-| Config | `D:/Google Drive/_WWW_/Julienweb.fr-public/.deploy-ftp.json`, cible `feux` — **partagée, jamais commitée**. L'offre mutualisée OVH n'autorise **qu'un seul utilisateur FTP** : ce sous-domaine utilise forcément le même compte que julienweb.fr, et ce compte voit tout l'hébergement. |
+| Config | `.deploy-ftp.json` dans le sibling `Julienweb.fr-public/`, cible `feux` — **partagée, jamais commitée** |
 | Helper | `ops/scripts/_sftp_op.js` (copie du canonique, aucun secret dedans) |
-| `.ovhconfig` | au niveau `/home/UTILISATEUR-FTP/` — **commun à tout l'hébergement**, une modif ici touche aussi julienweb.fr |
+| `.ovhconfig` | à la racine du compte — **commun à tout l'hébergement**, une modif ici touche aussi julienweb.fr |
+
+> **Pourquoi la cible n'est pas écrite ici.** Ce dépôt est **public depuis le 28/07/2026**. Le mot de
+> passe n'y a jamais figuré, mais le nom du cluster, l'utilisateur SFTP et le chemin du docroot y
+> figuraient — soit tout ce qu'il faut à une attaque par force brute, sauf le mot de passe. Aggravant :
+> l'offre mutualisée OVH n'autorise **qu'un seul utilisateur FTP**, donc ce compte voit *tout*
+> l'hébergement, julienweb.fr compris. Ces trois valeurs ont été purgées du dépôt **et de son
+> historique** (`git filter-repo`, 28/07/2026) avant l'ouverture au public. Elles se lisent dans le
+> `.deploy-ftp.json`, et nulle part ailleurs.
 
 Le helper trouve la config tout seul en remontant vers `../Julienweb.fr-public/.deploy-ftp.json`. Rien à passer en argument.
 
@@ -93,7 +100,8 @@ Le `curl` ne prouve que la livraison des octets. Le POC ne **fonctionne** que si
 
 ## CHANGELOG
 
-- 2026-07-27 (nuit, audit) : **`preconnect` Google Fonts retirés**. L'export embarquait `<link rel="preconnect">` vers `fonts.googleapis.com` et `fonts.gstatic.com`. Un `preconnect` **n'émet aucune requête HTTP** — il est donc invisible dans un relevé réseau — mais **ouvre une connexion TLS** vers Google à chaque visite : l'IP du visiteur y part. Vestiges inutiles (les 40 polices sont inlinées en `data:`), et ils rendaient **fausse** la phrase des mentions légales « seul l'hébergeur OVH enregistre l'adresse IP ». Réflexe à garder : sur un export Claude Design, auditer `document.querySelectorAll('link')`, pas seulement le relevé réseau. Dépôt GitHub créé le même jour : `molokoloco/feux.julienweb.fr` (privé, branche `main`).
+- 2026-07-28 : **purge de sécurité avant ouverture du dépôt au public.** Le nom du cluster OVH, l'utilisateur SFTP et le chemin absolu du docroot étaient en clair dans ce fichier, dans `CLAUDE.md` et dans l'en-tête de `app/.htaccess`. Aucun mot de passe n'a jamais été commité — mais publier host + user, c'est livrer une cible de force brute prête à l'emploi, sur un compte qui voit tout l'hébergement. Purgés du dépôt **et des 13 commits d'historique** (`git filter-repo --replace-text`), plus retrait de `mails/` (brouillons non envoyés, adresses de tiers). Sauvegarde préalable : bundle git complet. **Réflexe à garder : la question n'est pas « ai-je commité un mot de passe » mais « qu'est-ce que je livre à quelqu'un qui cherche à en deviner un ».**
+- 2026-07-27 (nuit, audit) : **`preconnect` Google Fonts retirés**. L'export embarquait `<link rel="preconnect">` vers `fonts.googleapis.com` et `fonts.gstatic.com`. Un `preconnect` **n'émet aucune requête HTTP** — il est donc invisible dans un relevé réseau — mais **ouvre une connexion TLS** vers Google à chaque visite : l'IP du visiteur y part. Vestiges inutiles (les 40 polices sont inlinées en `data:`), et ils rendaient **fausse** la phrase des mentions légales « seul l'hébergeur OVH enregistre l'adresse IP ». Réflexe à garder : sur un export Claude Design, auditer `document.querySelectorAll('link')`, pas seulement le relevé réseau. Dépôt GitHub créé le même jour : `molokoloco/feux.julienweb.fr` (branche `main` ; privé jusqu'au 28/07/2026, public depuis).
 - 2026-07-27 (soir) : **bascule sur la maquette Claude Design** (`design/Feux - Vue principale (autonome).html` → `app/index.html`, l'app vanilla conservée en `app/index-collecteurs.html`). Deux pièges payés, à ne pas repayer :
   - le bundler **réécrit tout le document** au chargement → une `<meta name="robots">` posée dans le `<head>` du fichier n'existe plus dans le DOM. Vérifier `document.querySelector('meta[name=robots]')` après rendu, pas la présence dans le source. L'injecter dans le `<script type="__bundler/template">`. Seul l'en-tête HTTP `X-Robots-Tag` est inconditionnel.
   - le HTML du bundle vit dans une **chaîne JS échappée** (`"` → `\"`, `/` → `/`). Toute retouche doit respecter cet échappement, et s'ancrer sur un littéral unique vérifié par un `count()==1` avant écriture.

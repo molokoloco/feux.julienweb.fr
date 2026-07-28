@@ -1,4 +1,5 @@
-# feux.julienweb.fr — OVH mutualisé clusterNNN, docroot /home/UTILISATEUR-FTP/feux/
+# feux.julienweb.fr — hébergement mutualisé Apache. Ce fichier est public :
+# n'y écrire ni identifiant, ni nom de cluster, ni chemin absolu du docroot.
 
 # --- Désindexation volontaire (POC en cours, posée le 27/07/2026) -----------
 # À retirer le jour de la mise en visibilité publique, en même temps que la
