@@ -4,7 +4,7 @@ description: Fin de session feux.julienweb.fr — synthèse, memory, CLAUDE.md/R
 trigger: /wrap-up
 ---
 
-> **Snapshot LOCAL** du global `C:/Users/molok/.claude/skills/wrap-up/SKILL.md` (état 2026-07-07) — adapté **2026-07-26** pour feux.julienweb.fr.
+> **Snapshot LOCAL** du global `C:/Users/molok/.claude/skills/wrap-up/SKILL.md` (état 2026-07-30) — adapté **2026-07-30** pour feux.julienweb.fr.
 > Chemins figés : memory `C:/Users/molok/.claude/projects/D--Google-Drive--WWW--feux-julienweb-fr/memory/`, projet `D:\Google Drive\_WWW_\feux.julienweb.fr`.
 > Patches généralisables → backsync vers le canonique : pack web `D:/Google Drive/_Claude/skills/web/` ou global `~/.claude/skills/`.
 > Sync inbound depuis le canonique : `/wrap-in`.
@@ -163,6 +163,24 @@ Si un tracker apparaît (`VEILLE-TRACKER.md` par département, `DEPLOY-STATUS.md
 
 Si une case saute, ce n'est pas un détail à noter : **corriger avant de committer.** Une amende dépend de ces champs.
 
+### 3g — 🔴 Passe anti-péremption (NEW 2026-07-30, du global §3f) — **jamais skippée en delta-partial**
+
+> Complémentaire du §3f local : le §3f vérifie la **vérité des données**, le §3g vérifie la **vérité
+> des docs**. Le reste de l'Étape 3 AJOUTE ; cette passe DÉMENT — elle cherche ce qui est devenu **faux**.
+
+**Déclencheur** : changement d'état observable cette session — mise en ligne/hors ligne du front,
+nouveau département couvert, réponse Valabre/préfecture reçue, arrêté expiré, décision actée.
+Si oui, passe sur les docs pilotes (CLAUDE.md — **jamais** HANDOFF.md — README.md).
+
+**Procédure** : 1. établir l'**état réel** (`curl` du front, `ls data/`, compteurs recomptés), pas
+supposé. 2. balayer : tableau « État au JJ/MM » (**la date du titre aussi**) · bandeaux/en-têtes ·
+tableaux de statut · **titres de section** · « Prochaine étape » / « En attente de Julien ».
+3. grep des formulations qui périment (`actuel`, `pour l'instant`, `toujours`, `encore`, `reste`,
+`en attente`, `pas encore`, `à faire`, `en cours`) — confronter au réel. 4. **requalifier sans
+effacer** (`~~périmé~~ → ✅ fait le JJ/MM`) — sauf HANDOFF.md, figé faux compris. 5. deux docs qui
+se contredisent → trancher avec la preuve, corriger les deux. 6. reporter : `§3g anti-péremption :
+N corrections dans M fichiers` (ou passe non déclenchée).
+
 ---
 
 ## Étape 4 — Skills (avec backsync) `(delta)`
@@ -300,6 +318,7 @@ Et si l'échéance **31/07/2026** approche ou est passée sans arbitrage : le re
 [ ] 3b. HANDOFF.md — NE PAS TOUCHER (nouveau fichier daté si besoin)
 [ ] 3c. README.md — compteurs recomptés, commandes, sources
 [ ] 3f. Vérité des données — 7 cases, JAMAIS skippée si data/ ou collectors/ touchés
+[ ] 3g. 🔴 Anti-péremption docs — si changement d'état : en-têtes datés, statuts, titres, prochaine étape
 [ ] 4. Skills — patcher skills/wrap-up + backsync si généralisable
 [ ] 5. Frontière voisins — signaler, ne pas éditer Julienweb.fr / feux-foret-carte d'ici
 [ ] 6. Mails — rédiger dans mails/, ne rien envoyer
@@ -319,6 +338,10 @@ Et si l'échéance **31/07/2026** approche ou est passée sans arbitrage : le re
 
 ## CHANGELOG (patches → candidats backsync)
 
+- 2026-07-30 : wrap-in-all depuis canonique commit e1b7861 — **§3g passe anti-péremption docs**
+  (le §3f du global, renuméroté : 3f local = vérité des données, déjà pris). Le principe non-skippable
+  noté « candidat backsync » le 26/07 est justement devenu canonique — la boucle est bouclée.
+  Header rebump (état global 2026-07-30).
 - 2026-07-26 : **création du snapshot local** depuis le global (état 2026-07-07). Adaptations feux :
   - garde-fous en tête : le wrap-up ne lance jamais de collecte · aucune date sans lecture humaine du PDF
   - §3 remappée sur le trio `CLAUDE.md` (vivant) / `HANDOFF.md` (figé, jamais réécrit) / `README.md` — le projet n'a ni `project.md` ni `playbook.md`
