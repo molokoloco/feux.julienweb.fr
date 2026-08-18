@@ -1,6 +1,14 @@
 # MAJ du 18/08/2026 — article #11311 + carte /labs/feux-foret/
 
-> ✅ **TOUT EST EN LIGNE (18/08/2026).** Carte déployée en SFTP et vérifiée sur
+> 🟠 **PASSE 3 (18/08, fin de journée) — LES 5 MASSIFS SONT EN LIGNE, UNE PHRASE DE L'ARTICLE EST
+> DEVENUE FAUSSE.** Carte redéployée en SFTP (`index.html` + `data.js`, 5 clés vérifiées dans le
+> `data.js` **servi**) et poussée sur GitHub (`75fad4a`). **Reste 1 geste manuel** : l'encart de
+> l'article #11311 affiche encore « Les deux massifs ajoutés en août n'y sont pas encore dessinés
+> (ils sont absents d'OpenStreetMap sous ce nom), mais ils sont signalés en clair. » — vérifié sur
+> le HTML servi après déploiement. Copie de remplacement en §2b. Édition **manuelle dans Elementor**
+> (pas d'injection `_elementor_data`, cf. incident 2026-04-12). Détail de la correction : §1.
+>
+> ✅ **PASSE 1 ET 2 EN LIGNE (18/08/2026).** Carte déployée en SFTP et vérifiée sur
 > `julienweb.fr/labs/feux-foret/` · article #11311 mis à jour dans Elementor
 > (`dateModified` 2026-08-18) · les 3 métas Yoast corrigées.
 >
@@ -67,9 +75,23 @@ Fichier modifié : `D:\Google Drive\_WWW_\feux-foret-carte\index.html` (+ `READM
 
 **Déploiement** : SFTP vers `www/labs/feux-foret/index.html` (le `data.js` est inchangé).
 
-**Limite assumée** : Nanteau-Poligny et la forêt communale de Nemours ne sont pas tracées.
-Vérifié le 18/08 par requête Overpass sur la zone (bbox 48.10-48.45 / 2.45-2.95, `landuse=forest`
-+ `natural=wood`) : aucun polygone nommé Nanteau, Poligny ou Nemours. Il faudra la BD Forêt IGN.
+**~~Limite assumée~~ → LEVÉE le 18/08 (passe 2)** : Nanteau-Poligny et la forêt communale de
+Nemours **sont maintenant tracées**. Le constat OSM était juste (requête Overpass sur bbox
+48.13-48.40 / 2.50-2.95 : aucun objet nommé Nanteau, Poligny ou Nemours), la conclusion était
+fausse : les deux polygones existaient depuis le début dans la **BD TOPO® IGN**, couche
+`BDTOPO_V3:foret_publique`, alimentée par l'**ONF** — l'organisme qui propose les arrêtés au
+préfet. Récupérés en WFS sur `data.geopf.fr` (Licence Ouverte 2.0), coordonnées arrondies à
+6 décimales, anneaux dédupliqués : Nanteau-Poligny = 72 polygones, Nemours = 33.
+
+Ce que le contour représente change avec la source : OSM trace la **couverture arborée**,
+la BD TOPO trace le **périmètre de propriété publique**. C'est le second qui correspond à
+l'objet juridique nommé dans l'arrêté — les trois massifs OSM restent en place, la légende
+et le README disent désormais quelle source vient d'où.
+
+Conséquences en cascade : bandeau jaune retourné (« les cinq massifs sont dessinés »),
+légende « forêt publique » au lieu de « forêt domaniale » (Nemours est communale),
+`<title>` et `<h1>` élargis au sud Seine-et-Marne, **lien vers l'article #11311 ajouté dans
+la légende**, double attribution OSM + IGN. `data.js` passe de 287 à 368 Ko.
 
 ---
 
@@ -90,8 +112,9 @@ Vérifié le 18/08 par requête Overpass sur la zone (bbox 48.10-48.45 / 2.45-2.
 > élargi : la forêt domaniale de Nanteau-Poligny et la forêt communale de Nemours s'ajoutent à
 > Fontainebleau, la Commanderie et les Trois-Pignons.
 >
-> La carte a été mise à jour. Les deux massifs ajoutés en août n'y sont pas encore dessinés — ils
-> sont absents d'OpenStreetMap sous ce nom — mais ils sont signalés en clair.
+> La carte a été mise à jour et affiche désormais **les cinq massifs**. Les deux ajoutés en août
+> n'existent sous aucun nom dans OpenStreetMap : leurs contours viennent de la BD TOPO® de l'IGN,
+> couche « forêt publique », alimentée par l'ONF — l'organisme qui propose ces arrêtés au préfet.
 >
 > **Avant de partir, la seule source qui fait foi reste la page de la préfecture de Seine-et-Marne.**
 
@@ -114,4 +137,10 @@ condition de tenir la promesse.
 - **La page se re-périme tous les vendredis.** Tant qu'il n'y a pas de collecteur automatique
   (c'est l'objet du projet `feux.julienweb.fr`), prévoir une vérification hebdomadaire, ou assumer
   le bandeau « vérifié le … » comme garde-fou honnête.
-- Tracer Nanteau-Poligny + Nemours via BD Forêt IGN.
+- ~~Tracer Nanteau-Poligny + Nemours via BD Forêt IGN.~~ **Fait le 18/08 via BD TOPO IGN / WFS
+  Géoplateforme** (pas la BD Forêt, qui ne donne que les essences — la bonne couche est
+  `foret_publique`, données ONF).
+- **Textes à corriger une fois la carte déployée** : l'encart de l'article #11311 dit encore
+  « Les deux massifs ajoutés en août n'y sont pas encore dessinés — ils sont absents
+  d'OpenStreetMap » (§2b ci-dessus). Faux dès la mise en ligne. Idem pour tout post social
+  qui reprendrait cette phrase.
