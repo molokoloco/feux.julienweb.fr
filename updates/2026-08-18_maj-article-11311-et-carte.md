@@ -1,5 +1,23 @@
 # MAJ du 18/08/2026 — article #11311 + carte /labs/feux-foret/
 
+> ✅ **TOUT EST EN LIGNE (18/08/2026).** Carte déployée en SFTP et vérifiée sur
+> `julienweb.fr/labs/feux-foret/` · article #11311 mis à jour dans Elementor
+> (`dateModified` 2026-08-18) · les 3 métas Yoast corrigées.
+>
+> **Ce que la première passe avait raté**, et qui n'apparaissait qu'en relisant le HTML servi :
+> l'encart et le badge ne suffisaient pas, **trois autres endroits** portaient encore la date du
+> 31 juillet — la légende sous la carte, la **réponse FAQ** (« Jusqu'à quand la forêt est-elle
+> fermée ? »), et surtout la **meta description Yoast**, celle que Google affiche. Les trois sont
+> corrigées. La meta est désormais **sans date** (« arrêté prorogé chaque semaine ») : elle ne peut
+> plus se périmer à la prochaine prorogation.
+>
+> **Restes assumés** : la mention « jusqu'au 31 juillet » subsiste à 2 endroits, chaque fois
+> **explicitement historique** (ce que disait l'arrêté du 24/07, suivi de la situation actuelle).
+> La **légende de l'image OG** dit encore « accès interdit aux 3 massifs jusqu'au 31/07 » — elle
+> vient du média lui-même, corriger demanderait de régénérer la carte OG. Le snippet temporaire
+> `TMP_YOAST_11311` (#493) est **désactivé mais non supprimé** : le force-delete REST rend 500 sur
+> un snippet déjà en corbeille (comportement connu) → à supprimer à la main dans WP Admin.
+
 > Copie prête à coller. L'article est construit en Elementor : **édition manuelle dans l'éditeur**,
 > jamais d'injection `_elementor_data` (incident 2026-04-12).
 
