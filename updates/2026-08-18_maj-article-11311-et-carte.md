@@ -19,6 +19,14 @@
 > là où personne ne pense à aller la corriger. L'ancienne image reste en bibliothèque (trace de ce
 > qui a circulé en juillet). L'archive `2026-07_fontainebleau/` n'a **pas** été touchée.
 >
+> **Ligne de date visible corrigée (dernière passe)** — le hero affichait toujours
+> « 26 juillet 2026 • 4 min de lecture » : **du texte écrit en dur**, pas une date WordPress. Les métas
+> machine (`article:modified_time`, schema `dateModified`) étaient justes depuis la première
+> sauvegarde, mais un lecteur humain voyait « 26 juillet ». Désormais :
+> « 26 juillet 2026 • **mis à jour le 18 août 2026** • 5 min de lecture » (l'article a pris 470 mots).
+> ⚠️ **Dette** : tant que cette ligne est du texte figé, elle re-mentira à la prochaine mise à jour.
+> Le « (MAJ : 26/07/2026) » visible dans l'éditeur Elementor n'existe **pas** sur la page publique.
+>
 > **Restes assumés** : la mention « jusqu'au 31 juillet » subsiste à 2 endroits du corps, chaque fois
 > **explicitement historique** (ce que disait l'arrêté du 24/07, suivi de la situation actuelle).
 > Deux snippets temporaires sont **en corbeille mais non purgés** — `TMP_YOAST_11311` (#493) et
