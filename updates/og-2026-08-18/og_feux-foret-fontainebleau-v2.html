@@ -1,0 +1,89 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8">
+<!--
+  Carte OG v2 — 18/08/2026. Adaptée de archive/2026-07_fontainebleau/infographie/og_feux-foret-fontainebleau.html
+  (que l'on ne modifie PAS : matériau fondateur figé sur l'arrêté du 24/07).
+
+  Deux changements de fond par rapport à la v1 :
+  1. CINQ massifs au lieu de trois — les arrêtés d'août ont ajouté Nanteau-Poligny et Nemours.
+  2. AUCUNE DATE dans le bandeau. La v1 affichait « Jusqu'au 31 juillet 2026 inclus » : elle est
+     devenue fausse le 1er août et l'est restée 18 jours, y compris comme vignette de partage.
+     L'interdiction étant prorogée chaque vendredi, une date gravée dans une image se périme plus
+     vite qu'on ne la remplace. Le bandeau dit donc le fait durable, et renvoie à la préfecture.
+
+  Rendu : node ~/.claude/skills/brand-card/scripts/render_html_to_png.js <ce fichier> --size 1200x630
+-->
+<link href="https://fonts.googleapis.com/css2?family=Squada+One&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:1200px;height:630px;overflow:hidden}
+  body{font-family:'Poppins',sans-serif;background:linear-gradient(135deg,#0F4C75 0%,#3d2e7a 52%,#5A4095 100%);color:#fff;position:relative}
+  .glow{position:absolute;border-radius:50%;filter:blur(70px);opacity:.5}
+  .glow1{width:420px;height:420px;background:#E25822;top:-160px;right:-120px}
+  .glow2{width:360px;height:360px;background:#5A4095;bottom:-150px;left:-100px}
+  .wrap{position:relative;z-index:2;height:100%;padding:50px 58px;display:flex;flex-direction:column}
+  .kicker{font-size:16px;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:#FFB08A}
+  h1{font-family:'Squada One',sans-serif;font-size:58px;line-height:1.04;letter-spacing:.5px;margin:12px 0 6px;max-width:1040px}
+  h1 .y{color:#F5FF00}
+  .sub{font-size:19px;font-weight:300;color:rgba(255,255,255,.85);max-width:960px;line-height:1.5}
+  .massifs{display:flex;gap:14px;margin:26px 0 0;flex:1;align-items:center}
+  .massif{flex:1;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:20px;padding:20px 10px;display:flex;flex-direction:column;align-items:center;gap:8px}
+  .massif svg{width:44px;height:44px}
+  /* min-height = 2 lignes : sans ça, « Nanteau-Poligny » (seul titre sur 2 lignes) pousse son
+     badge vers le bas et casse l'alignement de toute la rangée. */
+  .mtitle{font-family:'Squada One',sans-serif;font-size:22px;letter-spacing:.5px;color:#9ED5E1;text-align:center;line-height:1.1;min-height:48px;display:flex;align-items:center;justify-content:center}
+  .mtag{font-size:12px;font-weight:600;color:#FF7A59;background:rgba(226,88,34,.18);border:1px solid rgba(226,88,34,.45);padding:2px 11px;border-radius:12px;letter-spacing:1.5px}
+  .banner{margin:24px 0 12px;background:#F5FF00;color:#2A2746;border-radius:16px;padding:13px 26px;display:flex;align-items:center;justify-content:center;gap:16px}
+  .banner .big{font-family:'Squada One',sans-serif;font-size:28px;letter-spacing:1px;white-space:nowrap}
+  .banner .small{font-size:15px;font-weight:600;max-width:470px;line-height:1.3}
+  .footer{display:flex;align-items:center;gap:14px;font-size:15px;color:rgba(255,255,255,.7);font-weight:300}
+  .footer b{font-family:'Squada One',sans-serif;font-weight:400;color:#fff;font-size:19px;letter-spacing:.5px}
+  .footer b span{color:#1E91D4}
+  .badge{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);padding:4px 12px;border-radius:14px;font-size:13px}
+</style></head>
+<body>
+<div class="glow glow1"></div><div class="glow glow2"></div>
+<div class="wrap">
+  <div class="kicker">Incendies juillet 2026 &bull; Seine-et-Marne</div>
+  <h1>For&ecirc;ts de Fontainebleau <span class="y">ferm&eacute;es au public</span></h1>
+  <p class="sub">Acc&egrave;s, circulation et pr&eacute;sence interdits par arr&ecirc;t&eacute; pr&eacute;fectoral. Cinq massifs concern&eacute;s.</p>
+
+  <div class="massifs">
+    <div class="massif">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#9ED5E1" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L7 9 h3 L6 15 h4 L8 20 h8 L14 15 h4 L14 9 h3 Z"/><line x1="12" y1="20" x2="12" y2="22"/></svg>
+      <div class="mtitle">Fontainebleau</div>
+      <div class="mtag">FERM&Eacute;</div>
+    </div>
+    <div class="massif">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#9ED5E1" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L7 9 h3 L6 15 h4 L8 20 h8 L14 15 h4 L14 9 h3 Z"/><line x1="12" y1="20" x2="12" y2="22"/></svg>
+      <div class="mtitle">Trois-Pignons</div>
+      <div class="mtag">FERM&Eacute;</div>
+    </div>
+    <div class="massif">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#9ED5E1" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L7 9 h3 L6 15 h4 L8 20 h8 L14 15 h4 L14 9 h3 Z"/><line x1="12" y1="20" x2="12" y2="22"/></svg>
+      <div class="mtitle">La Commanderie</div>
+      <div class="mtag">FERM&Eacute;</div>
+    </div>
+    <div class="massif">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#9ED5E1" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L7 9 h3 L6 15 h4 L8 20 h8 L14 15 h4 L14 9 h3 Z"/><line x1="12" y1="20" x2="12" y2="22"/></svg>
+      <div class="mtitle">Nanteau-<br>Poligny</div>
+      <div class="mtag">FERM&Eacute;</div>
+    </div>
+    <div class="massif">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#9ED5E1" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L7 9 h3 L6 15 h4 L8 20 h8 L14 15 h4 L14 9 h3 Z"/><line x1="12" y1="20" x2="12" y2="22"/></svg>
+      <div class="mtitle">Nemours</div>
+      <div class="mtag">FERM&Eacute;</div>
+    </div>
+  </div>
+
+  <div class="banner">
+    <span class="big">Interdiction prorog&eacute;e chaque semaine</span>
+    <span class="small">V&eacute;rifiez la date en cours aupr&egrave;s de la pr&eacute;fecture de Seine-et-Marne avant de partir</span>
+  </div>
+
+  <div class="footer">
+    <b>Julien<span>Web</span>.fr</b>
+    <span class="badge">Carte interactive des massifs ferm&eacute;s</span>
+    <span class="badge">Source : pr&eacute;fecture de Seine-et-Marne</span>
+  </div>
+</div>
+</body></html>

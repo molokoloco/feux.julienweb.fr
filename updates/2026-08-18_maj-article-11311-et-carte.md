@@ -11,12 +11,19 @@
 > corrigées. La meta est désormais **sans date** (« arrêté prorogé chaque semaine ») : elle ne peut
 > plus se périmer à la prochaine prorogation.
 >
-> **Restes assumés** : la mention « jusqu'au 31 juillet » subsiste à 2 endroits, chaque fois
+> **Carte OG régénérée (v2)** — média **#11472**, featured + `og:image` + `twitter:image` + légende
+> schema, vérifiés sur le HTML servi. Gabarit : `updates/og-2026-08-18/og_feux-foret-fontainebleau-v2.html`.
+> Deux changements de fond : **5 massifs** au lieu de 3, et **aucune date gravée dans l'image**
+> (« Interdiction prorogée chaque semaine » + renvoi à la préfecture). La v1 affichait
+> « Jusqu'au 31 juillet 2026 inclus » : elle est restée fausse 18 jours **comme vignette de partage**,
+> là où personne ne pense à aller la corriger. L'ancienne image reste en bibliothèque (trace de ce
+> qui a circulé en juillet). L'archive `2026-07_fontainebleau/` n'a **pas** été touchée.
+>
+> **Restes assumés** : la mention « jusqu'au 31 juillet » subsiste à 2 endroits du corps, chaque fois
 > **explicitement historique** (ce que disait l'arrêté du 24/07, suivi de la situation actuelle).
-> La **légende de l'image OG** dit encore « accès interdit aux 3 massifs jusqu'au 31/07 » — elle
-> vient du média lui-même, corriger demanderait de régénérer la carte OG. Le snippet temporaire
-> `TMP_YOAST_11311` (#493) est **désactivé mais non supprimé** : le force-delete REST rend 500 sur
-> un snippet déjà en corbeille (comportement connu) → à supprimer à la main dans WP Admin.
+> Deux snippets temporaires sont **en corbeille mais non purgés** — `TMP_YOAST_11311` (#493) et
+> `TMP_OGIMG_11311` (#494) : le force-delete REST rend 500 sur un snippet déjà en corbeille
+> (comportement connu) → à vider à la main dans WP Admin.
 
 > Copie prête à coller. L'article est construit en Elementor : **édition manuelle dans l'éditeur**,
 > jamais d'injection `_elementor_data` (incident 2026-04-12).
